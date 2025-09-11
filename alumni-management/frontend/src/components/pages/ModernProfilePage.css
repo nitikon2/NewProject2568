@@ -1,0 +1,317 @@
+/* ModernProfilePage.css - Simple & Clean Profile Design */
+
+/* Global animations - minimal and smooth */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes softGlow {
+  0% {
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+  }
+  100% {
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+  }
+}
+
+/* Clean Profile Container */
+.modern-profile-container {
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* Profile Card Styles - Clean & Simple */
+.profile-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.profile-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Info Card Styles */
+.info-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  animation: slideUp 0.6s ease-out;
+}
+
+.info-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Avatar Styles - Simple & Clean */
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 2rem;
+  font-weight: 600;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Field Styles */
+.form-field {
+  margin-bottom: 16px;
+}
+
+.form-field .MuiOutlinedInput-root {
+  border-radius: 8px;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
+}
+
+.form-field .MuiOutlinedInput-root:hover {
+  background-color: #f3f4f6;
+}
+
+.form-field .MuiOutlinedInput-root.Mui-focused {
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Button Styles */
+.profile-button {
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-weight: 500;
+  text-transform: none;
+  transition: all 0.2s ease;
+}
+
+.profile-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Chip Styles */
+.profile-chip {
+  border-radius: 16px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.profile-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Title Styles */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 16px;
+}
+
+.section-title .MuiSvgIcon-root {
+  font-size: 20px;
+}
+
+/* Divider Styles */
+.section-divider {
+  margin: 24px 0;
+  border-color: #e5e7eb;
+}
+
+/* Field Label Styles */
+.field-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.field-value {
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+/* Loading States */
+.loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    #f3f4f6 25%,
+    #e5e7eb 50%,
+    #f3f4f6 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Icon Colors */
+.icon-blue { color: #3b82f6; }
+.icon-green { color: #10b981; }
+.icon-yellow { color: #f59e0b; }
+.icon-purple { color: #8b5cf6; }
+.icon-red { color: #ef4444; }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-card,
+  .info-card {
+    margin-bottom: 16px;
+  }
+  
+  .profile-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 1.75rem;
+  }
+  
+  .section-title {
+    font-size: 1rem;
+  }
+  
+  .profile-button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-card {
+    margin: 0 -8px;
+    border-radius: 8px;
+  }
+  
+  .info-card {
+    margin: 0 -8px 16px;
+    border-radius: 8px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .profile-button {
+    display: none !important;
+  }
+  
+  .profile-card,
+  .info-card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid;
+  }
+  
+  .modern-profile-container {
+    background: white !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .profile-card:hover,
+  .info-card:hover,
+  .profile-avatar:hover,
+  .profile-button:hover {
+    transform: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .profile-card,
+  .info-card {
+    border: 2px solid currentColor;
+  }
+  
+  .profile-button {
+    border: 2px solid currentColor;
+  }
+  
+  .section-divider {
+    border-color: currentColor;
+  }
+}
+
+/* Focus Styles for Accessibility */
+.profile-avatar:focus,
+.profile-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Error states */
+.field-error {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+/* Success states */
+.field-success {
+  color: #10b981;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}

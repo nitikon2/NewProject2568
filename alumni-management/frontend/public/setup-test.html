@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Setup Test User</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Setting up Test User...</h1>
+    <div id="status">กำลังตั้งค่า...</div>
+    
+    <script>
+        // ลบข้อมูลเก่าก่อน
+        localStorage.clear();
+        
+        // ตั้งค่าข้อมูล test user ใหม่
+        const testUser = {
+            id: 15,
+            name: "ทดสอบ ผู้ใช้",
+            email: "test@test.com",
+            role: "alumni",
+            faculty: "คณะวิทยาศาสตร์และเทคโนโลยี",
+            major: "วิทยาการคอมพิวเตอร์",
+            graduation_year: 2020
+        };
+        
+        localStorage.setItem('user', JSON.stringify(testUser));
+        localStorage.setItem('token', 'test-token');
+        
+        console.log('✅ ตั้งค่า test user แล้ว:', testUser);
+        document.getElementById('status').innerHTML = '✅ ตั้งค่า test user สำเร็จ! กำลังเปลี่ยนเส้นทางไปหน้าโปรไฟล์...';
+        
+        // เปลี่ยนเส้นทางไปหน้าโปรไฟล์หลังจาก 2 วินาที
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 2000);
+    </script>
+</body>
+</html>

@@ -75,6 +75,7 @@ import {
 } from '@mui/icons-material';
 import { styled, keyframes } from '@mui/material/styles';
 import axios from 'axios';
+import addressData from '../../assets/thai-address-full.json';
 
 // Keyframes for animations
 const shimmer = keyframes`
@@ -265,11 +266,20 @@ const WorkHistory = () => {
         is_current: false,
         salary_range: '',
         location: '',
+        work_province: '',
+        work_district: '',
+        work_subdistrict: '',
+        work_zipcode: '',
         skills: '',
         achievements: '',
         team_size: '',
         technologies: ''
     });
+
+    // Address dropdown states
+    const [provinceOptions, setProvinceOptions] = useState([]);
+    const [amphoeOptions, setAmphoeOptions] = useState([]);
+    const [districtOptions, setDistrictOptions] = useState([]);
 
     const showSnackbar = (message, severity = 'success') => {
         setSnackbar({ open: true, message, severity });
@@ -279,6 +289,50 @@ const WorkHistory = () => {
         fetchWorkHistory();
     }, []);
 
+    // Initialize address data
+    useEffect(() => {
+        // ดึงรายชื่อจังหวัดจาก json ที่ export มาใหม่
+        setProvinceOptions(addressData.provinces.map(p => p.name));
+    }, []);
+
+    useEffect(() => {
+        if (formData.work_province) {
+            // ดึงรายชื่ออำเภอจากจังหวัดที่เลือก
+            const province = addressData.provinces.find(p => p.name === formData.work_province);
+            setAmphoeOptions(province ? province.amphoes.map(a => a.name) : []);
+            
+            // ล้างค่าเฉพาะเมื่อไม่อยู่ในโหมดแก้ไข หรือเมื่อเปลี่ยนจังหวัด
+            if (!editingItem) {
+                setFormData(f => ({ ...f, work_district: '', work_subdistrict: '', work_zipcode: '' }));
+                setDistrictOptions([]);
+            }
+        }
+    }, [formData.work_province, editingItem]);
+
+    useEffect(() => {
+        if (formData.work_province && formData.work_district) {
+            // ดึงรายชื่อตำบลจากอำเภอที่เลือก
+            const province = addressData.provinces.find(p => p.name === formData.work_province);
+            const amphoe = province ? province.amphoes.find(a => a.name === formData.work_district) : null;
+            setDistrictOptions(amphoe ? amphoe.districts.map(d => d.name) : []);
+            
+            // ล้างค่าเฉพาะเมื่อไม่อยู่ในโหมดแก้ไข หรือเมื่อเปลี่ยนอำเภอ
+            if (!editingItem) {
+                setFormData(f => ({ ...f, work_subdistrict: '', work_zipcode: '' }));
+            }
+        }
+    }, [formData.work_district, editingItem]);
+
+    useEffect(() => {
+        if (formData.work_province && formData.work_district && formData.work_subdistrict) {
+            // ดึงรหัสไปรษณีย์จากตำบลที่เลือก
+            const province = addressData.provinces.find(p => p.name === formData.work_province);
+            const amphoe = province ? province.amphoes.find(a => a.name === formData.work_district) : null;
+            const district = amphoe ? amphoe.districts.find(d => d.name === formData.work_subdistrict) : null;
+            setFormData(f => ({ ...f, work_zipcode: district ? district.zipcode : '' }));
+        }
+    }, [formData.work_subdistrict]);
+
     const fetchWorkHistory = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -287,6 +341,7 @@ const WorkHistory = () => {
             });
             
             if (response.data.success) {
+                console.log('📋 Fetched work history data:', response.data.data); // Debug log
                 setWorkHistory(response.data.data);
             }
         } catch (error) {
@@ -393,6 +448,7 @@ const WorkHistory = () => {
     };
 
     const handleEdit = (item) => {
+        console.log('🔧 Edit item data:', item); // Debug log
         setEditingItem(item);
         setFormData({
             company_name: item.company_name || '',
@@ -403,12 +459,43 @@ const WorkHistory = () => {
             is_current: item.is_current || false,
             salary_range: item.salary_range || '',
             location: item.location || '',
+            work_province: item.work_province || '',
+            work_district: item.work_district || '',
+            work_subdistrict: item.work_subdistrict || '',
+            work_zipcode: item.work_zipcode || '',
             // Map ข้อมูลจากฐานข้อมูลมายังฟอร์ม
             skills: item.skills_used || '', // skills_used -> skills
             achievements: item.key_achievements || '', // key_achievements -> achievements
             team_size: item.team_size || '',
             technologies: item.technologies_used || '' // technologies_used -> technologies
         });
+        
+        console.log('🗺️ Address data for edit:', {
+            work_province: item.work_province,
+            work_district: item.work_district,
+            work_subdistrict: item.work_subdistrict,
+            work_zipcode: item.work_zipcode
+        }); // Debug log
+        
+        // Load dropdown options for existing address data
+        if (item.work_province) {
+            const province = addressData.provinces.find(p => p.name === item.work_province);
+            if (province) {
+                setAmphoeOptions(province.amphoes.map(a => a.name));
+                
+                if (item.work_district) {
+                    const amphoe = province.amphoes.find(a => a.name === item.work_district);
+                    if (amphoe) {
+                        setDistrictOptions(amphoe.districts.map(d => d.name));
+                    }
+                }
+            }
+        } else {
+            // ถ้าไม่มีจังหวัด ให้ล้าง dropdown อื่นๆ
+            setAmphoeOptions([]);
+            setDistrictOptions([]);
+        }
+        
         setShowForm(true);
     };
 
@@ -441,6 +528,10 @@ const WorkHistory = () => {
             is_current: false,
             salary_range: '',
             location: '',
+            work_province: '',
+            work_district: '',
+            work_subdistrict: '',
+            work_zipcode: '',
             skills: '',
             achievements: '',
             team_size: '',
@@ -449,6 +540,9 @@ const WorkHistory = () => {
         setEditingItem(null);
         setShowForm(false);
         setFormStep(0);
+        // ล้าง dropdown options
+        setAmphoeOptions([]);
+        setDistrictOptions([]);
     };
 
     const formatDate = (dateString) => {
@@ -761,10 +855,20 @@ const WorkHistory = () => {
                                                                             {formatDate(item.start_date)} - {item.is_current ? 'ปัจจุบัน' : formatDate(item.end_date)}
                                                                         </Typography>
                                                                     </Box>
-                                                                    {item.location && (
+                                                                    {(item.location || item.work_province || item.work_district || item.work_subdistrict || item.work_zipcode) && (
                                                                         <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
                                                                             <LocationIcon sx={{ fontSize: 16, mr: 0.5 }} />
-                                                                            <Typography variant="body2">{item.location}</Typography>
+                                                                            <Typography variant="body2">
+                                                                                {(() => {
+                                                                                    const addressParts = [];
+                                                                                    if (item.location) addressParts.push(item.location);
+                                                                                    if (item.work_subdistrict) addressParts.push(`ตำบล${item.work_subdistrict}`);
+                                                                                    if (item.work_district) addressParts.push(`อำเภอ${item.work_district}`);
+                                                                                    if (item.work_province) addressParts.push(`จังหวัด${item.work_province}`);
+                                                                                    if (item.work_zipcode) addressParts.push(item.work_zipcode);
+                                                                                    return addressParts.length > 0 ? addressParts.join(' ') : 'ไม่ระบุที่อยู่';
+                                                                                })()}
+                                                                            </Typography>
                                                                         </Box>
                                                                     )}
                                                                     <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
@@ -888,10 +992,20 @@ const WorkHistory = () => {
                                                                     {formatDate(item.start_date)} - {item.is_current ? 'ปัจจุบัน' : formatDate(item.end_date)}
                                                                 </Typography>
                                                             </Box>
-                                                            {item.location && (
+                                                            {(item.location || item.work_province || item.work_district || item.work_subdistrict || item.work_zipcode) && (
                                                                 <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
                                                                     <LocationIcon sx={{ fontSize: 16, mr: 0.5 }} />
-                                                                    <Typography variant="body2">{item.location}</Typography>
+                                                                    <Typography variant="body2">
+                                                                        {(() => {
+                                                                            const addressParts = [];
+                                                                            if (item.location) addressParts.push(item.location);
+                                                                            if (item.work_subdistrict) addressParts.push(`ตำบล${item.work_subdistrict}`);
+                                                                            if (item.work_district) addressParts.push(`อำเภอ${item.work_district}`);
+                                                                            if (item.work_province) addressParts.push(`จังหวัด${item.work_province}`);
+                                                                            if (item.work_zipcode) addressParts.push(item.work_zipcode);
+                                                                            return addressParts.length > 0 ? addressParts.join(' ') : 'ไม่ระบุที่อยู่';
+                                                                        })()}
+                                                                    </Typography>
                                                                 </Box>
                                                             )}
                                                         </Box>
@@ -978,9 +1092,17 @@ const WorkHistory = () => {
                                                                         <Typography variant="body2" color="text.secondary">
                                                                             {formatDate(item.start_date)} - {item.is_current ? 'ปัจจุบัน' : formatDate(item.end_date)}
                                                                         </Typography>
-                                                                        {item.location && (
+                                                                        {(item.location || item.work_province || item.work_district || item.work_subdistrict || item.work_zipcode) && (
                                                                             <Typography variant="body2" color="text.secondary">
-                                                                                • {item.location}
+                                                                                • {(() => {
+                                                                                    const addressParts = [];
+                                                                                    if (item.location) addressParts.push(item.location);
+                                                                                    if (item.work_subdistrict) addressParts.push(`ตำบล${item.work_subdistrict}`);
+                                                                                    if (item.work_district) addressParts.push(`อำเภอ${item.work_district}`);
+                                                                                    if (item.work_province) addressParts.push(`จังหวัด${item.work_province}`);
+                                                                                    if (item.work_zipcode) addressParts.push(item.work_zipcode);
+                                                                                    return addressParts.length > 0 ? addressParts.join(' ') : 'ไม่ระบุที่อยู่';
+                                                                                })()}
                                                                             </Typography>
                                                                         )}
                                                                         <Typography variant="body2" color="text.secondary">
@@ -1139,6 +1261,73 @@ const WorkHistory = () => {
                                                 InputProps={{
                                                     startAdornment: <LocationIcon sx={{ color: 'text.secondary', mr: 1 }} />
                                                 }}
+                                            />
+                                        </Grid>
+
+                                        {/* Address dropdown fields */}
+                                        <Grid item xs={12} sm={6}>
+                                            <FormControl fullWidth>
+                                                <InputLabel>จังหวัด</InputLabel>
+                                                <Select
+                                                    name="work_province"
+                                                    value={formData.work_province}
+                                                    label="จังหวัด"
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <MenuItem value="">เลือกจังหวัด</MenuItem>
+                                                    {provinceOptions.map((province) => (
+                                                        <MenuItem key={province} value={province}>
+                                                            {province}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+
+                                        <Grid item xs={12} sm={6}>
+                                            <FormControl fullWidth disabled={!formData.work_province}>
+                                                <InputLabel>อำเภอ</InputLabel>
+                                                <Select
+                                                    name="work_district"
+                                                    value={formData.work_district}
+                                                    label="อำเภอ"
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <MenuItem value="">เลือกอำเภอ</MenuItem>
+                                                    {amphoeOptions.map((amphoe) => (
+                                                        <MenuItem key={amphoe} value={amphoe}>
+                                                            {amphoe}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+
+                                        <Grid item xs={12} sm={6}>
+                                            <FormControl fullWidth disabled={!formData.work_district}>
+                                                <InputLabel>ตำบล</InputLabel>
+                                                <Select
+                                                    name="work_subdistrict"
+                                                    value={formData.work_subdistrict}
+                                                    label="ตำบล"
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <MenuItem value="">เลือกตำบล</MenuItem>
+                                                    {districtOptions.map((district) => (
+                                                        <MenuItem key={district} value={district}>
+                                                            {district}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+
+                                        <Grid item xs={12} sm={6}>
+                                            <TextField
+                                                fullWidth
+                                                label="รหัสไปรษณีย์"
+                                                value={formData.work_zipcode}
+                                                InputProps={{ readOnly: true }}
                                             />
                                         </Grid>
                                     </Grid>

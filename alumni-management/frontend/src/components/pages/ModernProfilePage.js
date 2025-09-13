@@ -521,26 +521,6 @@ function ModernProfilePage() {
             </Fade>
           </Grid>
 
-          {/* Work Information */}
-          <Grid item xs={12} md={6}>
-            <Fade in timeout={600} style={{ transitionDelay: '300ms' }}>
-              <InfoCard>
-                <CardContent sx={{ p: 3 }}>
-                  <SectionTitle>
-                    <WorkIcon sx={{ color: '#f59e0b', fontSize: 20 }} />
-                    ข้อมูลการทำงาน
-                  </SectionTitle>
-                  <Divider sx={{ mb: 3, borderColor: '#e5e7eb' }} />
-
-                  {renderField('occupation', 'อาชีพ', userData?.occupation)}
-                  {renderField('position', 'ตำแหน่ง', userData?.position)}
-                  {renderField('workplace', 'สถานที่ทำงาน', userData?.workplace)}
-                  {renderField('salary', 'เงินเดือน (บาท)', userData?.salary ? `${userData.salary} บาท` : '', 'number')}
-                </CardContent>
-              </InfoCard>
-            </Fade>
-          </Grid>
-
           {/* Address Information */}
           <Grid item xs={12} md={6}>
             <Fade in timeout={600} style={{ transitionDelay: '400ms' }}>

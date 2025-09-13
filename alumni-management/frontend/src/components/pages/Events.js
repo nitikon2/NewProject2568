@@ -452,12 +452,24 @@ function Events() {
                           backgroundColor: 'rgba(37, 99, 235, 0.05)',
                           borderRadius: 2,
                           mb: 2,
-                          flexGrow: 1
+                          flexGrow: 1,
+                          minHeight: '80px',
+                          display: 'flex',
+                          alignItems: 'flex-start'
                         }}>
-                          <Typography variant="body2" color="text.primary">
-                            {event.description?.length > 120
-                              ? event.description.substring(0, 120) + '...'
-                              : event.description}
+                          <Typography 
+                            variant="body2" 
+                            color="text.primary"
+                            sx={{
+                              display: '-webkit-box',
+                              WebkitLineClamp: 3,
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
+                              lineHeight: 1.4,
+                              textAlign: 'justify'
+                            }}
+                          >
+                            {event.description || 'ไม่มีรายละเอียดเพิ่มเติม'}
                           </Typography>
                         </Box>
 
@@ -489,8 +501,8 @@ function Events() {
                         </Stack>
                       </CardContent>
 
-                      {/* Organizer Footer */}
-                      <Box sx={{
+                      {/* Organizer Footer - ซ่อนส่วนนี้ */}
+                      {/* <Box sx={{
                         p: 2,
                         backgroundColor: 'rgba(255,255,255,0.8)',
                         borderTop: 1,
@@ -502,7 +514,7 @@ function Events() {
                             {event.organizer || 'ฝ่ายกิจการศิษย์เก่า'}
                           </Typography>
                         </Box>
-                      </Box>
+                      </Box> */}
                     </Card>
                     </Fade>
                   </Grid>
@@ -534,10 +546,14 @@ function Events() {
             <Dialog
               open={showModal}
               onClose={closeModal}
-              maxWidth="md"
+              maxWidth="lg"
               fullWidth
               PaperProps={{
-                sx: { borderRadius: 4 }
+                sx: { 
+                  borderRadius: 4,
+                  maxHeight: '90vh',
+                  overflow: 'hidden'
+                }
               }}
             >
               {selectedEvent && (
@@ -546,102 +562,189 @@ function Events() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: 2,
-                    background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)'
+                    background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)',
+                    borderBottom: '1px solid #e2e8f0',
+                    py: 2
                   }}>
-                    <CalendarIcon sx={{ color: '#facc15' }} />
-                    {selectedEvent.title}
+                    <CalendarIcon sx={{ color: '#facc15', fontSize: 28 }} />
+                    <Typography variant="h5" sx={{ fontWeight: 600, flex: 1 }}>
+                      {selectedEvent.title}
+                    </Typography>
                     <IconButton
                       onClick={closeModal}
-                      sx={{ ml: 'auto' }}
+                      sx={{ 
+                        bgcolor: 'rgba(255,255,255,0.8)',
+                        '&:hover': { bgcolor: 'rgba(255,255,255,1)' }
+                      }}
                     >
                       <CloseIcon />
                     </IconButton>
                   </DialogTitle>
                   
-                  <DialogContent sx={{ background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)' }}>
-                    <Grid container spacing={3} sx={{ mt: 1 }}>
-                      <Grid item xs={12} md={5}>
-                        <Box
-                          component="img"
-                          src={selectedEvent.image_url ? `http://localhost:5000${selectedEvent.image_url}` : '/event-default.jpg'}
-                          alt={selectedEvent.title}
-                          sx={{
-                            width: '100%',
-                            borderRadius: 3,
-                            objectFit: 'cover',
-                            maxHeight: 260
-                          }}
-                          onError={e => {
-                            e.target.onerror = null;
-                            e.target.src = '/event-default.jpg';
-                          }}
-                        />
-                        <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
-                          <Chip
-                            label={isUpcoming(selectedEvent.event_date) ? 'กำลังจะมาถึง' : 'กิจกรรมที่ผ่านมา'}
-                            color={isUpcoming(selectedEvent.event_date) ? 'primary' : 'default'}
-                            icon={isUpcoming(selectedEvent.event_date) ? <EventAvailableIcon /> : <EventBusyIcon />}
+                  <DialogContent sx={{ 
+                    background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)',
+                    p: 0,
+                    overflow: 'hidden'
+                  }}>
+                    <Box sx={{ height: '60vh', overflow: 'auto', p: 3 }}>
+                      <Grid container spacing={4}>
+                        <Grid item xs={12} md={6}>
+                          <Box
+                            component="img"
+                            src={selectedEvent.image_url ? `http://localhost:5000${selectedEvent.image_url}` : '/event-default.jpg'}
+                            alt={selectedEvent.title}
+                            sx={{
+                              width: '100%',
+                              borderRadius: 3,
+                              objectFit: 'cover',
+                              height: { xs: 200, md: 280 },
+                              boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+                            }}
+                            onError={e => {
+                              e.target.onerror = null;
+                              e.target.src = '/event-default.jpg';
+                            }}
                           />
-                          {selectedEvent.category && (
-                            <Chip label={selectedEvent.category} color="warning" />
-                          )}
-                        </Stack>
-                      </Grid>
-                      
-                      <Grid item xs={12} md={7}>
-                        <Stack spacing={2}>
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <EventIcon color="primary" />
-                            <Typography>
-                              {formatDate(selectedEvent.event_date)} | {formatTime(selectedEvent.event_date) || '--'}
+                          <Stack direction="row" spacing={1} sx={{ mt: 2, flexWrap: 'wrap', gap: 1 }}>
+                            <Chip
+                              label={isUpcoming(selectedEvent.event_date) ? 'กำลังจะมาถึง' : 'กิจกรรมที่ผ่านมา'}
+                              color={isUpcoming(selectedEvent.event_date) ? 'primary' : 'default'}
+                              icon={isUpcoming(selectedEvent.event_date) ? <EventAvailableIcon /> : <EventBusyIcon />}
+                              sx={{ fontWeight: 600 }}
+                            />
+                            {selectedEvent.category && (
+                              <Chip 
+                                label={selectedEvent.category} 
+                                sx={{ 
+                                  bgcolor: '#764ba2', 
+                                  color: 'white',
+                                  fontWeight: 600 
+                                }} 
+                              />
+                            )}
+                          </Stack>
+                        </Grid>
+                        
+                        <Grid item xs={12} md={6}>
+                          <Stack spacing={3}>
+                            {/* Event Info Cards */}
+                            <Paper elevation={0} sx={{ p: 2, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.7)' }}>
+                              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 1 }}>
+                                <EventIcon sx={{ color: '#667eea' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600, color: '#1e293b' }}>
+                                  วันที่และเวลา
+                                </Typography>
+                              </Box>
+                              <Typography variant="body1" sx={{ ml: 4, color: '#475569' }}>
+                                {formatDate(selectedEvent.event_date)}
+                              </Typography>
+                              <Typography variant="body1" sx={{ ml: 4, color: '#475569' }}>
+                                เวลา: {formatTime(selectedEvent.event_date) || 'ไม่ระบุ'}
+                              </Typography>
+                            </Paper>
+                            
+                            <Paper elevation={0} sx={{ p: 2, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.7)' }}>
+                              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 1 }}>
+                                <LocationIcon sx={{ color: '#667eea' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600, color: '#1e293b' }}>
+                                  สถานที่
+                                </Typography>
+                              </Box>
+                              <Typography variant="body1" sx={{ ml: 4, color: '#475569' }}>
+                                {selectedEvent.location || 'ไม่ระบุ'}
+                              </Typography>
+                            </Paper>
+                            
+                            <Paper elevation={0} sx={{ p: 2, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.7)' }}>
+                              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 1 }}>
+                                <GroupsIcon sx={{ color: '#667eea' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600, color: '#1e293b' }}>
+                                  ผู้เข้าร่วม
+                                </Typography>
+                              </Box>
+                              <Typography variant="body1" sx={{ ml: 4, color: '#475569' }}>
+                                {selectedEvent.participants_count || 0} คน
+                              </Typography>
+                            </Paper>
+                          </Stack>
+                        </Grid>
+                        
+                        <Grid item xs={12}>
+                          <Divider sx={{ my: 2 }} />
+                          
+                          <Box>
+                            <Typography variant="h6" color="primary" sx={{ mb: 2, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 1 }}>
+                              📝 รายละเอียดกิจกรรม
                             </Typography>
+                            <Paper elevation={0} sx={{ 
+                              p: 3, 
+                              borderRadius: 2, 
+                              bgcolor: 'rgba(255,255,255,0.8)',
+                              border: '1px solid #e2e8f0'
+                            }}>
+                              <Typography 
+                                variant="body1" 
+                                color="text.primary"
+                                sx={{
+                                  lineHeight: 1.8,
+                                  textAlign: 'justify',
+                                  whiteSpace: 'pre-wrap',
+                                  wordBreak: 'break-word'
+                                }}
+                              >
+                                {selectedEvent.description || 'ไม่มีรายละเอียดเพิ่มเติม'}
+                              </Typography>
+                            </Paper>
                           </Box>
-                          
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <LocationIcon color="primary" />
-                            <Typography>{selectedEvent.location}</Typography>
-                          </Box>
-                          
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <PersonIcon color="primary" />
-                            <Typography>{selectedEvent.organizer || 'ฝ่ายกิจการศิษย์เก่า'}</Typography>
-                          </Box>
-                          
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <GroupsIcon color="primary" />
-                            <Typography>{selectedEvent.participants_count || 0} คนเข้าร่วม</Typography>
-                          </Box>
-                          
-                          <Divider />
-                          
-                          <Typography variant="body1" color="text.primary">
-                            {selectedEvent.description}
-                          </Typography>
-                        </Stack>
+                        </Grid>
                       </Grid>
-                    </Grid>
+                    </Box>
                   </DialogContent>
                   
-                  <DialogActions sx={{ p: 3, background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)' }}>
+                  <DialogActions sx={{ 
+                    p: 3, 
+                    background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)',
+                    borderTop: '1px solid #e2e8f0',
+                    gap: 2,
+                    justifyContent: 'center'
+                  }}>
                     {user && (
                       registeredEvents.includes(selectedEvent.id) ? (
                         <Button
                           variant="outlined"
                           color="error"
+                          size="large"
                           startIcon={registering[selectedEvent.id] ? <CircularProgress size={20} /> : <CancelIcon />}
                           disabled={registering[selectedEvent.id]}
                           onClick={() => handleUnregister(selectedEvent.id)}
-                          sx={{ borderRadius: 3 }}
+                          sx={{ 
+                            borderRadius: 3,
+                            px: 4,
+                            py: 1.5,
+                            fontWeight: 600,
+                            minWidth: 200
+                          }}
                         >
                           ยกเลิกลงทะเบียน
                         </Button>
                       ) : (
                         <Button
                           variant="contained"
+                          size="large"
                           startIcon={registering[selectedEvent.id] ? <CircularProgress size={20} /> : <CheckIcon />}
                           disabled={registering[selectedEvent.id]}
                           onClick={() => handleRegister(selectedEvent.id)}
-                          sx={{ borderRadius: 3 }}
+                          sx={{ 
+                            borderRadius: 3,
+                            px: 4,
+                            py: 1.5,
+                            fontWeight: 600,
+                            minWidth: 200,
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            '&:hover': {
+                              background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)'
+                            }
+                          }}
                         >
                           ลงทะเบียนเข้าร่วมกิจกรรม
                         </Button>
@@ -649,9 +752,16 @@ function Events() {
                     )}
                     <Button
                       variant="outlined"
+                      size="large"
                       startIcon={<ShareIcon />}
                       onClick={() => handleShare(selectedEvent)}
-                      sx={{ borderRadius: 3 }}
+                      sx={{ 
+                        borderRadius: 3,
+                        px: 4,
+                        py: 1.5,
+                        fontWeight: 600,
+                        minWidth: 150
+                      }}
                     >
                       แชร์กิจกรรม
                     </Button>

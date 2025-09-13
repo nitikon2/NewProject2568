@@ -38,11 +38,6 @@ function Home() {
   const user = JSON.parse(localStorage.getItem('user'));
   const [latestNews, setLatestNews] = useState(null);
   const [latestEvent, setLatestEvent] = useState(null);
-  const [stats, setStats] = useState({
-    totalAlumni: 0,
-    totalEvents: 0,
-    totalNews: 0
-  });
 
   useEffect(() => {
     // Fetch latest news
@@ -59,13 +54,6 @@ function Home() {
         if (Array.isArray(res.data) && res.data.length > 0) setLatestEvent(res.data[0]);
       })
       .catch(err => console.error('Error fetching events:', err));
-
-    // Fetch statistics (mock data for now)
-    setStats({
-      totalAlumni: 2568,
-      totalEvents: 48,
-      totalNews: 127
-    });
   }, []);
 
   return (
@@ -212,53 +200,6 @@ function Home() {
                     </Button>
                   </Stack>
                 )}
-              </Box>
-            </Grid>
-            
-            <Grid item xs={12} md={4}>
-              <Box 
-                className="animate__animated animate__fadeInRight"
-                sx={{ 
-                  display: 'flex', 
-                  justifyContent: 'center',
-                  mt: { xs: 4, md: 0 }
-                }}
-              >
-                <Paper
-                  elevation={0}
-                  sx={{
-                    p: 3,
-                    borderRadius: 4,
-                    background: 'rgba(255,255,255,0.1)',
-                    backdropFilter: 'blur(15px)',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    textAlign: 'center'
-                  }}
-                >
-                  <Typography variant="h6" fontWeight={600} mb={2}>
-                    สถิติระบบ
-                  </Typography>
-                  <Grid container spacing={2}>
-                    <Grid item xs={4}>
-                      <Typography variant="h4" fontWeight={700} color="#ffd700">
-                        {stats.totalAlumni.toLocaleString()}
-                      </Typography>
-                      <Typography variant="caption">ศิษย์เก่า</Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Typography variant="h4" fontWeight={700} color="#ffd700">
-                        {stats.totalEvents}
-                      </Typography>
-                      <Typography variant="caption">กิจกรรม</Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Typography variant="h4" fontWeight={700} color="#ffd700">
-                        {stats.totalNews}
-                      </Typography>
-                      <Typography variant="caption">ข่าวสาร</Typography>
-                    </Grid>
-                  </Grid>
-                </Paper>
               </Box>
             </Grid>
           </Grid>

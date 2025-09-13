@@ -94,11 +94,7 @@ function Register() {
     address_subdistrict: '',
     address_district: '',
     address_province: '',
-    address_postcode: '',
-    occupation: '',
-    position: '',
-    workplace: '',
-    salary: ''
+    address_postcode: ''
   });
   const [provinceOptions, setProvinceOptions] = useState([]);
   const [amphoeOptions, setAmphoeOptions] = useState([]);
@@ -745,54 +741,6 @@ function Register() {
                     label="รหัสไปรษณีย์"
                     value={postcode}
                     InputProps={{ readOnly: true }}
-                    sx={textFieldStyles}
-                  />
-                </Grid>
-                
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    fullWidth
-                    label="อาชีพ"
-                    value={formData.occupation}
-                    onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
-                    sx={textFieldStyles}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <WorkIcon sx={{ color: '#6b7280' }} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    fullWidth
-                    label="ตำแหน่งงาน"
-                    value={formData.position}
-                    onChange={(e) => setFormData({ ...formData, position: e.target.value })}
-                    sx={textFieldStyles}
-                  />
-                </Grid>
-                
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    fullWidth
-                    label="สถานที่ทำงาน"
-                    value={formData.workplace}
-                    onChange={(e) => setFormData({ ...formData, workplace: e.target.value })}
-                    sx={textFieldStyles}
-                  />
-                </Grid>
-                
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="เงินเดือน"
-                    value={formData.salary}
-                    onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
                     sx={textFieldStyles}
                   />
                 </Grid>

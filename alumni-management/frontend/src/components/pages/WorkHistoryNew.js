@@ -75,6 +75,7 @@ import {
 } from '@mui/icons-material';
 import { styled, keyframes } from '@mui/material/styles';
 import axios from 'axios';
+import addressData from '../../assets/thai-address-full.json';
 
 // Keyframes for animations
 const shimmer = keyframes`
@@ -283,11 +284,18 @@ const WorkHistory = () => {
         location: '',
         work_province: '',
         work_district: '',
+        work_subdistrict: '',
+        work_zipcode: '',
         skills_used: '',
         key_achievements: '',
         team_size: '',
         technologies_used: ''
     });
+
+    // Address dropdown states
+    const [provinceOptions, setProvinceOptions] = useState([]);
+    const [amphoeOptions, setAmphoeOptions] = useState([]);
+    const [districtOptions, setDistrictOptions] = useState([]);
 
     const showSnackbar = (message, severity = 'success') => {
         setSnackbar({ open: true, message, severity });
@@ -295,7 +303,57 @@ const WorkHistory = () => {
 
     useEffect(() => {
         fetchWorkHistory();
+        // Initialize province options
+        console.log('🏠 Initializing address data...', addressData);
+        console.log('🏠 Provinces count:', addressData?.provinces?.length);
+        setProvinceOptions(addressData.provinces.map(p => p.name));
+        console.log('🏠 Province options set');
     }, []);
+
+    // Handle province change
+    useEffect(() => {
+        if (formData.work_province) {
+            const province = addressData.provinces.find(p => p.name === formData.work_province);
+            setAmphoeOptions(province ? province.amphoes.map(a => a.name) : []);
+            if (formData.work_district && !province?.amphoes.find(a => a.name === formData.work_district)) {
+                setFormData(prev => ({ 
+                    ...prev, 
+                    work_district: '', 
+                    work_subdistrict: '', 
+                    work_zipcode: '' 
+                }));
+            }
+            setDistrictOptions([]);
+        }
+    }, [formData.work_province]);
+
+    // Handle district change
+    useEffect(() => {
+        if (formData.work_province && formData.work_district) {
+            const province = addressData.provinces.find(p => p.name === formData.work_province);
+            const amphoe = province ? province.amphoes.find(a => a.name === formData.work_district) : null;
+            setDistrictOptions(amphoe ? amphoe.districts.map(d => d.name) : []);
+            if (formData.work_subdistrict && !amphoe?.districts.find(d => d.name === formData.work_subdistrict)) {
+                setFormData(prev => ({ 
+                    ...prev, 
+                    work_subdistrict: '', 
+                    work_zipcode: '' 
+                }));
+            }
+        }
+    }, [formData.work_district]);
+
+    // Handle subdistrict change (auto-fill zipcode)
+    useEffect(() => {
+        if (formData.work_province && formData.work_district && formData.work_subdistrict) {
+            const province = addressData.provinces.find(p => p.name === formData.work_province);
+            const amphoe = province ? province.amphoes.find(a => a.name === formData.work_district) : null;
+            const district = amphoe ? amphoe.districts.find(d => d.name === formData.work_subdistrict) : null;
+            if (district) {
+                setFormData(prev => ({ ...prev, work_zipcode: district.zipcode }));
+            }
+        }
+    }, [formData.work_subdistrict]);
 
     const fetchWorkHistory = async () => {
         try {
@@ -469,6 +527,8 @@ const WorkHistory = () => {
             location: item.location || '',
             work_province: item.work_province || '',
             work_district: item.work_district || '',
+            work_subdistrict: item.work_subdistrict || '',
+            work_zipcode: item.work_zipcode || '',
             skills_used: item.skills_used || '',
             key_achievements: item.key_achievements || '',
             team_size: item.team_size || '',
@@ -514,6 +574,8 @@ const WorkHistory = () => {
             location: '',
             work_province: '',
             work_district: '',
+            work_subdistrict: '',
+            work_zipcode: '',
             skills_used: '',
             key_achievements: '',
             team_size: '',
@@ -841,6 +903,8 @@ const WorkHistory = () => {
                                                                                 {item.location}
                                                                                 {item.work_province && `, ${item.work_province}`}
                                                                                 {item.work_district && `, ${item.work_district}`}
+                                                                                {item.work_subdistrict && `, ${item.work_subdistrict}`}
+                                                                                {item.work_zipcode && ` ${item.work_zipcode}`}
                                                                             </Typography>
                                                                         </Box>
                                                                     )}
@@ -1457,24 +1521,62 @@ const WorkHistory = () => {
                                                 }}
                                             />
                                         </Grid>
-                                        <Grid item xs={12} md={4}>
-                                            <TextField
-                                                fullWidth
-                                                label="จังหวัด"
-                                                name="work_province"
-                                                value={formData.work_province}
-                                                onChange={handleInputChange}
-                                                placeholder="เช่น กรุงเทพมหานคร"
-                                            />
+                                        <Grid item xs={12} md={3}>
+                                            <FormControl fullWidth>
+                                                <InputLabel>จังหวัด</InputLabel>
+                                                <Select
+                                                    name="work_province"
+                                                    value={formData.work_province}
+                                                    label="จังหวัด"
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <MenuItem value="">เลือกจังหวัด</MenuItem>
+                                                    {provinceOptions.map((province) => (
+                                                        <MenuItem key={province} value={province}>{province}</MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
                                         </Grid>
-                                        <Grid item xs={12} md={4}>
+                                        <Grid item xs={12} md={3}>
+                                            <FormControl fullWidth disabled={!formData.work_province}>
+                                                <InputLabel>อำเภอ/เขต</InputLabel>
+                                                <Select
+                                                    name="work_district"
+                                                    value={formData.work_district}
+                                                    label="อำเภอ/เขต"
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <MenuItem value="">เลือกอำเภอ</MenuItem>
+                                                    {amphoeOptions.map((amphoe) => (
+                                                        <MenuItem key={amphoe} value={amphoe}>{amphoe}</MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item xs={12} md={3}>
+                                            <FormControl fullWidth disabled={!formData.work_district}>
+                                                <InputLabel>ตำบล</InputLabel>
+                                                <Select
+                                                    name="work_subdistrict"
+                                                    value={formData.work_subdistrict}
+                                                    label="ตำบล"
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <MenuItem value="">เลือกตำบล</MenuItem>
+                                                    {districtOptions.map((district) => (
+                                                        <MenuItem key={district} value={district}>{district}</MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item xs={12} md={3}>
                                             <TextField
                                                 fullWidth
-                                                label="อำเภอ/เขต"
-                                                name="work_district"
-                                                value={formData.work_district}
-                                                onChange={handleInputChange}
-                                                placeholder="เช่น วัฒนา"
+                                                label="รหัสไปรษณีย์"
+                                                name="work_zipcode"
+                                                value={formData.work_zipcode}
+                                                InputProps={{ readOnly: true }}
+                                                placeholder="รหัสไปรษณีย์จะเติมอัตโนมัติ"
                                             />
                                         </Grid>
                                     </Grid>

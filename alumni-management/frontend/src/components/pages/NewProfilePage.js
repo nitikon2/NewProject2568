@@ -826,18 +826,6 @@ function NewProfilePage() {
                     <Grid item xs={12} sm={6}>
                       {renderField('major', 'สาขาวิชา', userData?.major)}
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                      {renderField('gpa', 'เกรดเฉลี่ย', userData?.gpa)}
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      {renderField('occupation', 'อาชีพปัจจุบัน', userData?.occupation)}
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      {renderField('position', 'ตำแหน่งงาน', userData?.position)}
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      {renderField('workplace', 'สถานที่ทำงาน', userData?.workplace)}
-                    </Grid>
                   </Grid>
                 </CardContent>
               </InfoCard>

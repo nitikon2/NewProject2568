@@ -8,22 +8,13 @@ router.get('/', async (req, res) => {
         const [alumni] = await db.query(`
             SELECT 
                 id, title, name, student_id, graduation_year, faculty, major, 
-                occupation, position, workplace, salary, email, phone, created_at
+                email, phone, created_at
             FROM users
             WHERE role = 'user'
             ORDER BY graduation_year DESC, created_at DESC
         `);
 
-        // ดึงข้อมูลจากฟิลด์ที่ผู้ใช้กรอกตอนสมัคร (ถ้า null ให้เป็นค่าว่าง)
-        const alumniWithDefaults = alumni.map(a => ({
-            ...a,
-            occupation: a.occupation || '',
-            position: a.position || '',
-            workplace: a.workplace || '',
-            salary: a.salary || ''
-        }));
-
-        res.json(alumniWithDefaults);
+        res.json(alumni);
     } catch (err) {
         res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อมูลศิษย์เก่า', error: err.message });
     }
@@ -35,7 +26,7 @@ router.get('/:id', async (req, res) => {
         const [alumni] = await db.query(
             `SELECT 
                 id, title, name, student_id, graduation_year, faculty, major, 
-                occupation, position, workplace, salary, email, phone, created_at
+                email, phone, created_at
              FROM users WHERE id = ? AND role = 'user'`,
             [req.params.id]
         );
@@ -51,7 +42,7 @@ router.get('/:id', async (req, res) => {
 // POST /api/alumni - เพิ่มศิษย์เก่า (เพิ่มเข้า users)
 router.post('/', async (req, res) => {
     try {
-        const { title, name, student_id, graduation_year, faculty, major, occupation, position, workplace, salary, email, phone, current_address, password } = req.body;
+        const { title, name, student_id, graduation_year, faculty, major, email, phone, current_address, password } = req.body;
         if (!title || !name || !student_id || !graduation_year || !faculty || !major || !email) {
             return res.status(400).json({ message: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
         }
@@ -67,9 +58,9 @@ router.post('/', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password || 'alumni123', 10);
         const [result] = await db.query(
             `INSERT INTO users (
-                title, name, student_id, graduation_year, faculty, major, occupation, position, workplace, salary, email, phone, password, role, is_verified, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'user', true, NOW())`,
-            [title, name, student_id, graduation_year, faculty, major, occupation || '', position || '', workplace || '', salary || '', email, phone || '', hashedPassword]
+                title, name, student_id, graduation_year, faculty, major, email, phone, password, role, is_verified, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'user', true, NOW())`,
+            [title, name, student_id, graduation_year, faculty, major, email, phone || '', hashedPassword]
         );
         res.status(201).json({ id: result.insertId, message: 'เพิ่มข้อมูลศิษย์เก่าสำเร็จ' });
     } catch (err) {

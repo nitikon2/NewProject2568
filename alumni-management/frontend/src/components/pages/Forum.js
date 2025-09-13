@@ -485,31 +485,106 @@ function Forum() {
                       </Box>
                     </Stack>
                     
-                    {/* Post Menu */}
+                    {/* Post Menu - ตกแต่งจุด 3 จุด */}
                     {user && user.id === post.user_id && (
                       <>
                         <IconButton
+                          data-post-id={post.id}
                           onClick={(e) => {
                             setShowMoreMenu(showMoreMenu === post.id ? null : post.id);
                           }}
+                          sx={{
+                            width: 44,
+                            height: 44,
+                            borderRadius: '50%',
+                            background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
+                            border: '1px solid #e2e8f0',
+                            transition: 'all 0.3s ease',
+                            '&:hover': {
+                              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                              color: 'white',
+                              transform: 'scale(1.05)',
+                              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)'
+                            },
+                            '&:active': {
+                              transform: 'scale(0.95)'
+                            }
+                          }}
                         >
-                          <MoreVertIcon />
+                          <MoreVertIcon sx={{ 
+                            fontSize: 20,
+                            transition: 'all 0.3s ease'
+                          }} />
                         </IconButton>
                         <Menu
                           anchorEl={showMoreMenu === post.id ? document.querySelector(`[data-post-id="${post.id}"]`) : null}
                           open={showMoreMenu === post.id}
                           onClose={() => setShowMoreMenu(null)}
+                          PaperProps={{
+                            sx: {
+                              borderRadius: 3,
+                              boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                              border: '1px solid #e2e8f0',
+                              minWidth: 180,
+                              overflow: 'hidden',
+                              background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
+                            }
+                          }}
+                          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
-                          <MenuItem onClick={() => handleOpenEditModal(post)}>
-                            <EditIcon sx={{ mr: 1 }} />
-                            แก้ไขโพสต์
+                          <MenuItem 
+                            onClick={() => handleOpenEditModal(post)}
+                            sx={{
+                              py: 1.5,
+                              px: 2,
+                              borderRadius: 0,
+                              transition: 'all 0.3s ease',
+                              '&:hover': {
+                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                color: 'white',
+                                '& .MuiSvgIcon-root': {
+                                  color: 'white'
+                                }
+                              }
+                            }}
+                          >
+                            <EditIcon sx={{ 
+                              mr: 2, 
+                              fontSize: 20,
+                              color: '#667eea',
+                              transition: 'color 0.3s ease'
+                            }} />
+                            <Typography variant="body2" fontWeight={500}>
+                              แก้ไขโพสต์
+                            </Typography>
                           </MenuItem>
+                          <Divider sx={{ mx: 1, bgcolor: '#e2e8f0' }} />
                           <MenuItem 
                             onClick={() => setShowDeleteModal(post.id)}
-                            sx={{ color: 'error.main' }}
+                            sx={{
+                              py: 1.5,
+                              px: 2,
+                              borderRadius: 0,
+                              transition: 'all 0.3s ease',
+                              '&:hover': {
+                                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                                color: 'white',
+                                '& .MuiSvgIcon-root': {
+                                  color: 'white'
+                                }
+                              }
+                            }}
                           >
-                            <DeleteIcon sx={{ mr: 1 }} />
-                            ลบโพสต์
+                            <DeleteIcon sx={{ 
+                              mr: 2, 
+                              fontSize: 20,
+                              color: '#ef4444',
+                              transition: 'color 0.3s ease'
+                            }} />
+                            <Typography variant="body2" fontWeight={500}>
+                              ลบโพสต์
+                            </Typography>
                           </MenuItem>
                         </Menu>
                       </>

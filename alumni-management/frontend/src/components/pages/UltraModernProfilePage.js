@@ -53,6 +53,7 @@ import {
   Timeline as TimelineIcon,
   TrendingUp as TrendingUpIcon,
   DateRange as DateRangeIcon,
+  CalendarToday as CalendarIcon,
   AttachMoney as MoneyIcon,
   Language as LanguageIcon,
   Public as PublicIcon,
@@ -888,68 +889,97 @@ function UltraModernProfilePage() {
 
         <TabPanel value={activeTab} index={1}>
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={6}>
+            <Grid item xs={12} lg={8}>
               <InfoCard>
                 <CardContent>
                   <SectionHeader>
-                    <SchoolIcon sx={{ color: '#f59e0b', fontSize: '2rem' }} />
+                    <SchoolIcon sx={{ color: '#667eea', fontSize: '2rem' }} />
                     <Box>
                       <Typography variant="h5" sx={{ fontWeight: 700, color: '#2d3748' }}>
                         ข้อมูลการศึกษา
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        ประวัติการศึกษาและผลการเรียน
+                        ประวัติการศึกษาและคุณวุฒิ
                       </Typography>
                     </Box>
                   </SectionHeader>
                   
                   <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                      {renderEducationField('faculty', 'คณะ', userData?.faculty, 'faculty')}
-                    </Grid>
-                    <Grid item xs={12}>
-                      {renderEducationField('major', 'สาขาวิชา', userData?.major, 'major')}
+                    <Grid item xs={12} sm={6}>
+                      {renderField('faculty', 'คณะ', userData?.faculty)}
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      {renderField('gpa', 'เกรดเฉลี่ย', userData?.gpa)}
+                      {renderField('major', 'สาขาวิชา', userData?.major)}
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      {renderField('graduation_year', 'ปีที่จบ', userData?.graduation_year)}
+                      {renderField('graduation_year', 'ปีที่จบการศึกษา', userData?.graduation_year)}
                     </Grid>
                   </Grid>
                 </CardContent>
               </InfoCard>
             </Grid>
 
-            <Grid item xs={12} lg={6}>
+            <Grid item xs={12} lg={4}>
               <InfoCard>
                 <CardContent>
                   <SectionHeader>
-                    <BusinessCenterIcon sx={{ color: '#8b5cf6', fontSize: '2rem' }} />
+                    <TrendingUpIcon sx={{ color: '#10b981', fontSize: '2rem' }} />
                     <Box>
                       <Typography variant="h5" sx={{ fontWeight: 700, color: '#2d3748' }}>
-                        ข้อมูลการทำงาน
+                        สถิติการศึกษา
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        ประสบการณ์และตำแหน่งปัจจุบัน
+                        ข้อมูลเพิ่มเติมและสถิติ
                       </Typography>
                     </Box>
                   </SectionHeader>
                   
-                  <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                      {renderField('occupation', 'อาชีพปัจจุบัน', userData?.occupation)}
-                    </Grid>
-                    <Grid item xs={12}>
-                      {renderField('position', 'ตำแหน่งงาน', userData?.position)}
-                    </Grid>
-                    <Grid item xs={12}>
-                      {renderField('workplace', 'สถานที่ทำงาน', userData?.workplace)}
-                    </Grid>
-                    <Grid item xs={12}>
-                      {renderField('salary', 'เงินเดือน', userData?.salary ? `${userData.salary} บาท` : '')}
-                    </Grid>
-                  </Grid>
+                  <Stack spacing={3}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <CalendarIcon sx={{ color: '#f59e0b' }} />
+                      <Box>
+                        <Typography variant="body2" color="text.secondary">
+                          ปีที่เข้าศึกษา
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {userData?.graduation_year ? (userData.graduation_year - 4) : '-'}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <SchoolIcon sx={{ color: '#8b5cf6' }} />
+                      <Box>
+                        <Typography variant="body2" color="text.secondary">
+                          ระดับการศึกษา
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          ปริญญาตรี
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <CelebrationIcon sx={{ color: '#ef4444' }} />
+                      <Box>
+                        <Typography variant="body2" color="text.secondary">
+                          สถานะ
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          จบการศึกษา
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <TimelineIcon sx={{ color: '#06b6d4' }} />
+                      <Box>
+                        <Typography variant="body2" color="text.secondary">
+                          ประสบการณ์หลังจบ
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {userData?.graduation_year ? (new Date().getFullYear() - userData.graduation_year) : 0} ปี
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Stack>
                 </CardContent>
               </InfoCard>
             </Grid>

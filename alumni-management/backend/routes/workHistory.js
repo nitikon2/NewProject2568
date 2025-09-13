@@ -28,7 +28,7 @@ router.get('/', verifyToken, async (req, res) => {
     }
 });
 
-// ดึงประวัติการทำงานของผู้ใช้คนอื่น (สำหรับดูโปรไฟล์)
+// ดึงประวัติการทำงานของผู้ใช้คนอื่น (สำหรับดูโปรไฟล์และ admin)
 router.get('/user/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
@@ -42,10 +42,8 @@ router.get('/user/:userId', async (req, res) => {
             [userId]
         );
         
-        res.json({
-            success: true,
-            data: rows
-        });
+        // ส่งเฉพาะ array ของข้อมูลประวัติการทำงาน
+        res.json(rows);
     } catch (error) {
         console.error('Error fetching user work history:', error);
         res.status(500).json({
@@ -76,6 +74,8 @@ router.post('/', verifyToken, async (req, res) => {
             location,
             work_province,
             work_district,
+            work_subdistrict,
+            work_zipcode,
             team_size,
             skills_used,
             technologies_used,
@@ -102,13 +102,14 @@ router.post('/', verifyToken, async (req, res) => {
             `INSERT INTO work_history 
              (user_id, company_name, company_type, industry, company_size, position, department, job_level, 
               job_description, start_date, end_date, is_current, employment_type, salary_range, 
-              location, work_province, work_district, team_size, skills_used, technologies_used, key_achievements)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              location, work_province, work_district, work_subdistrict, work_zipcode, team_size, skills_used, technologies_used, key_achievements)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [userId, company_name || null, company_type || null, industry || null, company_size || null, 
              position || null, department || null, job_level || null, job_description || null, 
              start_date || null, end_date || null, is_current || false, employment_type || null, 
              salary_range || null, location || null, work_province || null, work_district || null, 
-             team_size || null, skills_used || null, technologies_used || null, key_achievements || null]
+             work_subdistrict || null, work_zipcode || null, team_size || null, skills_used || null, 
+             technologies_used || null, key_achievements || null]
         );
 
         res.status(201).json({
@@ -154,6 +155,8 @@ router.put('/:id', verifyToken, async (req, res) => {
             location,
             work_province,
             work_district,
+            work_subdistrict,
+            work_zipcode,
             team_size,
             skills_used,
             technologies_used,
@@ -186,14 +189,14 @@ router.put('/:id', verifyToken, async (req, res) => {
              SET company_name = ?, company_type = ?, industry = ?, company_size = ?, position = ?, 
                  department = ?, job_level = ?, job_description = ?, start_date = ?, end_date = ?, 
                  is_current = ?, employment_type = ?, salary_range = ?, location = ?, work_province = ?, 
-                 work_district = ?, team_size = ?, skills_used = ?, technologies_used = ?, key_achievements = ?
+                 work_district = ?, work_subdistrict = ?, work_zipcode = ?, team_size = ?, skills_used = ?, technologies_used = ?, key_achievements = ?
              WHERE id = ? AND user_id = ?`,
             [company_name || null, company_type || null, industry || null, company_size || null, 
              position || null, department || null, job_level || null, job_description || null, 
              start_date || null, end_date || null, is_current || false, employment_type || null,
              salary_range || null, location || null, work_province || null, work_district || null, 
-             team_size || null, skills_used || null, technologies_used || null, key_achievements || null, 
-             id, userId]
+             work_subdistrict || null, work_zipcode || null, team_size || null, skills_used || null, 
+             technologies_used || null, key_achievements || null, id, userId]
         );
 
         res.json({

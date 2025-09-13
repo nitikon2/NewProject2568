@@ -164,15 +164,14 @@ router.post('/register', async (req, res) => {
             `INSERT INTO users (
                 title, name, password, student_id,
                 email, phone, graduation_year,
-                faculty, major, occupation, position, workplace, salary, bio,
+                faculty, major, bio,
                 role, is_verified,
                 province, district, subdistrict, zipcode
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'user', false, ?, ?, ?, ?)`,
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'user', false, ?, ?, ?, ?)`,
             [
                 userData.title, userData.name, hashedPassword, userData.student_id,
                 userData.email, userData.phone, userData.graduation_year,
-                userData.faculty, userData.major, userData.occupation || '',
-                userData.position || '', userData.workplace || '', userData.salary || '', userData.bio || '',
+                userData.faculty, userData.major, userData.bio || '',
                 province || '', district || '', subdistrict || '', zipcode || ''
             ]
         );
@@ -201,11 +200,6 @@ router.get('/:id', async (req, res) => {
                     IFNULL(graduation_year, '') as graduation_year, 
                     IFNULL(faculty, '') as faculty, 
                     IFNULL(major, '') as major, 
-                    IFNULL(gpa, '') as gpa,
-                    IFNULL(occupation, '') as occupation, 
-                    IFNULL(position, '') as position,
-                    IFNULL(workplace, '') as workplace,
-                    IFNULL(salary, '') as salary,
                     IFNULL(bio, '') as bio,
                     IFNULL(profile_image, '') as profile_image,
                     IFNULL(address, '') as address,
@@ -245,26 +239,19 @@ router.get('/:id', async (req, res) => {
 // Update user profile
 router.put('/:id', async (req, res) => {
   try {
-        const { 
+        const {
             name,
             phone,
             graduation_year,
             faculty,
             major,
-            gpa,
-            occupation,
-            position,
-            workplace,
-            salary,
             bio,
             address,
             province,
             district,
             subdistrict,
             zipcode
-        } = req.body;
-
-    // Validate required fields
+        } = req.body;    // Validate required fields
     if (!name || !phone || !graduation_year || !faculty || !major) {
       return res.status(400).json({ message: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
     }
@@ -272,7 +259,7 @@ router.put('/:id', async (req, res) => {
         await db.query(
             `UPDATE users 
              SET name = ?, phone = ?, graduation_year = ?, 
-                     faculty = ?, major = ?, gpa = ?, occupation = ?, position = ?, workplace = ?, salary = ?, bio = ?,
+                     faculty = ?, major = ?, bio = ?,
                      address = ?, province = ?, district = ?, subdistrict = ?, zipcode = ?,
                      updated_at = NOW()
              WHERE id = ?`,
@@ -282,11 +269,6 @@ router.put('/:id', async (req, res) => {
                 graduation_year,
                 faculty,
                 major,
-                gpa ?? '',
-                occupation ?? '',
-                position ?? '',
-                workplace ?? '',
-                salary ?? '',
                 bio ?? '',
                 address ?? '',
                 province ?? '',
@@ -299,7 +281,7 @@ router.put('/:id', async (req, res) => {
 
         const [users] = await db.query(
             `SELECT id, title, name, email, phone, graduation_year, faculty, 
-                            major, gpa, occupation, position, workplace, salary, bio,
+                            major, bio,
                             address, province, district, subdistrict, zipcode, 
                             student_id, profile_image, created_at, updated_at
              FROM users WHERE id = ?`, 

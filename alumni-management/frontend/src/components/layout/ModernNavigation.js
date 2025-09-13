@@ -23,7 +23,10 @@ import {
   Tooltip,
   Zoom,
   Fade,
-  Backdrop
+  Backdrop,
+  Paper,
+  Card,
+  CardContent
 } from '@mui/material';
 import { 
   Menu as MenuIcon, 
@@ -58,9 +61,72 @@ function ModernNavigation() {
   const [profileMenuAnchor, setProfileMenuAnchor] = useState(null);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [notificationMenuAnchor, setNotificationMenuAnchor] = useState(null);
 
-  // จำลองการแจ้งเตือน (ในอนาคตสามารถดึงจาก API)
-  const [notifications] = useState(3);
+  // ข้อมูลการแจ้งเตือน
+  const [notifications, setNotifications] = useState({
+    events: [
+      {
+        id: 1,
+        title: 'งานสัมมนาศิษย์เก่า 2024',
+        type: 'event',
+        date: '2024-02-15',
+        description: 'งานสัมมนาศิษย์เก่าประจำปี 2024',
+        isNew: true
+      },
+      {
+        id: 2,
+        title: 'กิจกรรมกีฬาสีประจำปี',
+        type: 'event',
+        date: '2024-02-20',
+        description: 'กิจกรรมกีฬาสีประจำปีของมหาวิทยาลัย',
+        isNew: true
+      }
+    ],
+    news: [
+      {
+        id: 3,
+        title: 'ประกาศผลการรับสมัครนิสิตใหม่',
+        type: 'news',
+        date: '2024-02-10',
+        description: 'ประกาศรายชื่อผู้ผ่านการคัดเลือก',
+        isNew: true
+      },
+      {
+        id: 4,
+        title: 'การปรับปรุงระบบสารสนเทศ',
+        type: 'news',
+        date: '2024-02-08',
+        description: 'ประกาศปรับปรุงระบบสารสนเทศของมหาวิทยาลัย',
+        isNew: false
+      }
+    ],
+    updates: [
+      {
+        id: 5,
+        title: 'อัปเดทฟีเจอร์ใหม่ในระบบ',
+        type: 'update',
+        date: '2024-02-12',
+        description: 'เพิ่มฟีเจอร์การค้นหาศิษย์เก่าขั้นสูง',
+        isNew: true
+      },
+      {
+        id: 6,
+        title: 'ปรับปรุงระบบความปลอดภัย',
+        type: 'update',
+        date: '2024-02-05',
+        description: 'เพิ่มระบบรักษาความปลอดภัยข้อมูล',
+        isNew: false
+      }
+    ]
+  });
+
+  // นับการแจ้งเตือนทั้งหมด
+  const totalNotifications = [
+    ...notifications.events,
+    ...notifications.news,
+    ...notifications.updates
+  ].filter(item => item.isNew).length;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -244,6 +310,21 @@ function ModernNavigation() {
               backdropFilter: 'blur(10px)'
             }} 
           />
+          
+          {/* Notifications Badge in Mobile */}
+          {totalNotifications > 0 && (
+            <Box sx={{ mt: 2 }}>
+              <Chip 
+                label={`การแจ้งเตือน ${totalNotifications} รายการ`}
+                size="small" 
+                color="error"
+                sx={{ 
+                  color: 'white',
+                  fontWeight: 500
+                }} 
+              />
+            </Box>
+          )}
         </Box>
       )}
       
@@ -378,6 +459,35 @@ function ModernNavigation() {
               </ListItemIcon>
               <ListItemText primary="ประวัติการทำงาน" />
             </ListItem>
+            
+            {/* Notifications in Mobile */}
+            <ListItem 
+              onClick={() => {
+                // Show mobile notifications - you could implement a separate mobile notification modal
+                setMobileDrawerOpen(false);
+              }}
+              sx={{ 
+                color: 'white',
+                borderRadius: '12px',
+                mb: 1,
+                cursor: 'pointer',
+                '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+              }}
+            >
+              <ListItemIcon sx={{ color: 'white', minWidth: 40 }}>
+                <Badge badgeContent={totalNotifications} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </ListItemIcon>
+              <ListItemText 
+                primary="การแจ้งเตือน" 
+                secondary={totalNotifications > 0 ? `${totalNotifications} รายการใหม่` : 'ไม่มีรายการใหม่'}
+                secondaryTypographyProps={{
+                  sx: { color: 'rgba(255,255,255,0.7)', fontSize: '0.7rem' }
+                }}
+              />
+            </ListItem>
+            
             <ListItem 
               onClick={handleLogout}
               sx={{ 
@@ -562,17 +672,233 @@ function ModernNavigation() {
                       <Tooltip title="การแจ้งเตือน" arrow>
                         <IconButton
                           color="inherit"
+                          onClick={(e) => setNotificationMenuAnchor(e.currentTarget)}
                           sx={{
                             bgcolor: 'rgba(255,255,255,0.1)',
                             '&:hover': { bgcolor: 'rgba(255,255,255,0.2)' },
                             borderRadius: '12px'
                           }}
                         >
-                          <Badge badgeContent={notifications} color="error">
+                          <Badge badgeContent={totalNotifications} color="error">
                             <NotificationsIcon />
                           </Badge>
                         </IconButton>
                       </Tooltip>
+
+                      {/* Notification Menu */}
+                      <Menu
+                        anchorEl={notificationMenuAnchor}
+                        open={Boolean(notificationMenuAnchor)}
+                        onClose={() => setNotificationMenuAnchor(null)}
+                        PaperProps={{
+                          sx: {
+                            mt: 2,
+                            borderRadius: '16px',
+                            minWidth: 400,
+                            maxWidth: 500,
+                            maxHeight: 600,
+                            boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
+                            border: '1px solid rgba(0,0,0,0.05)',
+                            overflow: 'hidden'
+                          }
+                        }}
+                        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                      >
+                        {/* Notification Header */}
+                        <Box sx={{ 
+                          px: 3, 
+                          py: 2.5, 
+                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                          color: 'white'
+                        }}>
+                          <Typography variant="h6" fontWeight="600">
+                            การแจ้งเตือน
+                          </Typography>
+                          <Typography variant="caption" sx={{ opacity: 0.9 }}>
+                            ข้อมูลล่าสุดและกิจกรรม
+                          </Typography>
+                        </Box>
+
+                        {/* Notification Content */}
+                        <Box sx={{ maxHeight: 450, overflow: 'auto' }}>
+                          {/* Events Section */}
+                          {notifications.events.length > 0 && (
+                            <Box>
+                              <Box sx={{ px: 3, py: 2, bgcolor: 'rgba(102, 126, 234, 0.05)' }}>
+                                <Typography variant="subtitle2" fontWeight="600" color="primary">
+                                  <EventIcon sx={{ fontSize: 16, mr: 1, verticalAlign: 'middle' }} />
+                                  กิจกรรม
+                                </Typography>
+                              </Box>
+                              {notifications.events.map((event) => (
+                                <MenuItem
+                                  key={event.id}
+                                  onClick={() => {
+                                    setNotificationMenuAnchor(null);
+                                    navigate('/events');
+                                  }}
+                                  sx={{ 
+                                    py: 2, 
+                                    px: 3,
+                                    borderBottom: '1px solid rgba(0,0,0,0.05)',
+                                    '&:hover': { bgcolor: 'rgba(102, 126, 234, 0.05)' }
+                                  }}
+                                >
+                                  <Box sx={{ width: '100%' }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                                      <Typography variant="body2" fontWeight="500" sx={{ mb: 0.5 }}>
+                                        {event.title}
+                                        {event.isNew && (
+                                          <Chip 
+                                            label="ใหม่" 
+                                            size="small" 
+                                            color="error"
+                                            sx={{ ml: 1, height: 20, fontSize: '0.7rem' }}
+                                          />
+                                        )}
+                                      </Typography>
+                                    </Box>
+                                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
+                                      {new Date(event.date).toLocaleDateString('th-TH')}
+                                    </Typography>
+                                    <Typography variant="caption" color="text.secondary">
+                                      {event.description}
+                                    </Typography>
+                                  </Box>
+                                </MenuItem>
+                              ))}
+                            </Box>
+                          )}
+
+                          {/* News Section */}
+                          {notifications.news.length > 0 && (
+                            <Box>
+                              <Box sx={{ px: 3, py: 2, bgcolor: 'rgba(76, 175, 80, 0.05)' }}>
+                                <Typography variant="subtitle2" fontWeight="600" color="success.main">
+                                  <NewsIcon sx={{ fontSize: 16, mr: 1, verticalAlign: 'middle' }} />
+                                  ข่าวสาร
+                                </Typography>
+                              </Box>
+                              {notifications.news.map((news) => (
+                                <MenuItem
+                                  key={news.id}
+                                  onClick={() => {
+                                    setNotificationMenuAnchor(null);
+                                    navigate('/news');
+                                  }}
+                                  sx={{ 
+                                    py: 2, 
+                                    px: 3,
+                                    borderBottom: '1px solid rgba(0,0,0,0.05)',
+                                    '&:hover': { bgcolor: 'rgba(76, 175, 80, 0.05)' }
+                                  }}
+                                >
+                                  <Box sx={{ width: '100%' }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                                      <Typography variant="body2" fontWeight="500" sx={{ mb: 0.5 }}>
+                                        {news.title}
+                                        {news.isNew && (
+                                          <Chip 
+                                            label="ใหม่" 
+                                            size="small" 
+                                            color="error"
+                                            sx={{ ml: 1, height: 20, fontSize: '0.7rem' }}
+                                          />
+                                        )}
+                                      </Typography>
+                                    </Box>
+                                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
+                                      {new Date(news.date).toLocaleDateString('th-TH')}
+                                    </Typography>
+                                    <Typography variant="caption" color="text.secondary">
+                                      {news.description}
+                                    </Typography>
+                                  </Box>
+                                </MenuItem>
+                              ))}
+                            </Box>
+                          )}
+
+                          {/* Updates Section */}
+                          {notifications.updates.length > 0 && (
+                            <Box>
+                              <Box sx={{ px: 3, py: 2, bgcolor: 'rgba(255, 152, 0, 0.05)' }}>
+                                <Typography variant="subtitle2" fontWeight="600" color="warning.main">
+                                  <SettingsIcon sx={{ fontSize: 16, mr: 1, verticalAlign: 'middle' }} />
+                                  การอัปเดท
+                                </Typography>
+                              </Box>
+                              {notifications.updates.map((update) => (
+                                <MenuItem
+                                  key={update.id}
+                                  onClick={() => {
+                                    setNotificationMenuAnchor(null);
+                                  }}
+                                  sx={{ 
+                                    py: 2, 
+                                    px: 3,
+                                    borderBottom: '1px solid rgba(0,0,0,0.05)',
+                                    '&:hover': { bgcolor: 'rgba(255, 152, 0, 0.05)' }
+                                  }}
+                                >
+                                  <Box sx={{ width: '100%' }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                                      <Typography variant="body2" fontWeight="500" sx={{ mb: 0.5 }}>
+                                        {update.title}
+                                        {update.isNew && (
+                                          <Chip 
+                                            label="ใหม่" 
+                                            size="small" 
+                                            color="error"
+                                            sx={{ ml: 1, height: 20, fontSize: '0.7rem' }}
+                                          />
+                                        )}
+                                      </Typography>
+                                    </Box>
+                                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
+                                      {new Date(update.date).toLocaleDateString('th-TH')}
+                                    </Typography>
+                                    <Typography variant="caption" color="text.secondary">
+                                      {update.description}
+                                    </Typography>
+                                  </Box>
+                                </MenuItem>
+                              ))}
+                            </Box>
+                          )}
+
+                          {/* Empty State */}
+                          {totalNotifications === 0 && (
+                            <Box sx={{ py: 4, px: 3, textAlign: 'center' }}>
+                              <NotificationsIcon sx={{ fontSize: 48, color: 'text.disabled', mb: 2 }} />
+                              <Typography variant="body2" color="text.secondary">
+                                ไม่มีการแจ้งเตือนใหม่
+                              </Typography>
+                            </Box>
+                          )}
+                        </Box>
+
+                        {/* Footer */}
+                        <Divider />
+                        <Box sx={{ p: 2, textAlign: 'center' }}>
+                          <Button 
+                            size="small" 
+                            onClick={() => {
+                              setNotificationMenuAnchor(null);
+                              // Mark all as read
+                              setNotifications(prev => ({
+                                events: prev.events.map(item => ({ ...item, isNew: false })),
+                                news: prev.news.map(item => ({ ...item, isNew: false })),
+                                updates: prev.updates.map(item => ({ ...item, isNew: false }))
+                              }));
+                            }}
+                            sx={{ borderRadius: '8px' }}
+                          >
+                            ทำเครื่องหมายว่าอ่านแล้วทั้งหมด
+                          </Button>
+                        </Box>
+                      </Menu>
 
                       {/* Profile Menu */}
                       <Tooltip title={`สวัสดี ${user.name}`} arrow>

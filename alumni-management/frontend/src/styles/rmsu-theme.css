@@ -1,0 +1,98 @@
+/* 
+ * Furni Modern Enhanced Green Theme - Exact Furniture Design
+ * เธีมสีเฟอร์นิเจอร์โมเดิร์น ได้แรงบันดาลใจจากเว็บไซต์ Furni ตามไฟล์ demo ที่ได้รับ
+ */
+
+:root {
+  /* สีหลัก (Primary Colors) - เขียวเข้มเหมือนในภาพ Furni */
+  --rmsu-primary: #2f4b3f;           /* Furni Deep Green - เขียวเข้มแบบ Furni */
+  --rmsu-primary-light: #3a5c4b;     /* Light Forest Green - เขียวป่าอ่อน */
+  --rmsu-primary-dark: #243d33;      /* Very Deep Green - เขียวแก่มาก */
+  
+  /* สีรอง (Secondary Colors) - เหลืองสว่างเหมือนในภาพ */
+  --rmsu-gold: #f9c74f;              /* Bright Yellow - เหลืองสว่าง */
+  --rmsu-gold-light: #fbd36b;        /* Light Yellow - เหลืองอ่อน */
+  --rmsu-gold-dark: #f8b42e;         /* Golden Yellow - เหลืองทอง */
+  
+  /* สีพื้นหลัง (Background Colors) - ครีม/เบจอบอุ่น */
+  --rmsu-bg-primary: #f7f5f3;        /* Warm Cream - ครีมอบอุ่น */
+  --rmsu-bg-secondary: #f0ede8;      /* Light Beige - เบจอ่อน */
+  --rmsu-bg-card: #ffffff;           /* Pure White - ขาวบริสุทธิ์ */
+  --rmsu-bg-dark: #2a3b3d;           /* Dark Teal Background - พื้นหลังเข้ม */
+  
+  /* สี Gradients - ธีมเฟอร์นิเจอร์ Furni */
+  --rmsu-gradient-primary: linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%);
+  --rmsu-gradient-gold: linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%);
+  --rmsu-gradient-bg: linear-gradient(135deg, #f7f5f3 0%, #f0ede8 100%);
+  --rmsu-gradient-hero: linear-gradient(135deg, #2f4b3f 0%, #243d33 100%);
+  
+  /* สีสำหรับ UI Elements */
+  --rmsu-success: #2f4b3f;           /* Forest Green - เขียวป่า */
+  --rmsu-warning: #f9c74f;           /* Bright Yellow Warning - เหลืองเตือน */
+  --rmsu-danger: #e76f51;            /* Red Orange - แดงส้ม */
+  --rmsu-info: #264653;              /* Dark Green - เขียวเข้ม */
+  
+  /* สี Text - Furniture Theme */
+  --rmsu-text-primary: #2a3b3d;      /* Dark Teal - เทอเข้มสำหรับข้อความ */
+  --rmsu-text-secondary: #6c757d;    /* Medium Gray - เทากลาง */
+  --rmsu-text-muted: #adb5bd;        /* Light Gray - เทาอ่อน */
+  --rmsu-text-white: #ffffff;        /* Pure White - ขาวบริสุทธิ์ */
+  --rmsu-text-dark: #2a3b3d;         /* Dark text for light backgrounds */
+  --rmsu-text-cream: #f7f5f3;        /* Cream text for dark backgrounds */
+  
+  /* สี Borders และ Shadows - Furniture Theme */
+  --rmsu-border-light: #e9ecef;      /* Light Border - เส้นขอบอ่อน */
+  --rmsu-border-medium: #dee2e6;     /* Medium Border - เส้นขอบกลาง */
+  --rmsu-border-dark: #ced4da;       /* Dark Border - เส้นขอบเข้ม */
+  --rmsu-shadow-light: 0 0.125rem 0.25rem rgba(47, 75, 63, 0.1);
+  --rmsu-shadow-medium: 0 0.5rem 1rem rgba(47, 75, 63, 0.15);
+  --rmsu-shadow-heavy: 0 1rem 3rem rgba(47, 75, 63, 0.2);
+  --rmsu-shadow-elevated: 0 1rem 2rem rgba(47, 75, 63, 0.25);
+  --rmsu-shadow-orange: 0 0.25rem 0.75rem rgba(249, 199, 79, 0.3);
+  
+  /* สำหรับ hover effects - Furni Green Theme */
+  --rmsu-hover-overlay: rgba(47, 75, 63, 0.08);
+  --rmsu-active-overlay: rgba(47, 75, 63, 0.12);
+  --rmsu-orange-overlay: rgba(249, 199, 79, 0.1);
+  
+  /* Transition effects */
+  --rmsu-transition-fast: 0.2s ease;
+  --rmsu-transition-medium: 0.3s ease;
+  --rmsu-transition-slow: 0.5s ease;
+  
+  /* Border radius - Modern Furniture Design */
+  --rmsu-radius-small: 0.5rem;
+  --rmsu-radius-medium: 0.75rem;
+  --rmsu-radius-large: 1rem;
+  --rmsu-radius-xl: 1.5rem;
+  
+  /* Font System - Modern Typography */
+  --rmsu-font-display: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --rmsu-font-heading: 'Poppins', 'Inter', sans-serif;
+  --rmsu-font-body: 'Source Sans Pro', 'Segoe UI', sans-serif;
+}
+
+/* Furniture Theme Support */
+body {
+  background: var(--rmsu-gradient-bg);
+  color: var(--rmsu-text-primary);
+  font-family: var(--rmsu-font-body);
+}
+
+/* Additional Furniture Theme Variables */
+:root {
+  --rmsu-glass-bg: rgba(255, 255, 255, 0.9);
+  --rmsu-glass-border: rgba(61, 90, 92, 0.15);
+  --rmsu-warm-accent: rgba(244, 162, 97, 0.15);
+  --rmsu-texture-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f4a261' fill-opacity='0.05' fill-rule='nonzero'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ฟอนต์สำหรับภาษาไทยและอังกฤษ */
+.rmsu-font-primary {
+  font-family: 'Sarabun', 'Prompt', 'Kanit', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.rmsu-font-display {
+  font-family: 'Prompt', 'Kanit', 'Sarabun', Georgia, serif;
+  font-weight: 600;
+}

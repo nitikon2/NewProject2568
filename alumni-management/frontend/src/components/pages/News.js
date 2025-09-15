@@ -19,7 +19,10 @@ import {
   Pagination,
   Skeleton,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Paper,
+  Stack,
+  Divider
 } from '@mui/material';
 import {
   Search as SearchIcon,
@@ -28,7 +31,9 @@ import {
   Visibility as ViewIcon,
   Close as CloseIcon,
   TrendingUp as TrendingIcon,
-  NewReleases as NewIcon
+  NewReleases as NewIcon,
+  Article as ArticleIcon,
+  Share as ShareIcon
 } from '@mui/icons-material';
 import axios from 'axios';
 import moment from 'moment';
@@ -101,92 +106,210 @@ function News() {
 
   if (loading) {
     return (
-      <Container maxWidth="xl" sx={{ py: 4 }}>
-        <Grid container spacing={3}>
-          {[...Array(6)].map((_, index) => (
-            <Grid item xs={12} md={6} lg={4} key={index}>
-              <Card sx={{ borderRadius: 3 }}>
-                <Skeleton variant="rectangular" height={200} />
-                <CardContent>
-                  <Skeleton variant="text" width="80%" height={32} />
-                  <Skeleton variant="text" width="60%" />
-                  <Skeleton variant="text" width="40%" />
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      <Box sx={{ 
+        minHeight: '100vh', 
+        background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)',
+        py: 4 
+      }}>
+        <Container maxWidth="xl">
+          <Grid container spacing={3}>
+            {[...Array(6)].map((_, index) => (
+              <Grid item xs={12} md={6} lg={4} key={index}>
+                <Paper sx={{ borderRadius: '1.5rem', overflow: 'hidden' }}>
+                  <Skeleton variant="rectangular" height={200} />
+                  <Box sx={{ p: 2 }}>
+                    <Skeleton variant="text" width="80%" height={32} />
+                    <Skeleton variant="text" width="60%" />
+                    <Skeleton variant="text" width="40%" />
+                  </Box>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
     );
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f8fafc' }}>
-      {/* Hero Section */}
+    <Box sx={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)',
+      fontFamily: 'Source Sans Pro, sans-serif'
+    }}>
+      {/* Hero Section - Furni Style */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-          py: 8,
-          textAlign: 'center'
+          background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
+          color: '#ffffff',
+          py: { xs: 8, md: 12 },
+          position: 'relative',
+          overflow: 'hidden'
         }}
       >
-        <Container maxWidth="lg">
-          <Typography variant="h2" fontWeight={700} mb={2}>
-            ข่าวสารและประกาศ
-          </Typography>
-          <Typography variant="h6" sx={{ opacity: 0.9 }}>
-            ติดตามข่าวสาร กิจกรรม และประกาศสำคัญจากมหาวิทยาลัยราชภัฏมหาสารคาม
-          </Typography>
+        {/* Furni-style decorative elements */}
+        <Box sx={{ 
+          position: 'absolute', 
+          top: 0, 
+          right: 0, 
+          bottom: 0, 
+          left: '50%',
+          background: 'url("data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'20\' cy=\'20\' r=\'1.5\' fill=\'%23f9c74f\' opacity=\'0.3\'/><circle cx=\'80\' cy=\'30\' r=\'1\' fill=\'%23f9c74f\' opacity=\'0.2\'/><circle cx=\'40\' cy=\'70\' r=\'1.2\' fill=\'%23f9c74f\' opacity=\'0.4\'/><circle cx=\'90\' cy=\'80\' r=\'0.8\' fill=\'%23f9c74f\' opacity=\'0.3\'/></svg>") repeat',
+          backgroundSize: '100px 100px',
+          animation: 'float 20s ease-in-out infinite',
+          '@keyframes float': {
+            '0%, 100%': { transform: 'translateY(0px)' },
+            '50%': { transform: 'translateY(-10px)' }
+          }
+        }} />
+        
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography 
+              variant="h1" 
+              sx={{ 
+                fontSize: { xs: '2.5rem', md: '3.5rem' },
+                fontWeight: 700,
+                lineHeight: 1.2,
+                mb: 2,
+                fontFamily: 'Poppins, sans-serif'
+              }}
+            >
+              ข่าวสารและประกาศ
+              <Box component="span" sx={{ 
+                color: '#f9c74f', 
+                display: 'block',
+                fontSize: { xs: '1.5rem', md: '2rem' }
+              }}>
+                มหาวิทยาลัยราชภัฏมหาสารคาม
+              </Box>
+            </Typography>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                mb: 4, 
+                opacity: 0.9,
+                fontSize: { xs: '1.1rem', md: '1.2rem' },
+                fontWeight: 400,
+                lineHeight: 1.6,
+                maxWidth: 600,
+                mx: 'auto'
+              }}
+            >
+              ติดตามข่าวสาร กิจกรรม และประกาศสำคัญจากมหาวิทยาลัย
+            </Typography>
+            
+            {/* News Icon */}
+            <Box sx={{ 
+              fontSize: { xs: '6rem', md: '8rem' }, 
+              color: 'rgba(249, 199, 79, 0.3)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mt: 2
+            }}>
+              <ArticleIcon sx={{ fontSize: 'inherit' }} />
+            </Box>
+          </Box>
         </Container>
       </Box>
 
-      <Container maxWidth="xl" sx={{ py: 4 }}>
-        {/* Search Bar */}
-        <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
+      <Container maxWidth="xl" sx={{ py: 6 }}>
+        {/* Search Bar - Furni Style */}
+        <Paper
+          elevation={0}
+          sx={{
+            mb: 6,
+            p: 2,
+            borderRadius: '1.5rem',
+            background: '#ffffff',
+            border: '1px solid #e9ecef',
+            boxShadow: '0 0.5rem 1rem rgba(47, 75, 63, 0.15)',
+            maxWidth: 600,
+            mx: 'auto'
+          }}
+        >
           <TextField
             placeholder="ค้นหาข่าวสาร..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ maxWidth: 500, width: '100%' }}
+            fullWidth
+            variant="outlined"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon color="action" />
+                  <SearchIcon sx={{ color: '#f9c74f' }} />
                 </InputAdornment>
               ),
-              sx: { borderRadius: 3 }
+              sx: { 
+                borderRadius: '1rem',
+                border: 'none',
+                '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+                fontSize: '1rem'
+              }
             }}
           />
-        </Box>
+        </Paper>
 
-        {/* Featured News */}
+        {/* Featured News - Furni Style */}
         {!searchTerm && featuredNews.length > 0 && (
-          <Box sx={{ mb: 6 }}>
+          <Box sx={{ mb: 8 }}>
             <Typography 
               variant="h4" 
-              fontWeight={700} 
-              mb={3} 
-              sx={{ display: 'flex', alignItems: 'center' }}
+              sx={{
+                fontWeight: 700,
+                mb: 4,
+                display: 'flex',
+                alignItems: 'center',
+                color: '#2f4b3f',
+                fontFamily: 'Poppins, sans-serif'
+              }}
             >
-              <TrendingIcon sx={{ mr: 1, color: '#ffd700' }} />
+              <Box sx={{
+                width: 60,
+                height: 60,
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mr: 2
+              }}>
+                <TrendingIcon sx={{ color: '#ffffff', fontSize: '1.5rem' }} />
+              </Box>
               ข่าวเด่น
             </Typography>
-            <Grid container spacing={3}>
+            <Grid container spacing={4}>
               {featuredNews.map((item, index) => (
                 <Grid item xs={12} md={index === 0 ? 12 : 6} key={item.id}>
-                  <Card
+                  <Paper
                     elevation={0}
                     sx={{
-                      borderRadius: 4,
+                      borderRadius: '1.5rem',
                       overflow: 'hidden',
                       cursor: 'pointer',
                       transition: 'all 0.3s ease',
-                      border: '1px solid #e2e8f0',
+                      border: '1px solid #e9ecef',
+                      background: '#ffffff',
+                      position: 'relative',
                       '&:hover': {
                         transform: 'translateY(-8px)',
-                        boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                        borderColor: '#667eea'
+                        boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.25)',
+                        borderColor: '#f9c74f'
+                      },
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: '4px',
+                        background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                        opacity: 0,
+                        transition: 'opacity 0.3s'
+                      },
+                      '&:hover::before': {
+                        opacity: 1
                       }
                     }}
                     onClick={() => handleShowDetail(item)}
@@ -202,7 +325,7 @@ function News() {
                             : '/images/news-default.jpg'
                         }
                         alt={item.title}
-                        sx={{ height: index === 0 ? 300 : 200, objectFit: 'cover' }}
+                        sx={{ height: index === 0 ? 350 : 250, objectFit: 'cover' }}
                         onError={(e) => {
                           e.target.onerror = null;
                           e.target.src = '/images/news-default.jpg';
@@ -216,87 +339,150 @@ function News() {
                           position: 'absolute',
                           top: 16,
                           right: 16,
-                          bgcolor: '#ff6b6b',
-                          color: 'white',
-                          fontWeight: 600
+                          background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                          color: '#ffffff',
+                          fontWeight: 600,
+                          borderRadius: '0.75rem'
                         }}
                       />
                     </Box>
                     <CardContent sx={{ p: 3 }}>
-                      <Typography variant="h5" fontWeight={600} mb={2} color="primary">
+                      <Typography 
+                        variant="h5" 
+                        sx={{
+                          fontWeight: 600,
+                          mb: 2,
+                          color: '#2f4b3f',
+                          fontFamily: 'Poppins, sans-serif'
+                        }}
+                      >
                         {item.title}
                       </Typography>
-                      <Typography variant="body1" color="text.secondary" mb={2}>
+                      <Typography 
+                        variant="body1" 
+                        sx={{
+                          color: '#6c757d',
+                          mb: 3,
+                          lineHeight: 1.6
+                        }}
+                      >
                         {item.content?.substring(0, index === 0 ? 200 : 120)}...
                       </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, color: 'text.secondary' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#adb5bd' }}>
                           <PersonIcon fontSize="small" />
-                          <Typography variant="body2">
+                          <Typography variant="body2" fontWeight={500}>
                             {item.author_name || 'Admin'}
                           </Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#adb5bd' }}>
                           <TimeIcon fontSize="small" />
-                          <Typography variant="body2">
+                          <Typography variant="body2" fontWeight={500}>
                             {moment(item.created_at).locale('th').format('LL')}
                           </Typography>
                         </Box>
-                      </Box>
+                      </Stack>
                     </CardContent>
-                  </Card>
+                  </Paper>
                 </Grid>
               ))}
             </Grid>
           </Box>
         )}
 
-        {/* All News */}
+        {/* All News - Furni Style */}
         <Box>
           <Typography 
             variant="h4" 
-            fontWeight={700} 
-            mb={3}
-            sx={{ display: 'flex', alignItems: 'center' }}
+            sx={{
+              fontWeight: 700,
+              mb: 4,
+              display: 'flex',
+              alignItems: 'center',
+              color: '#2f4b3f',
+              fontFamily: 'Poppins, sans-serif'
+            }}
           >
-            <NewIcon sx={{ mr: 1, color: '#667eea' }} />
+            <Box sx={{
+              width: 60,
+              height: 60,
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mr: 2
+            }}>
+              <NewIcon sx={{ color: '#ffffff', fontSize: '1.5rem' }} />
+            </Box>
             {searchTerm ? `ผลการค้นหา "${searchTerm}"` : 'ข่าวสารทั้งหมด'}
           </Typography>
 
           {error && (
-            <Box sx={{ textAlign: 'center', py: 4 }}>
+            <Paper sx={{ 
+              textAlign: 'center', 
+              py: 6,
+              borderRadius: '1.5rem',
+              border: '1px solid #e9ecef',
+              background: '#ffffff'
+            }}>
               <Typography color="error" variant="h6">
                 {error}
               </Typography>
-            </Box>
+            </Paper>
           )}
 
           {!loading && currentNews.length === 0 && (
-            <Box sx={{ textAlign: 'center', py: 8 }}>
-              <Typography variant="h5" color="text.secondary" mb={2}>
+            <Paper sx={{ 
+              textAlign: 'center', 
+              py: 8,
+              borderRadius: '1.5rem',
+              border: '1px solid #e9ecef',
+              background: '#ffffff'
+            }}>
+              <Typography variant="h5" sx={{ color: '#6c757d', mb: 2 }}>
                 {searchTerm ? 'ไม่พบข่าวสารที่ค้นหา' : 'ยังไม่มีข่าวสาร'}
               </Typography>
-              <Typography color="text.secondary">
+              <Typography sx={{ color: '#adb5bd' }}>
                 {searchTerm ? 'ลองค้นหาด้วยคำอื่น' : 'กรุณารอการอัปเดตข่าวสารใหม่'}
               </Typography>
-            </Box>
+            </Paper>
           )}
 
-          <Grid container spacing={3}>
+          <Grid container spacing={4}>
             {currentNews.map((item) => (
               <Grid item xs={12} sm={6} lg={4} key={item.id}>
-                <Card
+                <Paper
                   elevation={0}
                   sx={{
                     height: '100%',
-                    borderRadius: 4,
+                    borderRadius: '1.5rem',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid #e9ecef',
+                    background: '#ffffff',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
                     '&:hover': {
                       transform: 'translateY(-8px)',
-                      boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                      borderColor: '#667eea'
+                      boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.25)',
+                      borderColor: '#f9c74f'
+                    },
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '4px',
+                      background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                      opacity: 0,
+                      transition: 'opacity 0.3s'
+                    },
+                    '&:hover::before': {
+                      opacity: 1
                     }
                   }}
                   onClick={() => handleShowDetail(item)}
@@ -318,22 +504,48 @@ function News() {
                     }}
                   />
                   <CardContent sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="h6" fontWeight={600} mb={1} color="primary">
+                    <Typography 
+                      variant="h6" 
+                      sx={{
+                        fontWeight: 600,
+                        mb: 2,
+                        color: '#2f4b3f',
+                        fontFamily: 'Poppins, sans-serif'
+                      }}
+                    >
                       {item.title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" mb={2} sx={{ flexGrow: 1 }}>
+                    <Typography 
+                      variant="body2" 
+                      sx={{
+                        color: '#6c757d',
+                        mb: 3,
+                        flexGrow: 1,
+                        lineHeight: 1.6
+                      }}
+                    >
                       {item.content?.substring(0, 100)}...
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#adb5bd' }}>
                         <TimeIcon fontSize="small" />
-                        <Typography variant="caption">
+                        <Typography variant="caption" fontWeight={500}>
                           {moment(item.created_at).locale('th').format('DD MMM YYYY')}
                         </Typography>
                       </Box>
                       <Button
                         size="small"
                         startIcon={<ViewIcon />}
+                        sx={{
+                          background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                          color: '#ffffff',
+                          borderRadius: '0.75rem',
+                          fontWeight: 600,
+                          '&:hover': {
+                            background: '#f8b42e',
+                            transform: 'translateY(-2px)'
+                          }
+                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleShowDetail(item);
@@ -343,51 +555,92 @@ function News() {
                       </Button>
                     </Box>
                   </CardContent>
-                </Card>
+                </Paper>
               </Grid>
             ))}
           </Grid>
 
-          {/* Pagination */}
+          {/* Pagination - Furni Style */}
           {totalPages > 1 && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-              <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                color="primary"
-                size={isMobile ? "small" : "medium"}
-              />
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 2,
+                  borderRadius: '1.5rem',
+                  border: '1px solid #e9ecef',
+                  background: '#ffffff'
+                }}
+              >
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  size={isMobile ? "small" : "medium"}
+                  sx={{
+                    '& .MuiPaginationItem-root': {
+                      color: '#2f4b3f',
+                      fontWeight: 600,
+                      '&:hover': {
+                        backgroundColor: 'rgba(249, 199, 79, 0.1)',
+                      },
+                      '&.Mui-selected': {
+                        background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                        color: '#ffffff',
+                        '&:hover': {
+                          background: '#f8b42e',
+                        }
+                      }
+                    }
+                  }}
+                />
+              </Paper>
             </Box>
           )}
         </Box>
       </Container>
 
-      {/* News Detail Modal */}
+      {/* News Detail Modal - Furni Style */}
       <Dialog
         open={showModal && modalNews}
         onClose={handleCloseModal}
         maxWidth="md"
         fullWidth
         PaperProps={{
-          sx: { borderRadius: 4 }
+          sx: { 
+            borderRadius: '1.5rem',
+            overflow: 'hidden'
+          }
         }}
       >
         <DialogTitle
           sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
+            background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
+            color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            p: 3
           }}
         >
-          <Typography variant="h6" fontWeight={600}>
+          <Typography 
+            variant="h6" 
+            sx={{
+              fontWeight: 600,
+              fontFamily: 'Poppins, sans-serif'
+            }}
+          >
             {modalNews?.title}
           </Typography>
           <IconButton
             onClick={handleCloseModal}
-            sx={{ color: 'white' }}
+            sx={{ 
+              color: '#ffffff',
+              background: 'rgba(255, 255, 255, 0.1)',
+              '&:hover': {
+                background: 'rgba(255, 255, 255, 0.2)'
+              }
+            }}
           >
             <CloseIcon />
           </IconButton>
@@ -404,8 +657,8 @@ function News() {
                 }
                 alt={modalNews.title}
                 sx={{
-                  maxHeight: 350,
-                  borderRadius: 2,
+                  maxHeight: 400,
+                  borderRadius: '1rem',
                   objectFit: 'cover',
                   width: '100%'
                 }}
@@ -417,33 +670,69 @@ function News() {
             </Box>
           )}
           <Box sx={{ p: 3 }}>
-            <Typography variant="body1" sx={{ whiteSpace: 'pre-line', lineHeight: 1.7, mb: 3 }}>
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                whiteSpace: 'pre-line', 
+                lineHeight: 1.7, 
+                mb: 3,
+                color: '#2a3b3d'
+              }}
+            >
               {modalNews?.content}
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, color: 'text.secondary' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Divider sx={{ my: 3 }} />
+            <Stack direction="row" spacing={3} divider={<Divider orientation="vertical" flexItem />}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#6c757d' }}>
                 <PersonIcon fontSize="small" />
-                <Typography variant="body2">
+                <Typography variant="body2" fontWeight={500}>
                   {modalNews?.author_name || 'Admin'}
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#6c757d' }}>
                 <TimeIcon fontSize="small" />
-                <Typography variant="body2">
+                <Typography variant="body2" fontWeight={500}>
                   {modalNews && moment(modalNews.created_at).locale('th').format('LLL')}
                 </Typography>
               </Box>
-            </Box>
+            </Stack>
           </Box>
         </DialogContent>
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={handleCloseModal} variant="outlined">
+        <DialogActions sx={{ p: 3, gap: 2 }}>
+          <Button 
+            onClick={handleCloseModal} 
+            variant="outlined"
+            sx={{
+              borderColor: '#2f4b3f',
+              color: '#2f4b3f',
+              borderRadius: '0.75rem',
+              fontWeight: 600,
+              '&:hover': {
+                borderColor: '#2f4b3f',
+                background: 'rgba(47, 75, 63, 0.05)'
+              }
+            }}
+          >
             ปิด
+          </Button>
+          <Button 
+            startIcon={<ShareIcon />}
+            sx={{
+              background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+              color: '#ffffff',
+              borderRadius: '0.75rem',
+              fontWeight: 600,
+              '&:hover': {
+                background: '#f8b42e',
+                transform: 'translateY(-2px)'
+              }
+            }}
+          >
+            แชร์
           </Button>
         </DialogActions>
       </Dialog>
     </Box>
-
   );
 }
 

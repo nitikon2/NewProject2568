@@ -11,7 +11,7 @@ function ModernLayout({ children, fullWidth = false, maxWidth = 'xl', sx = {} })
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+        background: 'linear-gradient(135deg, #f7f5f3 0%, #f0ede8 100%)',
         position: 'relative',
         '&::before': {
           content: '""',
@@ -21,8 +21,8 @@ function ModernLayout({ children, fullWidth = false, maxWidth = 'xl', sx = {} })
           right: 0,
           bottom: 0,
           background: `
-            radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 20% 50%, rgba(47, 75, 63, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(249, 199, 79, 0.06) 0%, transparent 50%),
             radial-gradient(circle at 40% 80%, rgba(102, 126, 234, 0.08) 0%, transparent 50%)
           `,
           zIndex: -1,

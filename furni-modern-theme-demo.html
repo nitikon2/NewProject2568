@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furni Modern Theme Demo - Alumni Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Furni Modern Theme Variables - Enhanced Green Focus */
+        :root {
+            /* Primary Colors - Furni Deep Green */
+            --rmsu-primary: #2f4b3f;
+            --rmsu-primary-light: #3a5c4b;
+            --rmsu-primary-dark: #243d33;
+            
+            /* Secondary Colors - Bright Yellow Accent */
+            --rmsu-gold: #f9c74f;
+            --rmsu-gold-light: #fbd36b;
+            --rmsu-gold-dark: #f8b42e;
+            
+            /* Background Colors - Warm Cream */
+            --rmsu-bg-primary: #f7f5f3;
+            --rmsu-bg-secondary: #f0ede8;
+            --rmsu-bg-card: #ffffff;
+            --rmsu-bg-dark: #2a3b3d;
+            
+            /* Text Colors */
+            --rmsu-text-primary: #2a3b3d;
+            --rmsu-text-secondary: #6c757d;
+            --rmsu-text-muted: #adb5bd;
+            --rmsu-text-white: #ffffff;
+            --rmsu-text-cream: #f7f5f3;
+            
+            /* Border Colors */
+            --rmsu-border-light: #e9ecef;
+            --rmsu-border-medium: #dee2e6;
+            --rmsu-border-dark: #ced4da;
+            
+            /* Gradients */
+            --rmsu-gradient-primary: linear-gradient(135deg, #2f4b3f, #3a5c4b);
+            --rmsu-gradient-gold: linear-gradient(135deg, #f9c74f, #fbd36b);
+            --rmsu-gradient-bg: linear-gradient(135deg, #f7f5f3, #f0ede8);
+            --rmsu-gradient-hero: linear-gradient(135deg, #2f4b3f, #243d33);
+            
+            /* Shadows */
+            --rmsu-shadow-light: 0 0.125rem 0.25rem rgba(47, 75, 63, 0.1);
+            --rmsu-shadow-medium: 0 0.5rem 1rem rgba(47, 75, 63, 0.15);
+            --rmsu-shadow-heavy: 0 1rem 3rem rgba(47, 75, 63, 0.2);
+            --rmsu-shadow-elevated: 0 1rem 2rem rgba(47, 75, 63, 0.25);
+            --rmsu-shadow-orange: 0 0.25rem 0.75rem rgba(249, 199, 79, 0.3);
+            
+            /* Effects */
+            --rmsu-hover-overlay: rgba(47, 75, 63, 0.08);
+            --rmsu-orange-overlay: rgba(249, 199, 79, 0.1);
+            --rmsu-glass-bg: rgba(255, 255, 255, 0.9);
+            
+            /* Other */
+            --rmsu-radius-small: 0.5rem;
+            --rmsu-radius-medium: 0.75rem;
+            --rmsu-radius-large: 1rem;
+            --rmsu-radius-xl: 1.5rem;
+            --rmsu-transition-fast: 0.2s ease;
+            --rmsu-transition-medium: 0.3s ease;
+        }
+
+        /* Global Styles */
+        * {
+            font-family: 'Source Sans Pro', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6, .heading {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        body {
+            background: var(--rmsu-gradient-bg);
+            color: var(--rmsu-text-primary);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* Hero Section - Furni Style */
+        .hero-section {
+            background: var(--rmsu-gradient-hero);
+            color: var(--rmsu-text-white);
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 50%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.3"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.2"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.4"/><circle cx="90" cy="80" r="0.8" fill="%23f9c74f" opacity="0.3"/></svg>') repeat;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Navbar - Clean Modern Style */
+        .navbar {
+            background: var(--rmsu-bg-card) !important;
+            box-shadow: var(--rmsu-shadow-medium);
+            border-bottom: 1px solid var(--rmsu-border-light);
+            padding: 1rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--rmsu-primary) !important;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar .nav-link {
+            color: var(--rmsu-text-secondary) !important;
+            font-weight: 500;
+            font-size: 1rem;
+            margin-right: 1.5rem;
+            transition: var(--rmsu-transition-medium);
+            border-radius: var(--rmsu-radius-small);
+            padding: 0.5rem 1rem;
+            position: relative;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            color: var(--rmsu-primary) !important;
+            background: var(--rmsu-hover-overlay);
+        }
+
+        .navbar .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: var(--rmsu-gold);
+            border-radius: 2px;
+        }
+
+        /* Buttons - Furni Style */
+        .btn {
+            font-weight: 600;
+            border-radius: var(--rmsu-radius-medium);
+            transition: var(--rmsu-transition-medium);
+            border-width: 2px;
+            font-size: 0.95rem;
+            letter-spacing: 0.025em;
+            padding: 0.75rem 2rem;
+        }
+
+        .btn-primary {
+            background: var(--rmsu-gradient-gold);
+            border-color: var(--rmsu-gold);
+            color: var(--rmsu-text-white);
+            box-shadow: var(--rmsu-shadow-orange);
+        }
+
+        .btn-primary:hover {
+            background: var(--rmsu-gold-dark);
+            border-color: var(--rmsu-gold-dark);
+            color: var(--rmsu-text-white);
+            transform: translateY(-2px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .btn-outline-primary {
+            color: var(--rmsu-primary);
+            border-color: var(--rmsu-primary);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--rmsu-primary);
+            border-color: var(--rmsu-primary);
+            color: var(--rmsu-text-white);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--rmsu-gradient-primary);
+            border-color: var(--rmsu-primary);
+            color: var(--rmsu-text-white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--rmsu-primary-dark);
+            border-color: var(--rmsu-primary-dark);
+            color: var(--rmsu-text-white);
+            transform: translateY(-2px);
+        }
+
+        /* Cards - Modern Furniture Design */
+        .card {
+            background: var(--rmsu-bg-card);
+            border: 1px solid var(--rmsu-border-light);
+            border-radius: var(--rmsu-radius-xl);
+            box-shadow: var(--rmsu-shadow-light);
+            transition: var(--rmsu-transition-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--rmsu-shadow-elevated);
+            border-color: var(--rmsu-gold-light);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--rmsu-gradient-gold);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            background: var(--rmsu-bg-secondary);
+            border-bottom: 1px solid var(--rmsu-border-light);
+            padding: 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--rmsu-text-primary);
+            border-radius: var(--rmsu-radius-xl) var(--rmsu-radius-xl) 0 0;
+        }
+
+        .card-header.bg-primary {
+            background: var(--rmsu-gradient-primary) !important;
+            color: var(--rmsu-text-white);
+            border-bottom: none;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Product Cards - Furniture Style */
+        .product-card {
+            background: var(--rmsu-bg-card);
+            border-radius: var(--rmsu-radius-xl);
+            overflow: hidden;
+            box-shadow: var(--rmsu-shadow-light);
+            transition: var(--rmsu-transition-medium);
+            border: 1px solid var(--rmsu-border-light);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .product-image {
+            height: 250px;
+            background: var(--rmsu-gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--rmsu-text-white);
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(244, 162, 97, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .product-card:hover .product-image::before {
+            transform: translateX(100%);
+        }
+
+        .product-content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--rmsu-text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--rmsu-gold-dark);
+            margin-bottom: 1rem;
+        }
+
+        .product-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--rmsu-bg-secondary);
+            border: 2px solid var(--rmsu-border-medium);
+            color: var(--rmsu-text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            transition: var(--rmsu-transition-medium);
+            font-size: 1.2rem;
+        }
+
+        .product-btn:hover {
+            background: var(--rmsu-gradient-gold);
+            border-color: var(--rmsu-gold);
+            color: var(--rmsu-text-white);
+            transform: scale(1.1);
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            background: var(--rmsu-bg-card);
+            border-radius: var(--rmsu-radius-xl);
+            border: 1px solid var(--rmsu-border-light);
+            transition: var(--rmsu-transition-medium);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            color: var(--rmsu-gold);
+            margin-bottom: 1rem;
+            background: var(--rmsu-orange-overlay);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--rmsu-text-primary);
+            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--rmsu-text-secondary);
+        }
+
+        /* Form Elements */
+        .form-control,
+        .form-select {
+            background: var(--rmsu-bg-card);
+            border: 2px solid var(--rmsu-border-medium);
+            color: var(--rmsu-text-primary);
+            border-radius: var(--rmsu-radius-medium);
+            transition: var(--rmsu-transition-medium);
+            font-size: 0.95rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background: var(--rmsu-bg-card);
+            border-color: var(--rmsu-gold);
+            color: var(--rmsu-text-primary);
+            box-shadow: 0 0 0 0.2rem rgba(244, 162, 97, 0.25);
+        }
+
+        .form-label {
+            color: var(--rmsu-text-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            background: var(--rmsu-bg-secondary);
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .newsletter-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--rmsu-orange-overlay);
+        }
+
+        .newsletter-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Alerts */
+        .alert {
+            border: none;
+            border-radius: var(--rmsu-radius-medium);
+            box-shadow: var(--rmsu-shadow-light);
+            border-left: 4px solid;
+            font-weight: 500;
+        }
+
+        .alert-info {
+            background-color: var(--rmsu-orange-overlay);
+            color: var(--rmsu-text-primary);
+            border-left-color: var(--rmsu-gold);
+        }
+
+        .alert-success {
+            background-color: rgba(42, 157, 143, 0.1);
+            color: var(--rmsu-primary-dark);
+            border-left-color: #2a9d8f;
+        }
+
+        /* Badges */
+        .badge {
+            font-weight: 600;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--rmsu-radius-medium);
+            font-size: 0.75rem;
+        }
+
+        .badge-primary {
+            background: var(--rmsu-gradient-gold);
+            color: var(--rmsu-text-white);
+        }
+
+        .badge-secondary {
+            background: var(--rmsu-gradient-primary);
+            color: var(--rmsu-text-white);
+        }
+
+        /* Table */
+        .table {
+            background: var(--rmsu-bg-card);
+            border-radius: var(--rmsu-radius-medium);
+            overflow: hidden;
+            box-shadow: var(--rmsu-shadow-light);
+            border: 1px solid var(--rmsu-border-light);
+        }
+
+        .table thead th {
+            background: var(--rmsu-bg-secondary);
+            color: var(--rmsu-text-primary);
+            border: none;
+            padding: 1.2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .table tbody td {
+            color: var(--rmsu-text-primary);
+            border-color: var(--rmsu-border-light);
+            padding: 1rem 1.2rem;
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background: var(--rmsu-orange-overlay);
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .demo-section {
+            margin: 4rem 0;
+        }
+
+        /* Feature Section */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .feature-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .feature-image {
+            background: var(--rmsu-gradient-primary);
+            border-radius: var(--rmsu-radius-xl);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--rmsu-text-white);
+            font-size: 2.5rem;
+        }
+
+        .feature-image.tall {
+            grid-row: span 2;
+            height: 420px;
+        }
+
+        .feature-image.blue {
+            background: linear-gradient(135deg, #a8dadc, #457b9d);
+        }
+
+        .feature-image.orange {
+            background: var(--rmsu-gradient-gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-images {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                Furni.
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active" href="#">Home</a>
+                <a class="nav-link" href="#">Shop</a>
+                <a class="nav-link" href="#">About us</a>
+                <a class="nav-link" href="#">Services</a>
+                <a class="nav-link" href="#">Blog</a>
+                <a class="nav-link" href="#">Contact us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content fade-in">
+                        <h1 class="hero-title">Modern Interior<br>Design Studio</h1>
+                        <p class="hero-subtitle">
+                            Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. 
+                            Aliquam vulputate velit imperdiet dolor tempor tristique.
+                        </p>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-shopping-cart me-2"></i>Shop Now
+                            </button>
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-search me-2"></i>Explore
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center fade-in">
+                        <div style="font-size: 15rem; color: rgba(244, 162, 97, 0.3);">
+                            <i class="fas fa-couch"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Product Showcase Section -->
+        <div class="demo-section">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="heading mb-4">Crafted with excellent material.</h2>
+                    <p class="text-muted mb-5">
+                        Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. 
+                        Aliquam vulputate velit imperdiet dolor tempor tristique.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="product-card fade-in">
+                        <div class="product-image">
+                            <i class="fas fa-chair"></i>
+                        </div>
+                        <div class="product-content">
+                            <h5 class="product-title">Nordic Chair</h5>
+                            <div class="product-price">$50.00</div>
+                            <button class="product-btn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="product-card fade-in">
+                        <div class="product-image">
+                            <i class="fas fa-couch"></i>
+                        </div>
+                        <div class="product-content">
+                            <h5 class="product-title">Kruzo Aero Chair</h5>
+                            <div class="product-price">$78.00</div>
+                            <button class="product-btn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="product-card fade-in">
+                        <div class="product-image orange">
+                            <i class="fas fa-chair"></i>
+                        </div>
+                        <div class="product-content">
+                            <h5 class="product-title">Ergonomic Chair</h5>
+                            <div class="product-price">$43.00</div>
+                            <button class="product-btn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="demo-section">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card fade-in">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-number">2,568</div>
+                        <div class="stat-label">Total Alumni</div>
+                        <span class="badge badge-primary mt-2">+12% this month</span>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card fade-in">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-number">48</div>
+                        <div class="stat-label">Events</div>
+                        <span class="badge badge-secondary mt-2">Annual</span>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card fade-in">
+                        <div class="stat-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="stat-number">1,894</div>
+                        <div class="stat-label">Employed</div>
+                        <span class="badge badge-primary mt-2">74% of total</span>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card fade-in">
+                        <div class="stat-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="stat-number">327</div>
+                        <div class="stat-label">Studying</div>
+                        <span class="badge badge-secondary mt-2">13% of total</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Section -->
+        <div class="demo-section">
+            <div class="feature-grid">
+                <div class="feature-images">
+                    <div class="feature-image tall">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="feature-image blue">
+                        <i class="fas fa-lamp"></i>
+                    </div>
+                    <div class="feature-image orange">
+                        <i class="fas fa-table"></i>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="heading mb-4">We Help You Make Modern Interior Design</h2>
+                    <p class="text-muted mb-4">
+                        Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl 
+                        dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit 
+                        imperdiet dolor tempor tristique.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Donec vitae odio quis nisl dapibus malesuada
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Donec vitae odio quis nisl dapibus malesuada
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Donec vitae odio quis nisl dapibus malesuada
+                        </li>
+                        <li class="mb-4">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Donec vitae odio quis nisl dapibus malesuada
+                        </li>
+                    </ul>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-search me-2"></i>Explore
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button & Form Demo -->
+        <div class="demo-section">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card fade-in">
+                        <div class="card-header bg-primary">
+                            <i class="fas fa-mouse-pointer me-2"></i>Button Styles
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-3">
+                                <button class="btn btn-primary btn-lg">
+                                    <i class="fas fa-plus me-2"></i>Primary Button
+                                </button>
+                                <button class="btn btn-secondary btn-lg">
+                                    <i class="fas fa-star me-2"></i>Secondary Button
+                                </button>
+                                <button class="btn btn-outline-primary btn-lg">
+                                    <i class="fas fa-edit me-2"></i>Outline Button
+                                </button>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary btn-sm flex-fill">Small</button>
+                                    <button class="btn btn-secondary btn-sm flex-fill">Medium</button>
+                                    <button class="btn btn-outline-primary btn-sm flex-fill">Large</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <i class="fas fa-edit me-2"></i>Form Elements
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter your full name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" placeholder="example@email.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="department" class="form-label">Faculty</label>
+                                    <select class="form-select" id="department">
+                                        <option>Select Faculty</option>
+                                        <option>Education</option>
+                                        <option>Humanities & Social Sciences</option>
+                                        <option>Science & Technology</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-save me-2"></i>Save Data
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Demo -->
+        <div class="demo-section">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <i class="fas fa-table me-2"></i>Recent Alumni
+                </div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Faculty</th>
+                                <th>Graduation Year</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Somjai Jaidee</strong></td>
+                                <td>Education</td>
+                                <td>2566</td>
+                                <td><span class="badge badge-primary">Employed</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Prayuth Manjai</strong></td>
+                                <td>Science & Technology</td>
+                                <td>2565</td>
+                                <td><span class="badge badge-secondary">Studying</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Chalida Srisuk</strong></td>
+                                <td>Humanities & Social Sciences</td>
+                                <td>2564</td>
+                                <td><span class="badge badge-primary">Employed</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Demo -->
+        <div class="demo-section">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-info fade-in">
+                        <h5><i class="fas fa-palette me-2"></i>Furni Enhanced Green Theme</h5>
+                        <p class="mb-0">ธีมสีเขียวเข้มแบบ Furni พร้อมสีเหลืองสว่างสำหรับ accent - เน้นสีเขียวป่าที่สวยงามเหมือนในภาพ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content text-center">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <h3 class="heading mb-3">
+                            <i class="fas fa-envelope me-2"></i>Subscribe to Newsletter
+                        </h3>
+                        <p class="mb-4">Stay updated with our latest furniture collections and design tips</p>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input type="text" class="form-control" placeholder="Enter your name">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="email" class="form-control" placeholder="Enter your email">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="container mt-5 mb-4">
+        <div class="text-center">
+            <div class="card fade-in">
+                <div class="card-body">
+                    <h3 class="heading text-primary">
+                        Furni.
+                    </h3>
+                    <p class="text-muted mb-3">
+                        Alumni Management System - Furni Modern Theme<br>
+                        <small>Modern Furniture Design ที่ได้แรงบันดาลใจจากเว็บไซต์ Furni.com</small>
+                    </p>
+                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-couch me-1"></i>Modern Design
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-palette me-1"></i>Warm Colors
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-home me-1"></i>Furniture Style
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Add smooth interactions -->
+    <script>
+        // Add stagger animation to cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.fade-in');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Add hover effects to product cards
+        document.querySelectorAll('.product-card').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-12px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+
+        // Add click ripple effect for buttons
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(244, 162, 97, 0.3);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-section');
+            const rate = scrolled * -0.5;
+            
+            if (hero) {
+                hero.style.transform = `translateY(${rate}px)`;
+            }
+        });
+
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

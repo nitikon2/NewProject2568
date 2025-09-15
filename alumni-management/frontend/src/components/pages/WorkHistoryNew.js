@@ -103,36 +103,79 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `;
 
-// Styled Components
+// Styled Components - Furni Modern Theme  
 const HeroSection = styled(Box)(({ theme }) => ({
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
+    color: '#ffffff',
+    padding: theme.spacing(8, 0),
     position: 'relative',
     overflow: 'hidden',
+    borderRadius: '0 0 2rem 2rem',
+    '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: '50%',
+        background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.3"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.2"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.4"/><circle cx="90" cy="80" r="0.8" fill="%23f9c74f" opacity="0.3"/></svg>') repeat`,
+        backgroundSize: '100px 100px',
+        animation: `${float} 20s ease-in-out infinite`
+    },
+    '&::after': {
+        content: '""',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: '1px',
+        background: 'linear-gradient(90deg, transparent, #f9c74f, transparent)'
+    }
+}));
+
+const StatsCard = styled(Card)(({ theme }) => ({
+    background: 'rgba(255, 255, 255, 0.95)',
+    backdropFilter: 'blur(20px)',
+    WebkitBackdropFilter: 'blur(20px)',
+    borderRadius: 24,
+    padding: theme.spacing(3.5),
+    boxShadow: '0 12px 40px rgba(47, 75, 63, 0.15)',
+    border: '1px solid rgba(249, 199, 79, 0.3)',
+    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+    position: 'relative',
+    overflow: 'hidden',
+    textAlign: 'center',
     '&::before': {
         content: '""',
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0,
-        background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-        animation: `${float} 20s ease-in-out infinite`
+        height: '3px',
+        background: 'linear-gradient(90deg, #f9c74f, #f9844a)',
+        opacity: 0,
+        transition: 'opacity 0.3s ease'
+    },
+    '&:hover': {
+        transform: 'translateY(-8px) scale(1.02)',
+        boxShadow: '0 20px 60px rgba(47, 75, 63, 0.25)',
+        border: '1px solid rgba(249, 199, 79, 0.5)',
+        '&::before': {
+            opacity: 1
+        }
     }
 }));
 
-const StatsCard = styled(Card)(({ theme }) => ({
-    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-    borderRadius: 16,
-    padding: theme.spacing(3),
-    boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-    border: '1px solid rgba(255,255,255,0.2)',
-    transition: 'all 0.3s ease',
-    position: 'relative',
+const WorkCard = styled(Card)(({ theme }) => ({
+    borderRadius: 24,
+    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+    border: '1px solid rgba(249, 199, 79, 0.2)',
+    background: 'rgba(255, 255, 255, 0.95)',
+    backdropFilter: 'blur(20px)',
+    WebkitBackdropFilter: 'blur(20px)',
+    boxShadow: '0 8px 32px rgba(47, 75, 63, 0.1)',
     overflow: 'hidden',
-    '&:hover': {
-        transform: 'translateY(-4px)',
-        boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
-    },
+    position: 'relative',
     '&::before': {
         content: '""',
         position: 'absolute',
@@ -140,63 +183,74 @@ const StatsCard = styled(Card)(({ theme }) => ({
         left: 0,
         right: 0,
         height: 4,
-        background: 'linear-gradient(90deg, #4299e1, #9f7aea)',
-        borderRadius: '16px 16px 0 0'
-    }
-}));
-
-const WorkCard = styled(Card)(({ theme }) => ({
-    borderRadius: 16,
-    transition: 'all 0.3s ease',
-    border: '1px solid rgba(255,255,255,0.2)',
-    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-    overflow: 'hidden',
-    position: 'relative',
-    '&:hover': {
-        transform: 'translateY(-2px)',
-        boxShadow: '0 8px 30px rgba(0,0,0,0.12)'
+        background: 'linear-gradient(90deg, #f9c74f, #f9844a)',
+        opacity: 0,
+        transition: 'opacity 0.3s ease',
     },
-    '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: 3,
-        background: 'linear-gradient(90deg, #4299e1, #9f7aea)'
+    '&:hover': {
+        transform: 'translateY(-8px) scale(1.01)',
+        boxShadow: '0 20px 60px rgba(47, 75, 63, 0.2)',
+        borderColor: 'rgba(249, 199, 79, 0.5)',
+        '&::before': {
+            opacity: 1
+        }
     }
 }));
 
 const AnimatedDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialog-paper': {
-        borderRadius: 20,
+        borderRadius: 28,
         overflow: 'hidden',
-        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-        maxHeight: '90vh'
+        background: 'rgba(255, 255, 255, 0.98)',
+        backdropFilter: 'blur(25px)',
+        WebkitBackdropFilter: 'blur(25px)',
+        boxShadow: '0 25px 80px rgba(47, 75, 63, 0.25)',
+        maxHeight: '90vh',
+        border: '1px solid rgba(249, 199, 79, 0.3)',
+        position: 'relative',
+        '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '4px',
+            background: 'linear-gradient(90deg, #2f4b3f, #f9c74f)'
+        }
+    },
+    '& .MuiBackdrop-root': {
+        backdropFilter: 'blur(8px)',
+        backgroundColor: 'rgba(47, 75, 63, 0.4)'
     }
 }));
 
 const FilterBar = styled(Card)(({ theme }) => ({
-    padding: theme.spacing(2, 3),
-    borderRadius: 16,
-    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-    border: '1px solid rgba(255,255,255,0.3)',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-    marginBottom: theme.spacing(3)
+    padding: theme.spacing(2.5, 3.5),
+    borderRadius: 24,
+    background: 'rgba(255, 255, 255, 0.98)',
+    backdropFilter: 'blur(20px)',
+    WebkitBackdropFilter: 'blur(20px)',
+    border: '1px solid rgba(249, 199, 79, 0.3)',
+    boxShadow: '0 12px 40px rgba(47, 75, 63, 0.12)',
+    marginBottom: theme.spacing(3),
+    transition: 'all 0.3s ease',
+    '&:hover': {
+        transform: 'translateY(-2px)',
+        boxShadow: '0 16px 50px rgba(47, 75, 63, 0.15)',
+        borderColor: 'rgba(249, 199, 79, 0.4)'
+    }
 }));
 
 const TimelineDot = styled(Box)(({ theme }) => ({
     width: 48,
     height: 48,
     borderRadius: '50%',
-    background: 'linear-gradient(135deg, #4299e1 0%, #9f7aea 100%)',
+    background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     color: 'white',
-    boxShadow: '0 4px 16px rgba(66, 153, 225, 0.4)',
+    boxShadow: '0 4px 16px rgba(47, 75, 63, 0.4)',
     position: 'relative',
     '&::before': {
         content: '""',
@@ -206,7 +260,7 @@ const TimelineDot = styled(Box)(({ theme }) => ({
         right: -4,
         bottom: -4,
         borderRadius: '50%',
-        background: 'linear-gradient(135deg, #4299e1 0%, #9f7aea 100%)',
+        background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
         opacity: 0.3,
         animation: `${pulse} 2s infinite`
     }
@@ -215,20 +269,20 @@ const TimelineDot = styled(Box)(({ theme }) => ({
 const FloatingActionButton = styled(Button)(({ theme }) => ({
     borderRadius: 50,
     padding: theme.spacing(1.5, 4),
-    background: 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)',
-    color: 'white',
+    background: 'linear-gradient(135deg, #f9c74f 0%, #f9844a 100%)',
+    color: '#2f4b3f',
     fontWeight: 600,
     textTransform: 'none',
     fontSize: '1rem',
-    boxShadow: '0 8px 32px rgba(72, 187, 120, 0.4)',
+    boxShadow: '0 8px 32px rgba(249, 199, 79, 0.4)',
     border: 'none',
     transition: 'all 0.3s ease',
     position: 'relative',
     overflow: 'hidden',
     '&:hover': {
-        background: 'linear-gradient(135deg, #38a169 0%, #2f855a 100%)',
+        background: 'linear-gradient(135deg, #f9844a 0%, #f8961e 100%)',
         transform: 'translateY(-2px)',
-        boxShadow: '0 12px 40px rgba(72, 187, 120, 0.5)'
+        boxShadow: '0 12px 40px rgba(249, 199, 79, 0.5)'
     },
     '&::before': {
         content: '""',
@@ -248,9 +302,11 @@ const FloatingActionButton = styled(Button)(({ theme }) => ({
 const EmptyState = styled(Box)(({ theme }) => ({
     textAlign: 'center',
     padding: theme.spacing(8, 4),
-    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+    background: 'rgba(255, 255, 255, 0.9)',
+    backdropFilter: 'blur(15px)',
     borderRadius: 20,
-    border: '2px dashed #e2e8f0',
+    border: '2px dashed rgba(249, 199, 79, 0.4)',
+    boxShadow: '0 8px 32px rgba(47, 75, 63, 0.1)',
     animation: `${fadeIn} 0.8s ease-out`
 }));
 
@@ -296,6 +352,28 @@ const WorkHistory = () => {
     const [provinceOptions, setProvinceOptions] = useState([]);
     const [amphoeOptions, setAmphoeOptions] = useState([]);
     const [districtOptions, setDistrictOptions] = useState([]);
+
+    // Dropdown options for salary range and team size
+    const salaryRanges = [
+        'ต่ำกว่า 20,000 บาท',
+        '20,000 - 30,000 บาท',
+        '30,000 - 40,000 บาท',
+        '40,000 - 50,000 บาท',
+        '50,000 - 70,000 บาท',
+        '70,000 - 100,000 บาท',
+        '100,000 - 150,000 บาท',
+        'มากกว่า 150,000 บาท'
+    ];
+
+    const teamSizes = [
+        '1 คน (งานคนเดียว)',
+        '2-5 คน (ทีมเล็ก)',
+        '6-10 คน (ทีมกลาง)',
+        '11-20 คน (ทีมใหญ่)',
+        '21-50 คน (แผนกขนาดกลาง)',
+        '51-100 คน (แผนกใหญ่)',
+        'มากกว่า 100 คน (องค์กรขนาดใหญ่)'
+    ];
 
     const showSnackbar = (message, severity = 'success') => {
         setSnackbar({ open: true, message, severity });
@@ -613,7 +691,7 @@ const WorkHistory = () => {
     if (loading) {
         return (
             <Container maxWidth="lg" sx={{ py: 4, textAlign: 'center' }}>
-                <CircularProgress size={60} sx={{ color: '#4299e1' }} />
+                <CircularProgress size={60} sx={{ color: '#f9c74f' }} />
                 <Typography variant="h6" sx={{ mt: 2, color: 'text.secondary' }}>
                     กำลังโหลดข้อมูล...
                 </Typography>
@@ -622,7 +700,7 @@ const WorkHistory = () => {
     }
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: '#f8fafc' }}>
+        <Box sx={{ minHeight: '100vh', bgcolor: '#fef7ed' }}>
             {/* Hero Section */}
             <HeroSection>
                 <Container maxWidth="lg">
@@ -684,14 +762,14 @@ const WorkHistory = () => {
                                 <StatsCard>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <Box>
-                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a365d', mb: 0.5 }}>
+                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#2f4b3f', mb: 0.5 }}>
                                                 {stats.total}
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 ประสบการณ์ทั้งหมด
                                             </Typography>
                                         </Box>
-                                        <WorkIcon sx={{ fontSize: 40, color: '#4299e1', opacity: 0.7 }} />
+                                        <WorkIcon sx={{ fontSize: 40, color: '#f9c74f', opacity: 0.7 }} />
                                     </Box>
                                 </StatsCard>
                             </Grid>
@@ -699,14 +777,14 @@ const WorkHistory = () => {
                                 <StatsCard>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <Box>
-                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a365d', mb: 0.5 }}>
+                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#2f4b3f', mb: 0.5 }}>
                                                 {stats.current}
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 ทำงานปัจจุบัน
                                             </Typography>
                                         </Box>
-                                        <TrendingUpIcon sx={{ fontSize: 40, color: '#48bb78', opacity: 0.7 }} />
+                                        <TrendingUpIcon sx={{ fontSize: 40, color: '#f9c74f', opacity: 0.7 }} />
                                     </Box>
                                 </StatsCard>
                             </Grid>
@@ -714,14 +792,14 @@ const WorkHistory = () => {
                                 <StatsCard>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <Box>
-                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a365d', mb: 0.5 }}>
+                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#2f4b3f', mb: 0.5 }}>
                                                 {stats.past}
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 ประสบการณ์ที่ผ่านมา
                                             </Typography>
                                         </Box>
-                                        <AccessTimeIcon sx={{ fontSize: 40, color: '#ed8936', opacity: 0.7 }} />
+                                        <AccessTimeIcon sx={{ fontSize: 40, color: '#f9844a', opacity: 0.7 }} />
                                     </Box>
                                 </StatsCard>
                             </Grid>
@@ -729,14 +807,14 @@ const WorkHistory = () => {
                                 <StatsCard>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <Box>
-                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a365d', mb: 0.5 }}>
+                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#2f4b3f', mb: 0.5 }}>
                                                 {stats.totalExperience}
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 ปีประสบการณ์
                                             </Typography>
                                         </Box>
-                                        <StarIcon sx={{ fontSize: 40, color: '#f6ad55', opacity: 0.7 }} />
+                                        <StarIcon sx={{ fontSize: 40, color: '#f9c74f', opacity: 0.7 }} />
                                     </Box>
                                 </StatsCard>
                             </Grid>
@@ -1483,30 +1561,40 @@ const WorkHistory = () => {
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={6}>
-                                            <TextField
-                                                fullWidth
-                                                label="ช่วงเงินเดือน"
-                                                name="salary_range"
-                                                value={formData.salary_range}
-                                                onChange={handleInputChange}
-                                                placeholder="เช่น 25,000 - 30,000 บาท"
-                                                InputProps={{
-                                                    startAdornment: <MoneyIcon sx={{ color: 'text.secondary', mr: 1 }} />
-                                                }}
-                                            />
+                                            <FormControl fullWidth>
+                                                <InputLabel>ช่วงเงินเดือน</InputLabel>
+                                                <Select
+                                                    name="salary_range"
+                                                    value={formData.salary_range}
+                                                    onChange={handleInputChange}
+                                                    label="ช่วงเงินเดือน"
+                                                    startAdornment={<MoneyIcon sx={{ color: 'text.secondary', mr: 1 }} />}
+                                                >
+                                                    {salaryRanges.map((range) => (
+                                                        <MenuItem key={range} value={range}>
+                                                            {range}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
                                         </Grid>
                                         <Grid item xs={12} md={6}>
-                                            <TextField
-                                                fullWidth
-                                                label="ขนาดทีม"
-                                                name="team_size"
-                                                value={formData.team_size}
-                                                onChange={handleInputChange}
-                                                placeholder="เช่น 5-10 คน"
-                                                InputProps={{
-                                                    startAdornment: <TeamIcon sx={{ color: 'text.secondary', mr: 1 }} />
-                                                }}
-                                            />
+                                            <FormControl fullWidth>
+                                                <InputLabel>ขนาดทีม</InputLabel>
+                                                <Select
+                                                    name="team_size"
+                                                    value={formData.team_size}
+                                                    onChange={handleInputChange}
+                                                    label="ขนาดทีม"
+                                                    startAdornment={<TeamIcon sx={{ color: 'text.secondary', mr: 1 }} />}
+                                                >
+                                                    {teamSizes.map((size) => (
+                                                        <MenuItem key={size} value={size}>
+                                                            {size}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
                                         </Grid>
                                         <Grid item xs={12} md={4}>
                                             <TextField
@@ -1663,9 +1751,11 @@ const WorkHistory = () => {
                                     variant="contained"
                                     disabled={formStep === 0 && (!formData.company_name || !formData.position || !formData.start_date)}
                                     sx={{
-                                        background: 'linear-gradient(135deg, #4299e1 0%, #9f7aea 100%)',
+                                        background: 'linear-gradient(135deg, #f9c74f 0%, #f9844a 100%)',
+                                        color: '#2f4b3f',
+                                        fontWeight: 600,
                                         '&:hover': {
-                                            background: 'linear-gradient(135deg, #3182ce 0%, #805ad5 100%)'
+                                            background: 'linear-gradient(135deg, #f9844a 0%, #f8961e 100%)'
                                         }
                                     }}
                                 >
@@ -1678,9 +1768,11 @@ const WorkHistory = () => {
                                     startIcon={<SaveIcon />}
                                     disabled={!formData.company_name || !formData.position || !formData.start_date}
                                     sx={{
-                                        background: 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)',
+                                        background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
+                                        color: '#f9c74f',
+                                        fontWeight: 600,
                                         '&:hover': {
-                                            background: 'linear-gradient(135deg, #38a169 0%, #2f855a 100%)'
+                                            background: 'linear-gradient(135deg, #243d33 0%, #2f4b3f 100%)'
                                         }
                                     }}
                                 >

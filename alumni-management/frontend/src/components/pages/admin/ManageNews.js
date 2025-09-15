@@ -237,32 +237,82 @@ function ManageNews() {
 
   return (
     <AdminLayout>
-      <Box sx={{ minHeight: '100vh', bgcolor: '#f8fafc' }}>
+      <Box sx={{ minHeight: '100vh', bgcolor: '#f0ede8' }}>
         {/* Header */}
         <Box
           sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
             color: 'white',
             py: 4,
-            mb: 4
+            mb: 4,
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              width: '200px',
+              height: '200px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(249, 199, 79, 0.3) 0%, transparent 70%)',
+              top: '-100px',
+              right: '-50px',
+              animation: 'float 6s ease-in-out infinite'
+            },
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              width: '150px',
+              height: '150px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(251, 211, 107, 0.2) 0%, transparent 70%)',
+              bottom: '-75px',
+              left: '-25px',
+              animation: 'float 8s ease-in-out infinite reverse'
+            },
+            '@keyframes float': {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' }
+            }
           }}
         >
-          <Container maxWidth="xl" sx={{ pl: 4 }}>
+          <Container maxWidth="xl" sx={{ pl: 4, position: 'relative', zIndex: 2 }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Box>
-                <Typography variant="h4" fontWeight={700} mb={1}>
-                  <NewsIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                <Typography variant="h4" fontWeight={700} mb={1} sx={{
+                  textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                  fontFamily: "'Poppins', sans-serif"
+                }}>
+                  <NewsIcon sx={{ 
+                    mr: 1, 
+                    verticalAlign: 'middle',
+                    fontSize: '2rem',
+                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+                  }} />
                   จัดการข่าวสาร
                 </Typography>
-                <Typography variant="h6" sx={{ opacity: 0.9 }}>
+                <Typography variant="h6" sx={{ 
+                  opacity: 0.9,
+                  textShadow: '0 1px 2px rgba(0,0,0,0.1)',
+                  fontWeight: 400
+                }}>
                   จัดการข้อมูลข่าวสารและประชาสัมพันธ์ มหาวิทยาลัยราชภัฏมหาสารคาม
                 </Typography>
               </Box>
-              <Box sx={{ textAlign: 'right' }}>
-                <Typography variant="h5" fontWeight={700}>
+              <Box sx={{ 
+                textAlign: 'right',
+                bgcolor: 'rgba(255,255,255,0.1)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: 3,
+                p: 2,
+                border: '1px solid rgba(255,255,255,0.2)'
+              }}>
+                <Typography variant="h5" fontWeight={700} sx={{
+                  color: '#f9c74f',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                }}>
                   {filteredNews.length}
                 </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.8 }}>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
                   ข่าวสารทั้งหมด
                 </Typography>
               </Box>
@@ -272,19 +322,38 @@ function ManageNews() {
 
         {/* Controls */}
         <Container maxWidth="xl" sx={{ mb: 4, pl: 4 }}>
-          <Card sx={{ p: 3, borderRadius: '16px' }}>
+          <Card sx={{ 
+            p: 3, 
+            borderRadius: '16px',
+            border: '2px solid rgba(47, 75, 63, 0.1)',
+            background: 'rgba(255,255,255,0.95)',
+            backdropFilter: 'blur(20px)',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              borderColor: 'rgba(249, 199, 79, 0.3)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 8px 20px rgba(47, 75, 63, 0.1)'
+            }
+          }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
                 onClick={() => handleShowModal()}
                 sx={{
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  '&:hover': { 
-                    background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)' 
-                  },
+                  background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+                  color: '#2f4b3f',
+                  fontWeight: 600,
                   borderRadius: '12px',
-                  px: 3
+                  px: 3,
+                  py: 1.5,
+                  border: '1px solid rgba(47, 75, 63, 0.1)',
+                  boxShadow: '0 4px 12px rgba(249, 199, 79, 0.3)',
+                  '&:hover': { 
+                    background: 'linear-gradient(135deg, #fbd36b 0%, #f9c74f 100%)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 6px 16px rgba(249, 199, 79, 0.4)'
+                  }
                 }}
               >
                 เพิ่มข่าวใหม่
@@ -296,10 +365,31 @@ function ManageNews() {
                 onChange={e => setSearch(e.target.value)}
                 variant="outlined"
                 size="small"
-                sx={{ maxWidth: 400 }}
+                sx={{ 
+                  maxWidth: 400,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '12px',
+                    border: '2px solid rgba(47, 75, 63, 0.1)',
+                    bgcolor: 'white',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      borderColor: '#f9c74f',
+                      boxShadow: '0 4px 12px rgba(249, 199, 79, 0.15)'
+                    },
+                    '&.Mui-focused': {
+                      borderColor: '#2f4b3f',
+                      boxShadow: '0 4px 12px rgba(47, 75, 63, 0.15)'
+                    }
+                  },
+                  '& .MuiInputBase-input': {
+                    color: '#2f4b3f',
+                    '&::placeholder': {
+                      color: 'rgba(47, 75, 63, 0.6)'
+                    }
+                  }
+                }}
                 InputProps={{
-                  startAdornment: <SearchIcon sx={{ mr: 1, color: 'gray' }} />,
-                  sx: { borderRadius: '12px' }
+                  startAdornment: <SearchIcon sx={{ mr: 1, color: '#2f4b3f' }} />
                 }}
               />
             </Stack>
@@ -310,25 +400,89 @@ function ManageNews() {
         <Container maxWidth="xl" sx={{ pl: 4 }}>
           {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
           
-          <Card sx={{ borderRadius: '16px', overflow: 'hidden' }}>
+          <Card sx={{ 
+            borderRadius: '16px', 
+            overflow: 'hidden',
+            border: '2px solid rgba(47, 75, 63, 0.1)',
+            background: 'rgba(255,255,255,0.95)',
+            backdropFilter: 'blur(20px)',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              borderColor: 'rgba(249, 199, 79, 0.3)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 12px 25px rgba(47, 75, 63, 0.1)'
+            }
+          }}>
             <TableContainer>
               <Table>
-                <TableHead sx={{ bgcolor: '#f8fafc' }}>
+                <TableHead sx={{ 
+                  bgcolor: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+                    opacity: 0.1
+                  }
+                }}>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 600, color: '#475569', width: 50 }}>#</TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#475569' }}>หัวข้อข่าว</TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#475569' }}>วันที่เผยแพร่</TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#475569' }}>ผู้เขียน</TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: '#475569', textAlign: 'center' }}>การจัดการ</TableCell>
+                    <TableCell sx={{ 
+                      fontWeight: 700, 
+                      color: '#2f4b3f', 
+                      width: 50,
+                      fontSize: '0.9rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>#</TableCell>
+                    <TableCell sx={{ 
+                      fontWeight: 700, 
+                      color: '#2f4b3f',
+                      fontSize: '0.9rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>หัวข้อข่าว</TableCell>
+                    <TableCell sx={{ 
+                      fontWeight: 700, 
+                      color: '#2f4b3f',
+                      fontSize: '0.9rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>วันที่เผยแพร่</TableCell>
+                    <TableCell sx={{ 
+                      fontWeight: 700, 
+                      color: '#2f4b3f',
+                      fontSize: '0.9rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>ผู้เขียน</TableCell>
+                    <TableCell sx={{ 
+                      fontWeight: 700, 
+                      color: '#2f4b3f', 
+                      textAlign: 'center',
+                      fontSize: '0.9rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>การจัดการ</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {filteredNews.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={5} align="center" sx={{ py: 4, color: 'text.secondary' }}>
+                      <TableCell colSpan={5} align="center" sx={{ 
+                        py: 6, 
+                        color: '#2f4b3f',
+                        fontSize: '1.1rem',
+                        fontWeight: 500
+                      }}>
                         <Stack direction="column" alignItems="center" spacing={2}>
-                          <NewsIcon sx={{ fontSize: 48, color: 'text.disabled' }} />
-                          <Typography variant="body1">ไม่พบข้อมูลข่าวสาร</Typography>
+                          <NewsIcon sx={{ fontSize: 48, color: 'rgba(47, 75, 63, 0.3)' }} />
+                          <Typography variant="h6" color="#2f4b3f">
+                            ไม่พบข้อมูลข่าวสาร
+                          </Typography>
                         </Stack>
                       </TableCell>
                     </TableRow>
@@ -337,34 +491,50 @@ function ManageNews() {
                       <TableRow 
                         key={item.id} 
                         sx={{ 
-                          backgroundColor: idx % 2 === 0 ? '#f8fafc' : '#ffffff',
-                          '&:hover': { backgroundColor: '#e2e8f0' },
-                          transition: 'background-color 0.2s'
+                          '&:nth-of-type(odd)': { 
+                            bgcolor: 'rgba(249, 199, 79, 0.03)' 
+                          },
+                          '&:hover': { 
+                            bgcolor: 'rgba(47, 75, 63, 0.05)',
+                            transform: 'scale(1.002)',
+                            transition: 'all 0.2s ease'
+                          },
+                          transition: 'all 0.2s ease'
                         }}
                       >
-                        <TableCell sx={{ fontWeight: 600, color: '#667eea' }}>
+                        <TableCell sx={{ 
+                          fontWeight: 700, 
+                          color: '#2f4b3f',
+                          fontSize: '1rem'
+                        }}>
                           {idx + 1}
                         </TableCell>
                         <TableCell>
                           <Stack direction="row" alignItems="center" spacing={1}>
-                            <NewsIcon sx={{ color: '#667eea', fontSize: 20 }} />
-                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            <NewsIcon sx={{ color: '#f9c74f', fontSize: '1.2rem' }} />
+                            <Typography variant="body2" sx={{ 
+                              fontWeight: 600,
+                              color: '#2f4b3f'
+                            }}>
                               {item.title}
                             </Typography>
                           </Stack>
                         </TableCell>
                         <TableCell>
                           <Stack direction="row" alignItems="center" spacing={1}>
-                            <ScheduleIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
-                            <Typography variant="body2" color="text.secondary">
+                            <ScheduleIcon sx={{ fontSize: 16, color: '#f9c74f' }} />
+                            <Typography variant="body2" sx={{ color: '#2f4b3f' }}>
                               {moment(item.created_at).locale('th').format('LLL')}
                             </Typography>
                           </Stack>
                         </TableCell>
                         <TableCell>
                           <Stack direction="row" alignItems="center" spacing={1}>
-                            <PersonIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
-                            <Typography variant="body2">
+                            <PersonIcon sx={{ fontSize: 16, color: '#f9c74f' }} />
+                            <Typography variant="body2" sx={{ 
+                              color: '#2f4b3f',
+                              fontWeight: 500
+                            }}>
                               {item.author_name || 'Admin'}
                             </Typography>
                           </Stack>
@@ -375,13 +545,17 @@ function ManageNews() {
                               size="small"
                               onClick={() => handleShowModal(item)}
                               sx={{
-                                bgcolor: '#e3f2fd',
-                                color: '#1976d2',
+                                color: '#2f4b3f',
+                                bgcolor: 'rgba(47, 75, 63, 0.1)',
+                                border: '1px solid rgba(47, 75, 63, 0.2)',
+                                borderRadius: '8px',
+                                transition: 'all 0.3s ease',
                                 '&:hover': { 
-                                  bgcolor: '#bbdefb',
-                                  transform: 'translateY(-1px)' 
-                                },
-                                transition: 'all 0.2s'
+                                  bgcolor: '#2f4b3f',
+                                  color: 'white',
+                                  transform: 'translateY(-2px)',
+                                  boxShadow: '0 4px 12px rgba(47, 75, 63, 0.3)'
+                                }
                               }}
                             >
                               <EditIcon fontSize="small" />
@@ -390,13 +564,17 @@ function ManageNews() {
                               size="small"
                               onClick={() => handleDelete(item.id)}
                               sx={{
-                                bgcolor: '#ffebee',
-                                color: '#d32f2f',
+                                color: '#ef4444',
+                                bgcolor: 'rgba(239, 68, 68, 0.1)',
+                                border: '1px solid rgba(239, 68, 68, 0.2)',
+                                borderRadius: '8px',
+                                transition: 'all 0.3s ease',
                                 '&:hover': { 
-                                  bgcolor: '#ffcdd2',
-                                  transform: 'translateY(-1px)' 
-                                },
-                                transition: 'all 0.2s'
+                                  bgcolor: '#ef4444',
+                                  color: 'white',
+                                  transform: 'translateY(-2px)',
+                                  boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)'
+                                }
                               }}
                             >
                               <DeleteIcon fontSize="small" />
@@ -423,32 +601,65 @@ function ManageNews() {
           sx: { 
             borderRadius: 4,
             maxHeight: '90vh',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            border: '2px solid rgba(47, 75, 63, 0.1)',
+            background: 'rgba(255,255,255,0.95)',
+            backdropFilter: 'blur(20px)'
           }
         }}
       >
         <form onSubmit={handleSubmit}>
           <DialogTitle sx={{ 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+            background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)', 
             color: 'white',
             display: 'flex',
             alignItems: 'center',
             gap: 2,
-            py: 2
+            py: 3,
+            position: 'relative',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: '100px',
+              height: '100px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(249, 199, 79, 0.3) 0%, transparent 70%)',
+              transform: 'translate(30px, -30px)'
+            }
           }}>
-            <NewsIcon />
+            <NewsIcon sx={{ 
+              fontSize: '1.5rem',
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
+            }} />
             <Typography variant="h6" component="div">
               {selectedNews ? 'แก้ไขข่าว' : 'เพิ่มข่าวใหม่'}
             </Typography>
           </DialogTitle>
           
-          <DialogContent sx={{ bgcolor: '#f8fafc', p: 0, overflow: 'auto' }}>
+          <DialogContent sx={{ 
+            bgcolor: '#f0ede8', 
+            p: 0, 
+            overflow: 'auto'
+          }}>
             <Box sx={{ p: 3 }}>
               <Stack spacing={3}>
                 {/* หัวข้อข่าว */}
-                <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e2e8f0' }}>
-                  <CardContent sx={{ p: 2 }}>
-                    <Typography variant="subtitle1" fontWeight={600} mb={2} color="primary.main">
+                <Card elevation={0} sx={{ 
+                  borderRadius: 3, 
+                  border: '2px solid rgba(47, 75, 63, 0.1)',
+                  background: 'rgba(255,255,255,0.95)',
+                  backdropFilter: 'blur(20px)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    borderColor: 'rgba(249, 199, 79, 0.3)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(47, 75, 63, 0.1)'
+                  }
+                }}>
+                  <CardContent sx={{ p: 3 }}>
+                    <Typography variant="subtitle1" fontWeight={600} mb={2} sx={{ color: '#2f4b3f' }}>
                       หัวข้อข่าว *
                     </Typography>
                     <TextField
@@ -463,7 +674,14 @@ function ManageNews() {
                       sx={{
                         '& .MuiOutlinedInput-root': {
                           borderRadius: 2,
-                          bgcolor: 'white'
+                          bgcolor: 'white',
+                          border: '2px solid rgba(47, 75, 63, 0.1)',
+                          '&:hover': {
+                            borderColor: '#f9c74f'
+                          },
+                          '&.Mui-focused': {
+                            borderColor: '#2f4b3f'
+                          }
                         }
                       }}
                     />
@@ -471,9 +689,20 @@ function ManageNews() {
                 </Card>
                 
                 {/* เนื้อหาข่าว */}
-                <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e2e8f0' }}>
-                  <CardContent sx={{ p: 2 }}>
-                    <Typography variant="subtitle1" fontWeight={600} mb={2} color="primary.main">
+                <Card elevation={0} sx={{ 
+                  borderRadius: 3, 
+                  border: '2px solid rgba(47, 75, 63, 0.1)',
+                  background: 'rgba(255,255,255,0.95)',
+                  backdropFilter: 'blur(20px)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    borderColor: 'rgba(249, 199, 79, 0.3)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(47, 75, 63, 0.1)'
+                  }
+                }}>
+                  <CardContent sx={{ p: 3 }}>
+                    <Typography variant="subtitle1" fontWeight={600} mb={2} sx={{ color: '#2f4b3f' }}>
                       เนื้อหาข่าว *
                     </Typography>
                     <TextField
@@ -490,7 +719,14 @@ function ManageNews() {
                       sx={{
                         '& .MuiOutlinedInput-root': {
                           borderRadius: 2,
-                          bgcolor: 'white'
+                          bgcolor: 'white',
+                          border: '2px solid rgba(47, 75, 63, 0.1)',
+                          '&:hover': {
+                            borderColor: '#f9c74f'
+                          },
+                          '&.Mui-focused': {
+                            borderColor: '#2f4b3f'
+                          }
                         }
                       }}
                     />
@@ -498,22 +734,33 @@ function ManageNews() {
                 </Card>
                 
                 {/* รูปภาพ */}
-                <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e2e8f0' }}>
-                  <CardContent sx={{ p: 2 }}>
-                    <Typography variant="subtitle1" fontWeight={600} mb={2} color="primary.main">
+                <Card elevation={0} sx={{ 
+                  borderRadius: 3, 
+                  border: '2px solid rgba(47, 75, 63, 0.1)',
+                  background: 'rgba(255,255,255,0.95)',
+                  backdropFilter: 'blur(20px)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    borderColor: 'rgba(249, 199, 79, 0.3)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(47, 75, 63, 0.1)'
+                  }
+                }}>
+                  <CardContent sx={{ p: 3 }}>
+                    <Typography variant="subtitle1" fontWeight={600} mb={2} sx={{ color: '#2f4b3f' }}>
                       รูปภาพประกอบ
                     </Typography>
                     <Box 
                       sx={{ 
-                        border: '2px dashed #d1d5db',
+                        border: '2px dashed rgba(249, 199, 79, 0.5)',
                         borderRadius: 2,
                         p: 2,
                         textAlign: 'center',
-                        bgcolor: 'white',
+                        bgcolor: 'rgba(249, 199, 79, 0.05)',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',
                         '&:hover': {
-                          borderColor: '#667eea',
+                          borderColor: '#f9c74f',
                           bgcolor: '#f8fafc'
                         }
                       }}
@@ -552,13 +799,20 @@ function ManageNews() {
                           <Stack direction="row" spacing={1} justifyContent="center" sx={{ mt: 2 }}>
                             <Button
                               variant="outlined"
-                              color="primary"
                               size="small"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 document.getElementById('news-image-input').click();
                               }}
-                              sx={{ borderRadius: 2 }}
+                              sx={{ 
+                                borderRadius: 2,
+                                borderColor: '#f9c74f',
+                                color: '#2f4b3f',
+                                '&:hover': {
+                                  borderColor: '#2f4b3f',
+                                  bgcolor: 'rgba(47, 75, 63, 0.05)'
+                                }
+                              }}
                             >
                               เปลี่ยนรูป
                             </Button>
@@ -592,9 +846,9 @@ function ManageNews() {
           
           <DialogActions 
             sx={{ 
-              bgcolor: '#f8fafc', 
-              borderTop: '1px solid #e2e8f0',
-              p: 2,
+              bgcolor: '#f0ede8', 
+              borderTop: '2px solid rgba(47, 75, 63, 0.1)',
+              p: 3,
               gap: 2,
               justifyContent: 'flex-end'
             }}
@@ -602,23 +856,39 @@ function ManageNews() {
             <Button 
               onClick={handleCloseModal}
               variant="outlined"
-              size="small"
-              sx={{ borderRadius: 2, px: 3 }}
+              sx={{
+                borderRadius: 3,
+                borderColor: '#2f4b3f',
+                color: '#2f4b3f',
+                fontWeight: 600,
+                px: 3,
+                py: 1.5,
+                '&:hover': {
+                  borderColor: '#2f4b3f',
+                  bgcolor: 'rgba(47, 75, 63, 0.05)',
+                  transform: 'translateY(-1px)'
+                }
+              }}
             >
               ยกเลิก
             </Button>
             <Button 
-              type="submit" 
+              type="submit"
               variant="contained"
-              size="small"
               sx={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                '&:hover': { 
-                  background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)' 
-                },
-                borderRadius: 2,
+                borderRadius: 3,
+                background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+                color: '#2f4b3f',
+                fontWeight: 600,
                 px: 3,
-                boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)'
+                py: 1.5,
+                border: '1px solid rgba(47, 75, 63, 0.1)',
+                boxShadow: '0 4px 12px rgba(249, 199, 79, 0.3)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #fbd36b 0%, #f9c74f 100%)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 6px 16px rgba(249, 199, 79, 0.4)'
+                }
               }}
             >
               {selectedNews ? 'บันทึกการแก้ไข' : 'เพิ่มข่าว'}

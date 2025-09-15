@@ -63,7 +63,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
 }));
 
 const GradientBox = styled(Box)(({ theme }) => ({
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
   borderRadius: 16,
   padding: theme.spacing(4),
   color: 'white',

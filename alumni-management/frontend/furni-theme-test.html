@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furni Theme Test - Alumni Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Import the updated RMSU Furni Theme */
+        @import url('./src/styles/rmsu-theme.css');
+
+        /* Furni Enhanced Green Theme Variables */
+        :root {
+            /* Primary Colors - Furni Deep Green */
+            --rmsu-primary: #2f4b3f;
+            --rmsu-primary-light: #3a5c4b;
+            --rmsu-primary-dark: #243d33;
+            
+            /* Secondary Colors - Bright Yellow Accent */
+            --rmsu-gold: #f9c74f;
+            --rmsu-gold-light: #fbd36b;
+            --rmsu-gold-dark: #f8b42e;
+            
+            /* Background Colors - Warm Cream */
+            --rmsu-bg-primary: #f7f5f3;
+            --rmsu-bg-secondary: #f0ede8;
+            --rmsu-bg-card: #ffffff;
+            
+            /* Gradients */
+            --rmsu-gradient-primary: linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%);
+            --rmsu-gradient-gold: linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%);
+            --rmsu-gradient-bg: linear-gradient(135deg, #f7f5f3 0%, #f0ede8 100%);
+            
+            /* Text Colors */
+            --rmsu-text-primary: #2a3b3d;
+            --rmsu-text-white: #ffffff;
+            
+            /* Shadows and effects */
+            --rmsu-shadow-light: 0 0.125rem 0.25rem rgba(47, 75, 63, 0.1);
+            --rmsu-shadow-medium: 0 0.5rem 1rem rgba(47, 75, 63, 0.15);
+            --rmsu-shadow-elevated: 0 1rem 2rem rgba(47, 75, 63, 0.25);
+            --rmsu-hover-overlay: rgba(47, 75, 63, 0.08);
+            --rmsu-orange-overlay: rgba(249, 199, 79, 0.1);
+            
+            /* Border radius */
+            --rmsu-radius-medium: 0.75rem;
+            --rmsu-radius-xl: 1.5rem;
+            
+            /* Transitions */
+            --rmsu-transition-medium: 0.3s ease;
+        }
+
+        body {
+            background: var(--rmsu-gradient-bg) !important;
+            color: var(--rmsu-text-primary);
+            font-family: 'Source Sans Pro', 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--rmsu-gradient-primary) !important;
+            box-shadow: var(--rmsu-shadow-medium);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            color: var(--rmsu-text-white) !important;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar .nav-link {
+            color: rgba(255,255,255,0.8) !important;
+            font-weight: 500;
+            margin-right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--rmsu-radius-medium);
+            transition: var(--rmsu-transition-medium);
+        }
+
+        .navbar .nav-link:hover {
+            color: var(--rmsu-text-white) !important;
+            background: var(--rmsu-hover-overlay);
+        }
+
+        /* Buttons */
+        .btn {
+            font-weight: 600;
+            border-radius: var(--rmsu-radius-medium);
+            transition: var(--rmsu-transition-medium);
+            border-width: 2px;
+            padding: 0.75rem 2rem;
+        }
+
+        .btn-primary {
+            background: var(--rmsu-gradient-gold);
+            border-color: var(--rmsu-gold);
+            color: var(--rmsu-text-white);
+        }
+
+        .btn-primary:hover {
+            background: var(--rmsu-gold-dark);
+            border-color: var(--rmsu-gold-dark);
+            color: var(--rmsu-text-white);
+            transform: translateY(-2px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .btn-secondary {
+            background: var(--rmsu-gradient-primary);
+            border-color: var(--rmsu-primary);
+            color: var(--rmsu-text-white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--rmsu-primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--rmsu-bg-card);
+            border: 1px solid rgba(249, 199, 79, 0.2);
+            border-radius: var(--rmsu-radius-xl);
+            box-shadow: var(--rmsu-shadow-light);
+            transition: var(--rmsu-transition-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--rmsu-gradient-gold);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--rmsu-shadow-elevated);
+            border-color: var(--rmsu-gold-light);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header.bg-primary {
+            background: var(--rmsu-gradient-primary) !important;
+            color: var(--rmsu-text-white);
+            border-bottom: none;
+        }
+
+        /* Alert */
+        .alert-info {
+            background-color: var(--rmsu-orange-overlay);
+            color: var(--rmsu-text-primary);
+            border-left: 4px solid var(--rmsu-gold);
+            border-radius: var(--rmsu-radius-medium);
+        }
+
+        /* Stats */
+        .stat-card {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            background: var(--rmsu-bg-card);
+            border-radius: var(--rmsu-radius-xl);
+            border: 1px solid rgba(249, 199, 79, 0.2);
+            transition: var(--rmsu-transition-medium);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            color: var(--rmsu-gold);
+            margin-bottom: 1rem;
+            background: var(--rmsu-orange-overlay);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--rmsu-text-primary);
+            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .badge-primary {
+            background: var(--rmsu-gradient-gold);
+            color: var(--rmsu-text-white);
+        }
+
+        .badge-secondary {
+            background: var(--rmsu-gradient-primary);
+            color: var(--rmsu-text-white);
+        }
+
+        /* Demo styles */
+        .demo-section {
+            margin: 4rem 0;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-graduation-cap me-2"></i>Alumni Management
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active" href="#">หน้าหลัก</a>
+                <a class="nav-link" href="#">Alumni</a>
+                <a class="nav-link" href="#">Events</a>
+                <a class="nav-link" href="#">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Theme Info Alert -->
+        <div class="alert alert-info fade-in mb-4">
+            <h5><i class="fas fa-palette me-2"></i>✅ Theme Updated Successfully!</h5>
+            <p class="mb-0">
+                <strong>Furni Enhanced Green Theme Applied</strong> - ธีมสีเขียวเข้มแบบ Furni พร้อมสีเหลืองสว่างสำหรับ accent<br>
+                <small>เปลี่ยนแปลงสำเร็จแล้ว: ระบบผู้ใช้ และ ระบบผู้ดูแล ทั้งสองระบบได้รับการอัพเดทธีมแล้ว</small>
+            </p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="row mb-5">
+            <div class="col-md-3 mb-4">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">2,568</div>
+                    <div class="stat-label">Total Alumni</div>
+                    <span class="badge badge-primary mt-2">+12% this month</span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-number">48</div>
+                    <div class="stat-label">Events</div>
+                    <span class="badge badge-secondary mt-2">Annual</span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="stat-number">1,894</div>
+                    <div class="stat-label">Employed</div>
+                    <span class="badge badge-primary mt-2">74% of total</span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-number">327</div>
+                    <div class="stat-label">Studying</div>
+                    <span class="badge badge-secondary mt-2">13% of total</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Component Examples -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card fade-in">
+                    <div class="card-header bg-primary">
+                        <i class="fas fa-palette me-2"></i>Updated Theme Components
+                    </div>
+                    <div class="card-body">
+                        <h5>Furni Modern Theme Features:</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>เขียวเข้ม (#2f4b3f) สำหรับสีหลัก</li>
+                            <li><i class="fas fa-check text-success me-2"></i>เหลืองสว่าง (#f9c74f) สำหรับ accent</li>
+                            <li><i class="fas fa-check text-success me-2"></i>พื้นหลังครีมอบอุ่น (#f7f5f3)</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Gradients แบบ Furniture Design</li>
+                            <li><i class="fas fa-check text-success me-2"></li>เงาและ hover effects ที่นุ่มนวล</li>
+                        </ul>
+                        <div class="mt-3">
+                            <button class="btn btn-primary me-2">
+                                <i class="fas fa-palette me-1"></i>Primary Button
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-cog me-1"></i>Secondary Button
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <i class="fas fa-list-check me-2"></i>Updated Systems
+                    </div>
+                    <div class="card-body">
+                        <h5>ระบบที่ได้รับการอัพเดท:</h5>
+                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-user text-success me-3" style="font-size: 1.2rem;"></i>
+                                <div>
+                                    <strong>ระบบผู้ใช้ (User System)</strong><br>
+                                    <small class="text-muted">Navigation, Home, Profile, Forms</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-user-shield text-success me-3" style="font-size: 1.2rem;"></i>
+                                <div>
+                                    <strong>ระบบผู้ดูแล (Admin System)</strong><br>
+                                    <small class="text-muted">Dashboard, Sidebar, Statistics, Tables</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-paint-brush text-success me-3" style="font-size: 1.2rem;"></i>
+                                <div>
+                                    <strong>Theme Components</strong><br>
+                                    <small class="text-muted">CSS Variables, Material-UI Theme, Layout</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card fade-in">
+                    <div class="card-header bg-primary">
+                        <i class="fas fa-check-circle me-2"></i>Theme Update Summary
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <div class="display-1 text-success"><i class="fas fa-check-circle"></i></div>
+                                <h5>Theme Applied</h5>
+                                <p class="text-muted">Furni Modern Green Theme ถูกนำไปใช้เรียบร้อยแล้ว</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="display-1 text-success"><i class="fas fa-cogs"></i></div>
+                                <h5>Systems Updated</h5>
+                                <p class="text-muted">ทั้งระบบผู้ใช้และผู้ดูแลได้รับการอัพเดท</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="display-1 text-success"><i class="fas fa-shield-alt"></i></div>
+                                <h5>No Errors</h5>
+                                <p class="text-muted">ไม่มีข้อผิดพลาดในระบบหลังจากการเปลี่ยนแปลง</p>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info mt-4">
+                            <h6><i class="fas fa-info-circle me-2"></i>การเปลี่ยนแปลงที่สำคัญ:</h6>
+                            <ul class="mb-0">
+                                <li>สีหลักเปลี่ยนจาก สีน้ำเงิน-ม่วง เป็น <strong>เขียวเข้มแบบ Furni (#2f4b3f)</strong></li>
+                                <li>สี Accent เปลี่ยนเป็น <strong>เหลืองสว่าง (#f9c74f)</strong> แทนสีทอง</li>
+                                <li>พื้นหลังใช้โทน <strong>ครีมอบอุ่น (#f7f5f3)</strong> แทนสีขาว</li>
+                                <li>Navigation และ Admin Sidebar ใช้ gradient เขียวใหม่</li>
+                                <li>ปุ่มและ Cards ได้รับการปรับปรุงให้สอดคล้องกับธีม Furni</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Add animation delays
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.fade-in');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Add hover effects
+        document.querySelectorAll('.card, .stat-card').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -46,6 +46,33 @@ import Swal from 'sweetalert2';
 import AdminLayout from '../../layout/AdminLayout';
 import addressData from '../../../assets/thai-address-full.json';
 
+// Add Furni animations
+const furniAnimations = `
+  @keyframes furniFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(1deg); }
+    50% { transform: translateY(-20px) rotate(0deg); }
+    75% { transform: translateY(-10px) rotate(-1deg); }
+  }
+  
+  @keyframes furniPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+  }
+  
+  @keyframes furniShimmer {
+    0% { background-position: -200px 0; }
+    100% { background-position: 200px 0; }
+  }
+`;
+
+// Inject animations into head
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.textContent = furniAnimations;
+  document.head.appendChild(style);
+}
+
 const ManageAlumni = () => {
   const [alumni, setAlumni] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -252,12 +279,21 @@ const ManageAlumni = () => {
     try {
       const token = localStorage.getItem('token');
       const dataToSend = {
-        ...formData,
+        student_id: formData.student_id,
+        title: formData.title,
         name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone,
+        graduation_year: formData.graduation_year,
+        faculty: formData.faculty,
+        major: formData.major,
+        bio: formData.bio,
+        current_address: formData.current_address,
         province: formData.address_province,
         district: formData.address_district,
         subdistrict: formData.address_subdistrict,
-        zipcode: formData.address_postcode
+        zipcode: formData.address_postcode,
+        password: formData.password
       };
       if (selectedAlumni) {
         delete dataToSend.password;
@@ -368,41 +404,152 @@ const ManageAlumni = () => {
 
   return (
     <AdminLayout>
-      <Box sx={{ minHeight: '100vh', bgcolor: '#f8fafc' }}>
-        {/* Header */}
+      <Box sx={{ 
+        minHeight: '100vh', 
+        background: 'linear-gradient(135deg, #f7f5f3 0%, #f0ede8 50%, #faf8f5 100%)',
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="40" cy="40" r="2" fill="%23f9c74f" opacity="0.1"/><circle cx="160" cy="60" r="1.5" fill="%2347755f" opacity="0.08"/><circle cx="80" cy="140" r="1.8" fill="%23f9c74f" opacity="0.12"/><circle cx="180" cy="160" r="1.2" fill="%2347755f" opacity="0.1"/></svg>') repeat`,
+          backgroundSize: '200px 200px',
+          opacity: 0.3,
+          animation: 'furniFloat 30s ease-in-out infinite',
+          pointerEvents: 'none'
+        }
+      }}>
+        {/* Floating particles for ambiance */}
+        <Box sx={{
+          position: 'absolute',
+          top: '10%',
+          right: '10%',
+          width: 100,
+          height: 100,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(249, 199, 79, 0.1) 0%, transparent 70%)',
+          animation: 'furniFloat 20s ease-in-out infinite',
+          zIndex: 1
+        }} />
+        <Box sx={{
+          position: 'absolute',
+          bottom: '20%',
+          left: '15%',
+          width: 80,
+          height: 80,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(47, 75, 63, 0.08) 0%, transparent 70%)',
+          animation: 'furniFloat 25s ease-in-out infinite reverse',
+          zIndex: 1
+        }} />
+        {/* Header - Furni Theme */}
         <Box
           sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 50%, #243d33 100%)',
             color: 'white',
-            py: 4,
-            mb: 4
+            py: 5,
+            mb: 4,
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.2"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.15"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.25"/><circle cx="90" cy="80" r="0.8" fill="%23f9c74f" opacity="0.2"/></svg>') repeat`,
+              backgroundSize: '120px 120px',
+              opacity: 0.15,
+              animation: 'furniFloat 25s ease-in-out infinite'
+            },
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '2px',
+              background: 'linear-gradient(90deg, transparent, #f9c74f, transparent)'
+            }
           }}
         >
-          <Container maxWidth="xl" sx={{ pl: 4 }}>
+          <Container maxWidth="xl" sx={{ pl: 4, position: 'relative', zIndex: 2 }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Box>
-                <Typography variant="h4" fontWeight={700} mb={1}>
-                  <SchoolIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                  จัดการข้อมูลศิษย์เก่า
-                </Typography>
-                <Typography variant="h6" sx={{ opacity: 0.9 }}>
-                  จัดการข้อมูลศิษย์เก่า มหาวิทยาลัยราชภัฏมหาสารคาม
-                </Typography>
+                <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
+                  <Box
+                    sx={{
+                      width: 60,
+                      height: 60,
+                      borderRadius: '16px',
+                      background: 'linear-gradient(135deg, rgba(249,199,79,0.2), rgba(255,255,255,0.1))',
+                      backdropFilter: 'blur(15px)',
+                      WebkitBackdropFilter: 'blur(15px)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: '2px solid rgba(249,199,79,0.3)',
+                      transition: 'transform 0.3s ease',
+                      '&:hover': {
+                        transform: 'scale(1.05) rotate(5deg)'
+                      }
+                    }}
+                  >
+                    <SchoolIcon sx={{ fontSize: 32, color: '#f9c74f' }} />
+                  </Box>
+                  <Box>
+                    <Typography 
+                      variant="h4" 
+                      sx={{ 
+                        fontWeight: 700, 
+                        mb: 0.5,
+                        background: 'linear-gradient(135deg, #ffffff, #f9c74f)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                        fontFamily: "'Poppins', sans-serif"
+                      }}
+                    >
+                      จัดการข้อมูลศิษย์เก่า
+                    </Typography>
+                    <Typography 
+                      variant="subtitle1" 
+                      sx={{ 
+                        opacity: 0.9,
+                        color: '#fbd36b',
+                        fontWeight: 500
+                      }}
+                    >
+                      มหาวิทยาลัยราชภัฏมหาสารคาม 
+                    </Typography>
+                  </Box>
+                </Stack>
               </Box>
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
                 onClick={() => handleShowModal()}
                 sx={{
-                  bgcolor: 'rgba(255,255,255,0.2)',
-                  color: 'white',
-                  fontWeight: 600,
-                  px: 3,
-                  py: 1.5,
-                  borderRadius: 3,
-                  backdropFilter: 'blur(10px)',
+                  background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                  color: '#2f4b3f',
+                  fontWeight: 700,
+                  px: 4,
+                  py: 2,
+                  borderRadius: '16px',
+                  fontSize: '1rem',
+                  textTransform: 'none',
+                  boxShadow: '0 8px 25px rgba(249, 199, 79, 0.3)',
+                  border: '2px solid rgba(255,255,255,0.2)',
+                  transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                   '&:hover': {
-                    bgcolor: 'rgba(255,255,255,0.3)'
+                    background: 'linear-gradient(135deg, #fbd36b, #f9c74f)',
+                    transform: 'translateY(-2px) scale(1.05)',
+                    boxShadow: '0 12px 35px rgba(249, 199, 79, 0.4)'
                   }
                 }}
               >
@@ -419,58 +566,215 @@ const ManageAlumni = () => {
             </Alert>
           )}
 
-          {/* Search */}
-          <Box sx={{ mb: 3, maxWidth: 500 }}>
+          {/* Search - Furni Style */}
+          <Box sx={{ mb: 4, maxWidth: 600 }}>
             <TextField
               fullWidth
-              placeholder="ค้นหา รหัสนักศึกษา, ชื่อ, คณะ, สาขาวิชา, ปีที่จบ, อีเมล, อาชีพ"
+              placeholder="ค้นหา รหัสนักศึกษา, ชื่อ, คณะ, สาขาวิชา, ปีที่จบ, อีเมล, อาชีพ..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               InputProps={{
-                startAdornment: <SearchIcon sx={{ color: 'text.secondary', mr: 1 }} />
+                startAdornment: (
+                  <Box sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    mr: 1,
+                    color: '#2f4b3f'
+                  }}>
+                    <SearchIcon />
+                  </Box>
+                )
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  borderRadius: 3,
-                  bgcolor: 'white',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(247,245,243,0.95))',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  border: '2px solid rgba(47,75,63,0.1)',
+                  fontSize: '1rem',
+                  transition: 'all 0.3s ease',
                   '&:hover': {
-                    '& > fieldset': { borderColor: '#667eea' }
+                    border: '2px solid rgba(249,199,79,0.4)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 25px rgba(249, 199, 79, 0.2)'
+                  },
+                  '&.Mui-focused': {
+                    border: '2px solid #f9c74f',
+                    boxShadow: '0 8px 25px rgba(249, 199, 79, 0.3)'
+                  },
+                  '& fieldset': {
+                    border: 'none'
+                  }
+                },
+                '& .MuiInputBase-input': {
+                  color: '#2f4b3f',
+                  fontWeight: 500,
+                  '&::placeholder': {
+                    color: 'rgba(47,75,63,0.6)',
+                    opacity: 1
                   }
                 }
               }}
             />
           </Box>
-          {/* Alumni Table */}
+          {/* Alumni Table - Enhanced Furni Design */}
           <Card 
             elevation={0}
             sx={{
-              borderRadius: 4,
-              border: '1px solid #e2e8f0',
+              borderRadius: '20px',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.98), rgba(247,245,243,0.95))',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: '2px solid rgba(47,75,63,0.1)',
+              overflow: 'hidden',
+              transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+              position: 'relative',
+              boxShadow: '0 12px 40px rgba(47, 75, 63, 0.08), 0 0 0 1px rgba(249,199,79,0.1)',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent, rgba(249,199,79,0.6), transparent)',
+                zIndex: 1
+              },
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                top: '20px',
+                right: '20px',
+                width: '60px',
+                height: '60px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(249, 199, 79, 0.08) 0%, transparent 70%)',
+                animation: 'furniPulse 4s ease-in-out infinite',
+                pointerEvents: 'none'
+              },
               '&:hover': {
-                boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+                transform: 'translateY(-6px)',
+                boxShadow: '0 25px 50px rgba(47, 75, 63, 0.15), 0 0 0 1px rgba(249,199,79,0.3)',
+                border: '2px solid rgba(249,199,79,0.3)',
+                '&::before': {
+                  background: 'linear-gradient(90deg, transparent, rgba(249,199,79,0.8), transparent)'
+                }
               }
             }}
           >
             <CardContent sx={{ p: 0 }}>
-              <TableContainer component={Paper} elevation={0}>
+              <TableContainer 
+                component={Paper} 
+                elevation={0}
+                sx={{ 
+                  backgroundColor: 'transparent',
+                  borderRadius: '20px'
+                }}
+              >
                 <Table>
-                  <TableHead sx={{ bgcolor: '#f8fafc' }}>
+                  <TableHead 
+                    sx={{ 
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(247,245,243,0.95))',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                      position: 'relative',
+                      border: '2px solid rgba(47,75,63,0.1)',
+                      '&::after': {
+                        content: '""',
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: '2px',
+                        background: 'linear-gradient(90deg, transparent, #f9c74f, transparent)'
+                      }
+                    }}
+                  >
                     <TableRow>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>#</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>รหัสนักศึกษา</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>ชื่อ-นามสกุล</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>คณะ</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>สาขาวิชา</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>ปีที่จบ</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>อีเมล</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>จัดการ</TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.95rem',
+                        borderBottom: 'none',
+                        py: 2.5
+                      }}>
+                        #
+                      </TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.95rem',
+                        borderBottom: 'none'
+                      }}>
+                        รหัสนักศึกษา
+                      </TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.95rem',
+                        borderBottom: 'none'
+                      }}>
+                        ชื่อ-นามสกุล
+                      </TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.95rem',
+                        borderBottom: 'none'
+                      }}>
+                        คณะ
+                      </TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.95rem',
+                        borderBottom: 'none'
+                      }}>
+                        สาขาวิชา
+                      </TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.95rem',
+                        borderBottom: 'none'
+                      }}>
+                        ปีที่จบ
+                      </TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.95rem',
+                        borderBottom: 'none'
+                      }}>
+                        อีเมล
+                      </TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.95rem',
+                        borderBottom: 'none',
+                        textAlign: 'center'
+                      }}>
+                        จัดการ
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {filteredAlumni.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={7} align="center" sx={{ py: 4, color: 'text.secondary' }}>
-                          ไม่พบข้อมูลศิษย์เก่า
+                        <TableCell 
+                          colSpan={7} 
+                          align="center" 
+                          sx={{ 
+                            py: 6, 
+                            color: 'rgba(47,75,63,0.6)',
+                            fontSize: '1.1rem',
+                            fontWeight: 500,
+                            borderBottom: 'none'
+                          }}
+                        >
+                          🔍 ไม่พบข้อมูลศิษย์เก่า
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -478,44 +782,109 @@ const ManageAlumni = () => {
                         <TableRow 
                           key={person.id}
                           sx={{ 
-                            '&:nth-of-type(odd)': { bgcolor: '#f8fafc' },
-                            '&:hover': { bgcolor: '#e2e8f0' }
+                            background: idx % 2 === 0 
+                              ? 'rgba(47, 75, 63, 0.03)' 
+                              : 'rgba(249, 199, 79, 0.02)',
+                            transition: 'all 0.3s ease',
+                            '&:hover': { 
+                              background: 'linear-gradient(135deg, rgba(249,199,79,0.1), rgba(47, 75, 63, 0.05))',
+                              transform: 'scale(1.01)',
+                              boxShadow: '0 4px 15px rgba(249, 199, 79, 0.2)'
+                            }
                           }}
                         >
-                          <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>
+                          <TableCell sx={{ 
+                            fontWeight: 700, 
+                            color: '#2f4b3f',
+                            fontSize: '1rem',
+                            borderBottom: '1px solid rgba(47,75,63,0.1)'
+                          }}>
                             {idx + 1}
                           </TableCell>
-                          <TableCell>{person.student_id}</TableCell>
-                          <TableCell>
+                          <TableCell sx={{ 
+                            fontWeight: 600,
+                            color: '#1a202c',
+                            borderBottom: '1px solid rgba(47,75,63,0.1)'
+                          }}>
+                            {person.student_id}
+                          </TableCell>
+                          <TableCell sx={{ borderBottom: '1px solid rgba(47,75,63,0.1)' }}>
                             <Stack direction="row" alignItems="center" spacing={1}>
-                              <Avatar sx={{ width: 24, height: 24, bgcolor: 'primary.main' }}>
-                                <PersonIcon sx={{ fontSize: 16 }} />
+                              <Avatar sx={{ 
+                                width: 32, 
+                                height: 32, 
+                                background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
+                                border: '2px solid rgba(249,199,79,0.3)'
+                              }}>
+                                <PersonIcon sx={{ fontSize: 18, color: '#f9c74f' }} />
                               </Avatar>
-                              <Typography fontWeight={600}>{person.name}</Typography>
+                              <Typography 
+                                fontWeight={600}
+                                sx={{ color: '#2f4b3f' }}
+                              >
+                                {person.name}
+                              </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell>{person.faculty}</TableCell>
-                          <TableCell>{person.major}</TableCell>
-                          <TableCell>
+                          <TableCell sx={{ 
+                            borderBottom: '1px solid rgba(47,75,63,0.1)',
+                            color: 'rgba(47,75,63,0.8)',
+                            fontWeight: 500
+                          }}>
+                            {person.faculty}
+                          </TableCell>
+                          <TableCell sx={{ 
+                            borderBottom: '1px solid rgba(47,75,63,0.1)',
+                            color: 'rgba(47,75,63,0.8)',
+                            fontWeight: 500
+                          }}>
+                            {person.major}
+                          </TableCell>
+                          <TableCell sx={{ borderBottom: '1px solid rgba(47,75,63,0.1)' }}>
                             <Chip 
                               label={person.graduation_year} 
                               size="small" 
                               sx={{
-                                bgcolor: '#667eea',
-                                color: 'white',
-                                fontWeight: 600
+                                background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                                color: '#2f4b3f',
+                                fontWeight: 700,
+                                borderRadius: '12px',
+                                '&:hover': {
+                                  transform: 'scale(1.05)'
+                                }
                               }}
                             />
                           </TableCell>
-                          <TableCell>{person.email}</TableCell>
-                          <TableCell>
-                            <Stack direction="row" spacing={1}>
+                          <TableCell sx={{ 
+                            borderBottom: '1px solid rgba(47,75,63,0.1)',
+                            color: 'rgba(47,75,63,0.7)',
+                            fontWeight: 500
+                          }}>
+                            {person.email}
+                          </TableCell>
+                          <TableCell sx={{ 
+                            borderBottom: '1px solid rgba(47,75,63,0.1)',
+                            textAlign: 'center'
+                          }}>
+                            <Stack direction="row" spacing={1} justifyContent="center">
                               <IconButton
                                 size="small"
                                 onClick={() => handleViewAlumni(person)}
                                 sx={{
-                                  color: '#3b82f6',
-                                  '&:hover': { bgcolor: 'rgba(59, 130, 246, 0.1)' }
+                                  background: 'linear-gradient(135deg, rgba(47,75,63,0.9), rgba(58,92,75,0.9))',
+                                  color: '#f9c74f',
+                                  width: 40,
+                                  height: 40,
+                                  borderRadius: '12px',
+                                  border: '2px solid rgba(249,199,79,0.2)',
+                                  backdropFilter: 'blur(10px)',
+                                  transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                                  '&:hover': { 
+                                    background: 'linear-gradient(135deg, rgba(47,75,63,1), rgba(58,92,75,1))',
+                                    transform: 'translateY(-3px) scale(1.1)',
+                                    boxShadow: '0 8px 20px rgba(47, 75, 63, 0.3)',
+                                    border: '2px solid rgba(249,199,79,0.5)'
+                                  }
                                 }}
                                 title="ดูข้อมูล"
                               >
@@ -525,8 +894,20 @@ const ManageAlumni = () => {
                                 size="small"
                                 onClick={() => handleShowModal(person)}
                                 sx={{
-                                  color: '#f59e0b',
-                                  '&:hover': { bgcolor: 'rgba(245, 158, 11, 0.1)' }
+                                  background: 'linear-gradient(135deg, rgba(249,199,79,0.9), rgba(251,211,107,0.9))',
+                                  color: '#2f4b3f',
+                                  width: 40,
+                                  height: 40,
+                                  borderRadius: '12px',
+                                  border: '2px solid rgba(47,75,63,0.2)',
+                                  backdropFilter: 'blur(10px)',
+                                  transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                                  '&:hover': { 
+                                    background: 'linear-gradient(135deg, rgba(249,199,79,1), rgba(251,211,107,1))',
+                                    transform: 'translateY(-3px) scale(1.1)',
+                                    boxShadow: '0 8px 20px rgba(249, 199, 79, 0.4)',
+                                    border: '2px solid rgba(47,75,63,0.3)'
+                                  }
                                 }}
                                 title="แก้ไข"
                               >
@@ -536,8 +917,20 @@ const ManageAlumni = () => {
                                 size="small"
                                 onClick={() => handleDelete(person.id)}
                                 sx={{
-                                  color: '#ef4444',
-                                  '&:hover': { bgcolor: 'rgba(239, 68, 68, 0.1)' }
+                                  background: 'linear-gradient(135deg, rgba(239,68,68,0.9), rgba(220,38,38,0.9))',
+                                  color: 'white',
+                                  width: 40,
+                                  height: 40,
+                                  borderRadius: '12px',
+                                  border: '2px solid rgba(255,255,255,0.2)',
+                                  backdropFilter: 'blur(10px)',
+                                  transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                                  '&:hover': { 
+                                    background: 'linear-gradient(135deg, rgba(239,68,68,1), rgba(220,38,38,1))',
+                                    transform: 'translateY(-3px) scale(1.1)',
+                                    boxShadow: '0 8px 20px rgba(239, 68, 68, 0.4)',
+                                    border: '2px solid rgba(255,255,255,0.3)'
+                                  }
                                 }}
                                 title="ลบ"
                               >
@@ -571,24 +964,123 @@ const ManageAlumni = () => {
         <form onSubmit={handleSubmit}>
           <DialogTitle
             sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
               color: 'white',
               fontWeight: 700,
               display: 'flex',
               alignItems: 'center',
-              gap: 1
+              gap: 2,
+              position: 'relative',
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '3px',
+                background: 'linear-gradient(90deg, transparent, #f9c74f, transparent)'
+              }
             }}
           >
-            <PersonIcon />
-            {selectedAlumni ? 'แก้ไขข้อมูลศิษย์เก่า' : 'เพิ่มข้อมูลศิษย์เก่า'}
+            <Box
+              sx={{
+                width: 48,
+                height: 48,
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, rgba(249,199,79,0.2), rgba(255,255,255,0.1))',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '2px solid rgba(249,199,79,0.3)'
+              }}
+            >
+              <PersonIcon sx={{ color: '#f9c74f', fontSize: 24 }} />
+            </Box>
+            <Box>
+              <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+                {selectedAlumni ? 'แก้ไขข้อมูลศิษย์เก่า' : 'เพิ่มข้อมูลศิษย์เก่า'}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9, color: '#fbd36b' }}>
+                Furni Modern Admin • ข้อมูลศิษย์เก่า
+              </Typography>
+            </Box>
           </DialogTitle>
-          <DialogContent sx={{ bgcolor: '#f8fafc', p: 2 }}>
-            {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+          <DialogContent sx={{ 
+            background: 'linear-gradient(135deg, #f7f5f3 0%, #f0ede8 100%)',
+            p: 3,
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="90" cy="10" r="1" fill="%23f9c74f" opacity="0.1"/><circle cx="20" cy="80" r="1.5" fill="%23f9c74f" opacity="0.08"/><circle cx="70" cy="50" r="0.8" fill="%23f9c74f" opacity="0.12"/></svg>') repeat`,
+              backgroundSize: '100px 100px',
+              animation: 'furniFloat 15s ease-in-out infinite',
+              pointerEvents: 'none'
+            },
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(47, 75, 63, 0.1) 0%, transparent 70%)',
+              animation: 'furniPulse 3s ease-in-out infinite',
+              pointerEvents: 'none'
+            }
+          }}>
+            {error && (
+              <Alert 
+                severity="error" 
+                sx={{ 
+                  mb: 3, 
+                  borderRadius: '12px',
+                  background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.05))',
+                  border: '2px solid rgba(239, 68, 68, 0.2)',
+                  position: 'relative',
+                  zIndex: 2
+                }}
+              >
+                {error}
+              </Alert>
+            )}
             
             {/* ข้อมูลพื้นฐาน */}
-            <Typography variant="h6" sx={{ mb: 2, color: 'primary.main', fontWeight: 600 }}>
-              ข้อมูลพื้นฐาน
-            </Typography>
+            <Box sx={{ position: 'relative', zIndex: 2 }}>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  mb: 3, 
+                  color: '#2f4b3f', 
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 2
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '8px',
+                    background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <SchoolIcon sx={{ color: '#2f4b3f', fontSize: 18 }} />
+                </Box>
+                ข้อมูลพื้นฐาน
+              </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={2}>
                 <FormControl fullWidth required size="small">
@@ -866,13 +1358,14 @@ const ManageAlumni = () => {
                 />
               </Grid>
             </Grid>
+            </Box>
           </DialogContent>
           
           <DialogActions 
             sx={{ 
-              bgcolor: '#f8fafc', 
-              borderTop: '1px solid #e2e8f0',
-              p: 2,
+              background: 'linear-gradient(135deg, #f7f5f3 0%, #f0ede8 100%)',
+              borderTop: '2px solid rgba(47,75,63,0.1)',
+              p: 3,
               gap: 2,
               justifyContent: 'flex-end'
             }}
@@ -880,19 +1373,41 @@ const ManageAlumni = () => {
             <Button 
               onClick={handleCloseModal}
               variant="outlined"
-              size="small"
-              sx={{ borderRadius: 2, px: 3 }}
+              sx={{ 
+                borderRadius: '12px', 
+                px: 4,
+                py: 1.5,
+                borderColor: 'rgba(47,75,63,0.3)',
+                color: '#2f4b3f',
+                fontWeight: 600,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  borderColor: '#2f4b3f',
+                  background: 'rgba(47,75,63,0.05)',
+                  transform: 'translateY(-2px)'
+                }
+              }}
             >
               ยกเลิก
             </Button>
             <Button 
               type="submit" 
               variant="contained"
-              size="small"
               sx={{ 
-                borderRadius: 2, 
-                px: 3,
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                borderRadius: '12px', 
+                px: 4,
+                py: 1.5,
+                fontWeight: 700,
+                fontSize: '1rem',
+                background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                color: '#2f4b3f',
+                boxShadow: '0 6px 20px rgba(249, 199, 79, 0.3)',
+                transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #fbd36b, #f9c74f)',
+                  transform: 'translateY(-3px) scale(1.05)',
+                  boxShadow: '0 8px 25px rgba(249, 199, 79, 0.4)'
+                }
               }}
             >
               {selectedAlumni ? 'บันทึกการแก้ไข' : 'เพิ่มข้อมูล'}
@@ -909,74 +1424,86 @@ const ManageAlumni = () => {
         fullWidth
         sx={{
           '& .MuiDialog-paper': {
-            borderRadius: 3,
+            borderRadius: '20px',
             maxHeight: '90vh',
-            background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-            overflow: 'hidden'
+            background: '#f0ede8',
+            overflow: 'hidden',
+            border: '1px solid rgba(47, 75, 63, 0.1)',
+            boxShadow: '0 20px 40px rgba(47, 75, 63, 0.15)'
           }
         }}
       >
         <Box sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
           color: 'white',
-          p: 2,
+          p: 3,
           position: 'relative',
           overflow: 'hidden'
         }}>
-          {/* Background decorations */}
+          {/* Floating particles effect */}
           <Box sx={{
             position: 'absolute',
-            top: -30,
-            right: -30,
-            width: 80,
-            height: 80,
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-            opacity: 0.7
-          }} />
-          <Box sx={{
-            position: 'absolute',
-            bottom: -20,
-            left: -20,
+            top: '20%',
+            right: '15%',
             width: 60,
             height: 60,
             borderRadius: '50%',
-            background: 'rgba(255,255,255,0.05)',
-            opacity: 0.8
+            background: 'radial-gradient(circle, rgba(249, 199, 79, 0.2) 0%, transparent 70%)',
+            animation: 'float 6s ease-in-out infinite'
+          }} />
+          <Box sx={{
+            position: 'absolute',
+            bottom: '30%',
+            left: '10%',
+            width: 40,
+            height: 40,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(251, 211, 107, 0.15) 0%, transparent 70%)',
+            animation: 'float 8s ease-in-out infinite reverse'
+          }} />
+          <Box sx={{
+            position: 'absolute',
+            top: '60%',
+            right: '25%',
+            width: 30,
+            height: 30,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(47, 75, 63, 0.3) 0%, transparent 70%)',
+            animation: 'float 10s ease-in-out infinite'
           }} />
           
           {/* Header content */}
           <Box sx={{ position: 'relative', zIndex: 1 }}>
             <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 1.5 }}>
               <Avatar sx={{ 
-                bgcolor: 'rgba(255,255,255,0.2)', 
-                width: 40, 
-                height: 40,
-                border: '2px solid rgba(255,255,255,0.3)'
+                bgcolor: 'rgba(249, 199, 79, 0.2)', 
+                width: 50, 
+                height: 50,
+                border: '2px solid rgba(249, 199, 79, 0.3)'
               }}>
-                <PersonIcon sx={{ fontSize: 24, color: 'white' }} />
+                <PersonIcon sx={{ fontSize: 26, color: '#f9c74f' }} />
               </Avatar>
               <Box>
-                <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5, color: '#f9c74f' }}>
                   ข้อมูลศิษย์เก่า
                 </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                <Typography variant="body2" sx={{ opacity: 0.9, color: '#f0ede8' }}>
                   รายละเอียดข้อมูลครบถ้วน
                 </Typography>
               </Box>
             </Stack>
             {viewingAlumni && (
               <Box sx={{ 
-                bgcolor: 'rgba(255,255,255,0.1)', 
-                borderRadius: 2, 
-                p: 1.5,
+                bgcolor: 'rgba(249, 199, 79, 0.1)', 
+                borderRadius: '15px', 
+                p: 2,
                 backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.2)'
+                border: '1px solid rgba(249, 199, 79, 0.2)'
               }}>
-                <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5, color: '#f9c74f' }}>
                   {viewingAlumni.name}
                 </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                <Typography variant="body2" sx={{ opacity: 0.9, color: '#f0ede8' }}>
                   {viewingAlumni.student_id} • {viewingAlumni.faculty} • {viewingAlumni.major}
                 </Typography>
               </Box>
@@ -985,21 +1512,26 @@ const ManageAlumni = () => {
         </Box>
         <DialogContent sx={{ 
           bgcolor: 'transparent', 
-          p: 2,
-          background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+          p: 3,
+          background: '#f0ede8'
         }}>
           {viewingAlumni && (
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
               {/* ข้อมูลส่วนตัว */}
               <Grid item xs={12}>
                 <Card sx={{ 
-                  borderRadius: 3, 
-                  boxShadow: '0 8px 20px rgba(0,0,0,0.08)',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'rgba(255,255,255,0.95)',
-                  backdropFilter: 'blur(20px)',
+                  borderRadius: '20px', 
+                  boxShadow: '0 8px 32px rgba(47, 75, 63, 0.1)',
+                  border: '1px solid rgba(47, 75, 63, 0.1)',
+                  background: 'rgba(255,255,255,0.9)',
+                  backdropFilter: 'blur(10px)',
                   overflow: 'hidden',
-                  position: 'relative'
+                  position: 'relative',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 12px 40px rgba(47, 75, 63, 0.15)'
+                  },
+                  transition: 'all 0.3s ease'
                 }}>
                   {/* Background pattern */}
                   <Box sx={{
@@ -1008,62 +1540,59 @@ const ManageAlumni = () => {
                     right: 0,
                     width: '100%',
                     height: '100%',
-                    background: 'radial-gradient(circle at 80% 20%, rgba(102, 126, 234, 0.05) 0%, transparent 50%)',
+                    background: 'radial-gradient(circle at 80% 20%, rgba(249, 199, 79, 0.05) 0%, transparent 50%)',
                     pointerEvents: 'none'
                   }} />
                   
-                  <CardContent sx={{ p: 2.5, position: 'relative', zIndex: 1 }}>
+                  <CardContent sx={{ p: 3, position: 'relative', zIndex: 1 }}>
                     <Box sx={{ 
                       display: 'flex', 
                       alignItems: 'center', 
-                      mb: 2,
-                      pb: 1.5,
-                      borderBottom: '2px solid #e2e8f0'
+                      mb: 3,
+                      pb: 2,
+                      borderBottom: '2px solid rgba(47, 75, 63, 0.1)'
                     }}>
                       <Avatar sx={{ 
-                        bgcolor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-                        width: 32, 
-                        height: 32,
-                        mr: 1.5,
-                        boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)'
+                        background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)', 
+                        width: 40, 
+                        height: 40,
+                        mr: 2,
+                        boxShadow: '0 4px 15px rgba(249, 199, 79, 0.3)'
                       }}>
-                        <PersonIcon sx={{ fontSize: 20 }} />
+                        <PersonIcon sx={{ fontSize: 24, color: '#2f4b3f' }} />
                       </Avatar>
                       <Typography variant="h6" sx={{ 
                         fontWeight: 700, 
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        backgroundClip: 'text',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent'
+                        color: '#2f4b3f'
                       }}>
                         ข้อมูลส่วนตัว
                       </Typography>
                     </Box>
                     
-                    <Grid container spacing={2}>
+                    <Grid container spacing={3}>
                       <Grid item xs={12} sm={6} md={4}>
                         <Box sx={{ 
-                          p: 1.5, 
-                          bgcolor: 'rgba(102, 126, 234, 0.05)', 
-                          borderRadius: 2,
-                          border: '1px solid rgba(102, 126, 234, 0.1)',
+                          p: 2, 
+                          bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                          borderRadius: '15px',
+                          border: '1px solid rgba(47, 75, 63, 0.1)',
                           transition: 'all 0.3s ease',
                           '&:hover': {
-                            bgcolor: 'rgba(102, 126, 234, 0.1)',
-                            transform: 'translateY(-1px)',
-                            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.15)'
+                            bgcolor: 'rgba(47, 75, 63, 0.1)',
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)'
                           }
                         }}>
                           <Typography variant="caption" sx={{ 
-                            color: '#667eea', 
+                            color: '#2f4b3f', 
                             fontWeight: 600, 
                             textTransform: 'uppercase',
                             letterSpacing: '0.5px',
-                            fontSize: '0.7rem'
+                            fontSize: '0.75rem'
                           }}>
                             คำนำหน้า
                           </Typography>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a365d', mt: 0.5 }}>
+                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a202c', mt: 0.5 }}>
                             {viewingAlumni.title || '-'}
                           </Typography>
                         </Box>
@@ -1071,27 +1600,27 @@ const ManageAlumni = () => {
                       
                       <Grid item xs={12} sm={6} md={8}>
                         <Box sx={{ 
-                          p: 1.5, 
-                          bgcolor: 'rgba(102, 126, 234, 0.05)', 
-                          borderRadius: 2,
-                          border: '1px solid rgba(102, 126, 234, 0.1)',
+                          p: 2, 
+                          bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                          borderRadius: '15px',
+                          border: '1px solid rgba(47, 75, 63, 0.1)',
                           transition: 'all 0.3s ease',
                           '&:hover': {
-                            bgcolor: 'rgba(102, 126, 234, 0.1)',
-                            transform: 'translateY(-1px)',
-                            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.15)'
+                            bgcolor: 'rgba(47, 75, 63, 0.1)',
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)'
                           }
                         }}>
                           <Typography variant="caption" sx={{ 
-                            color: '#667eea', 
+                            color: '#2f4b3f', 
                             fontWeight: 600, 
                             textTransform: 'uppercase',
                             letterSpacing: '0.5px',
-                            fontSize: '0.7rem'
+                            fontSize: '0.75rem'
                           }}>
                             ชื่อ-นามสกุล
                           </Typography>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a365d', mt: 0.5 }}>
+                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a202c', mt: 0.5 }}>
                             {viewingAlumni.name || '-'}
                           </Typography>
                         </Box>
@@ -1099,27 +1628,27 @@ const ManageAlumni = () => {
                       
                       <Grid item xs={12} sm={6}>
                         <Box sx={{ 
-                          p: 1.5, 
-                          bgcolor: 'rgba(102, 126, 234, 0.05)', 
-                          borderRadius: 2,
-                          border: '1px solid rgba(102, 126, 234, 0.1)',
+                          p: 2, 
+                          bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                          borderRadius: '15px',
+                          border: '1px solid rgba(47, 75, 63, 0.1)',
                           transition: 'all 0.3s ease',
                           '&:hover': {
-                            bgcolor: 'rgba(102, 126, 234, 0.1)',
-                            transform: 'translateY(-1px)',
-                            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.15)'
+                            bgcolor: 'rgba(47, 75, 63, 0.1)',
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)'
                           }
                         }}>
                           <Typography variant="caption" sx={{ 
-                            color: '#667eea', 
+                            color: '#2f4b3f', 
                             fontWeight: 600, 
                             textTransform: 'uppercase',
                             letterSpacing: '0.5px',
-                            fontSize: '0.7rem'
+                            fontSize: '0.75rem'
                           }}>
                             รหัสนักศึกษา
                           </Typography>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a365d', mt: 0.5 }}>
+                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a202c', mt: 0.5 }}>
                             {viewingAlumni.student_id || '-'}
                           </Typography>
                         </Box>
@@ -1127,27 +1656,27 @@ const ManageAlumni = () => {
                       
                       <Grid item xs={12} sm={6}>
                         <Box sx={{ 
-                          p: 1.5, 
-                          bgcolor: 'rgba(102, 126, 234, 0.05)', 
-                          borderRadius: 2,
-                          border: '1px solid rgba(102, 126, 234, 0.1)',
+                          p: 2, 
+                          bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                          borderRadius: '15px',
+                          border: '1px solid rgba(47, 75, 63, 0.1)',
                           transition: 'all 0.3s ease',
                           '&:hover': {
-                            bgcolor: 'rgba(102, 126, 234, 0.1)',
-                            transform: 'translateY(-1px)',
-                            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.15)'
+                            bgcolor: 'rgba(47, 75, 63, 0.1)',
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)'
                           }
                         }}>
                           <Typography variant="caption" sx={{ 
-                            color: '#667eea', 
+                            color: '#2f4b3f', 
                             fontWeight: 600, 
                             textTransform: 'uppercase',
                             letterSpacing: '0.5px',
-                            fontSize: '0.7rem'
+                            fontSize: '0.75rem'
                           }}>
                             ปีที่จบการศึกษา
                           </Typography>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a365d', mt: 0.5 }}>
+                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a202c', mt: 0.5 }}>
                             {viewingAlumni.graduation_year || '-'}
                           </Typography>
                         </Box>
@@ -1155,27 +1684,27 @@ const ManageAlumni = () => {
                       
                       <Grid item xs={12} sm={6}>
                         <Box sx={{ 
-                          p: 1.5, 
-                          bgcolor: 'rgba(102, 126, 234, 0.05)', 
-                          borderRadius: 2,
-                          border: '1px solid rgba(102, 126, 234, 0.1)',
+                          p: 2, 
+                          bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                          borderRadius: '15px',
+                          border: '1px solid rgba(47, 75, 63, 0.1)',
                           transition: 'all 0.3s ease',
                           '&:hover': {
-                            bgcolor: 'rgba(102, 126, 234, 0.1)',
-                            transform: 'translateY(-1px)',
-                            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.15)'
+                            bgcolor: 'rgba(47, 75, 63, 0.1)',
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)'
                           }
                         }}>
                           <Typography variant="caption" sx={{ 
-                            color: '#667eea', 
+                            color: '#2f4b3f', 
                             fontWeight: 600, 
                             textTransform: 'uppercase',
                             letterSpacing: '0.5px',
-                            fontSize: '0.7rem'
+                            fontSize: '0.75rem'
                           }}>
                             คณะ
                           </Typography>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a365d', mt: 0.5 }}>
+                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a202c', mt: 0.5 }}>
                             {viewingAlumni.faculty || '-'}
                           </Typography>
                         </Box>
@@ -1183,27 +1712,27 @@ const ManageAlumni = () => {
                       
                       <Grid item xs={12} sm={6}>
                         <Box sx={{ 
-                          p: 1.5, 
-                          bgcolor: 'rgba(102, 126, 234, 0.05)', 
-                          borderRadius: 2,
-                          border: '1px solid rgba(102, 126, 234, 0.1)',
+                          p: 2, 
+                          bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                          borderRadius: '15px',
+                          border: '1px solid rgba(47, 75, 63, 0.1)',
                           transition: 'all 0.3s ease',
                           '&:hover': {
-                            bgcolor: 'rgba(102, 126, 234, 0.1)',
-                            transform: 'translateY(-1px)',
-                            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.15)'
+                            bgcolor: 'rgba(47, 75, 63, 0.1)',
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)'
                           }
                         }}>
                           <Typography variant="caption" sx={{ 
-                            color: '#667eea', 
+                            color: '#2f4b3f', 
                             fontWeight: 600, 
                             textTransform: 'uppercase',
                             letterSpacing: '0.5px',
-                            fontSize: '0.7rem'
+                            fontSize: '0.75rem'
                           }}>
                             สาขาวิชา
                           </Typography>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a365d', mt: 0.5 }}>
+                          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#1a202c', mt: 0.5 }}>
                             {viewingAlumni.major || '-'}
                           </Typography>
                         </Box>
@@ -1213,22 +1742,22 @@ const ManageAlumni = () => {
                         <Grid item xs={12}>
                           <Box sx={{ 
                             p: 2, 
-                            bgcolor: 'rgba(102, 126, 234, 0.05)', 
-                            borderRadius: 2,
-                            border: '1px solid rgba(102, 126, 234, 0.1)',
+                            bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                            borderRadius: '15px',
+                            border: '1px solid rgba(47, 75, 63, 0.1)',
                             transition: 'all 0.3s ease',
                             '&:hover': {
-                              bgcolor: 'rgba(102, 126, 234, 0.1)',
-                              transform: 'translateY(-1px)',
-                              boxShadow: '0 4px 15px rgba(102, 126, 234, 0.15)'
+                              bgcolor: 'rgba(47, 75, 63, 0.1)',
+                              transform: 'translateY(-2px)',
+                              boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)'
                             }
                           }}>
                             <Typography variant="caption" sx={{ 
-                              color: '#667eea', 
+                              color: '#2f4b3f', 
                               fontWeight: 600, 
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px',
-                              fontSize: '0.7rem'
+                              fontSize: '0.75rem'
                             }}>
                               แนะนำตัว
                             </Typography>
@@ -1266,7 +1795,7 @@ const ManageAlumni = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    background: 'radial-gradient(circle at 20% 80%, rgba(76, 175, 80, 0.05) 0%, transparent 50%)',
+                    background: 'radial-gradient(circle at 20% 80%, rgba(47, 75, 63, 0.05) 0%, transparent 50%)',
                     pointerEvents: 'none'
                   }} />
                   
@@ -1279,17 +1808,17 @@ const ManageAlumni = () => {
                       borderBottom: '2px solid #e8f5e8'
                     }}>
                       <Avatar sx={{ 
-                        bgcolor: 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)', 
+                        background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)', 
                         width: 32, 
                         height: 32,
                         mr: 1.5,
-                        boxShadow: '0 4px 12px rgba(76, 175, 80, 0.3)'
+                        boxShadow: '0 4px 12px rgba(249, 199, 79, 0.3)'
                       }}>
                         📞
                       </Avatar>
                       <Typography variant="h6" sx={{ 
                         fontWeight: 700, 
-                        color: '#2e7d32'
+                        color: '#2f4b3f'
                       }}>
                         ข้อมูลการติดต่อ
                       </Typography>
@@ -1298,19 +1827,19 @@ const ManageAlumni = () => {
                     <Stack spacing={2}>
                       <Box sx={{ 
                         p: 2, 
-                        bgcolor: 'rgba(76, 175, 80, 0.05)', 
-                        borderRadius: 2,
-                        border: '1px solid rgba(76, 175, 80, 0.1)',
+                        bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                        borderRadius: '15px',
+                        border: '1px solid rgba(47, 75, 63, 0.1)',
                         transition: 'all 0.3s ease',
                         '&:hover': {
-                          bgcolor: 'rgba(76, 175, 80, 0.1)',
-                          transform: 'translateY(-1px)',
-                          boxShadow: '0 4px 15px rgba(76, 175, 80, 0.15)'
+                          bgcolor: 'rgba(47, 75, 63, 0.1)',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)'
                         }
                       }}>
                         <Stack direction="row" alignItems="center" spacing={1.5}>
                           <Avatar sx={{ 
-                            bgcolor: '#4caf50', 
+                            bgcolor: '#2f4b3f', 
                             width: 24, 
                             height: 24 
                           }}>
@@ -1318,17 +1847,17 @@ const ManageAlumni = () => {
                           </Avatar>
                           <Box>
                             <Typography variant="caption" sx={{ 
-                              color: '#4caf50', 
+                              color: '#2f4b3f', 
                               fontWeight: 600, 
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px',
-                              fontSize: '0.7rem'
+                              fontSize: '0.75rem'
                             }}>
                               อีเมล
                             </Typography>
                             <Typography variant="subtitle1" sx={{ 
                               fontWeight: 600, 
-                              color: '#1a365d',
+                              color: '#1a202c',
                               wordBreak: 'break-word'
                             }}>
                               {viewingAlumni.email || '-'}
@@ -1339,19 +1868,19 @@ const ManageAlumni = () => {
                       
                       <Box sx={{ 
                         p: 2, 
-                        bgcolor: 'rgba(76, 175, 80, 0.05)', 
-                        borderRadius: 2,
-                        border: '1px solid rgba(76, 175, 80, 0.1)',
+                        bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                        borderRadius: '15px',
+                        border: '1px solid rgba(47, 75, 63, 0.1)',
                         transition: 'all 0.3s ease',
                         '&:hover': {
-                          bgcolor: 'rgba(76, 175, 80, 0.1)',
-                          transform: 'translateY(-1px)',
-                          boxShadow: '0 4px 15px rgba(76, 175, 80, 0.15)'
+                          bgcolor: 'rgba(47, 75, 63, 0.1)',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)'
                         }
                       }}>
                         <Stack direction="row" alignItems="center" spacing={1.5}>
                           <Avatar sx={{ 
-                            bgcolor: '#4caf50', 
+                            bgcolor: '#2f4b3f', 
                             width: 24, 
                             height: 24 
                           }}>
@@ -1359,17 +1888,17 @@ const ManageAlumni = () => {
                           </Avatar>
                           <Box>
                             <Typography variant="caption" sx={{ 
-                              color: '#4caf50', 
+                              color: '#2f4b3f', 
                               fontWeight: 600, 
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px',
-                              fontSize: '0.7rem'
+                              fontSize: '0.75rem'
                             }}>
                               เบอร์โทรศัพท์
                             </Typography>
                             <Typography variant="subtitle1" sx={{ 
                               fontWeight: 600, 
-                              color: '#1a365d'
+                              color: '#1a202c'
                             }}>
                               {viewingAlumni.phone || '-'}
                             </Typography>
@@ -1400,7 +1929,7 @@ const ManageAlumni = () => {
                     right: 0,
                     width: '100%',
                     height: '100%',
-                    background: 'radial-gradient(circle at 80% 20%, rgba(255, 152, 0, 0.05) 0%, transparent 50%)',
+                    background: 'radial-gradient(circle at 80% 20%, rgba(47, 75, 63, 0.05) 0%, transparent 50%)',
                     pointerEvents: 'none'
                   }} />
                   
@@ -1410,20 +1939,20 @@ const ManageAlumni = () => {
                       alignItems: 'center', 
                       mb: 2,
                       pb: 1.5,
-                      borderBottom: '2px solid #fff3e0'
+                      borderBottom: '2px solid rgba(47, 75, 63, 0.1)'
                     }}>
                       <Avatar sx={{ 
-                        bgcolor: 'linear-gradient(135deg, #ff9800 0%, #f57c00 100%)', 
+                        background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)', 
                         width: 32, 
                         height: 32,
                         mr: 1.5,
-                        boxShadow: '0 4px 12px rgba(255, 152, 0, 0.3)'
+                        boxShadow: '0 4px 12px rgba(249, 199, 79, 0.3)'
                       }}>
                         🏠
                       </Avatar>
                       <Typography variant="h6" sx={{ 
                         fontWeight: 700, 
-                        color: '#e65100'
+                        color: '#2f4b3f'
                       }}>
                         ที่อยู่
                       </Typography>
@@ -1433,22 +1962,22 @@ const ManageAlumni = () => {
                       {viewingAlumni.address && (
                         <Box sx={{ 
                           p: 2, 
-                          bgcolor: 'rgba(255, 152, 0, 0.05)', 
-                          borderRadius: 2,
-                          border: '1px solid rgba(255, 152, 0, 0.1)',
+                          bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                          borderRadius: '15px',
+                          border: '1px solid rgba(47, 75, 63, 0.1)',
                           transition: 'all 0.3s ease',
                           '&:hover': {
-                            bgcolor: 'rgba(255, 152, 0, 0.1)',
-                            transform: 'translateY(-1px)',
-                            boxShadow: '0 4px 15px rgba(255, 152, 0, 0.15)'
+                            bgcolor: 'rgba(47, 75, 63, 0.1)',
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)'
                           }
                         }}>
                           <Typography variant="caption" sx={{ 
-                            color: '#ff9800', 
+                            color: '#2f4b3f', 
                             fontWeight: 600, 
                             textTransform: 'uppercase',
                             letterSpacing: '0.5px',
-                            fontSize: '0.7rem'
+                            fontSize: '0.75rem'
                           }}>
                             ที่อยู่
                           </Typography>
@@ -1466,18 +1995,18 @@ const ManageAlumni = () => {
                         <Grid item xs={6}>
                           <Box sx={{ 
                             p: 1.5, 
-                            bgcolor: 'rgba(255, 152, 0, 0.05)', 
-                            borderRadius: 2,
-                            border: '1px solid rgba(255, 152, 0, 0.1)',
+                            bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                            borderRadius: '12px',
+                            border: '1px solid rgba(47, 75, 63, 0.1)',
                             transition: 'all 0.3s ease',
                             '&:hover': {
-                              bgcolor: 'rgba(255, 152, 0, 0.1)',
+                              bgcolor: 'rgba(47, 75, 63, 0.1)',
                               transform: 'translateY(-1px)',
-                              boxShadow: '0 4px 15px rgba(255, 152, 0, 0.15)'
+                              boxShadow: '0 4px 15px rgba(47, 75, 63, 0.15)'
                             }
                           }}>
                             <Typography variant="caption" sx={{ 
-                              color: '#ff9800', 
+                              color: '#2f4b3f', 
                               fontWeight: 600, 
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px',
@@ -1487,7 +2016,7 @@ const ManageAlumni = () => {
                             </Typography>
                             <Typography variant="body2" sx={{ 
                               fontWeight: 600, 
-                              color: '#1a365d', 
+                              color: '#1a202c', 
                               mt: 0.5 
                             }}>
                               {viewingAlumni.province || '-'}
@@ -1498,18 +2027,18 @@ const ManageAlumni = () => {
                         <Grid item xs={6}>
                           <Box sx={{ 
                             p: 1.5, 
-                            bgcolor: 'rgba(255, 152, 0, 0.05)', 
-                            borderRadius: 2,
-                            border: '1px solid rgba(255, 152, 0, 0.1)',
+                            bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                            borderRadius: '12px',
+                            border: '1px solid rgba(47, 75, 63, 0.1)',
                             transition: 'all 0.3s ease',
                             '&:hover': {
-                              bgcolor: 'rgba(255, 152, 0, 0.1)',
+                              bgcolor: 'rgba(47, 75, 63, 0.1)',
                               transform: 'translateY(-1px)',
-                              boxShadow: '0 4px 15px rgba(255, 152, 0, 0.15)'
+                              boxShadow: '0 4px 15px rgba(47, 75, 63, 0.15)'
                             }
                           }}>
                             <Typography variant="caption" sx={{ 
-                              color: '#ff9800', 
+                              color: '#2f4b3f', 
                               fontWeight: 600, 
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px',
@@ -1519,7 +2048,7 @@ const ManageAlumni = () => {
                             </Typography>
                             <Typography variant="body2" sx={{ 
                               fontWeight: 600, 
-                              color: '#1a365d', 
+                              color: '#1a202c', 
                               mt: 0.5 
                             }}>
                               {viewingAlumni.district || '-'}
@@ -1530,18 +2059,18 @@ const ManageAlumni = () => {
                         <Grid item xs={6}>
                           <Box sx={{ 
                             p: 1.5, 
-                            bgcolor: 'rgba(255, 152, 0, 0.05)', 
-                            borderRadius: 2,
-                            border: '1px solid rgba(255, 152, 0, 0.1)',
+                            bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                            borderRadius: '12px',
+                            border: '1px solid rgba(47, 75, 63, 0.1)',
                             transition: 'all 0.3s ease',
                             '&:hover': {
-                              bgcolor: 'rgba(255, 152, 0, 0.1)',
+                              bgcolor: 'rgba(47, 75, 63, 0.1)',
                               transform: 'translateY(-1px)',
-                              boxShadow: '0 4px 15px rgba(255, 152, 0, 0.15)'
+                              boxShadow: '0 4px 15px rgba(47, 75, 63, 0.15)'
                             }
                           }}>
                             <Typography variant="caption" sx={{ 
-                              color: '#ff9800', 
+                              color: '#2f4b3f', 
                               fontWeight: 600, 
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px',
@@ -1551,7 +2080,7 @@ const ManageAlumni = () => {
                             </Typography>
                             <Typography variant="body2" sx={{ 
                               fontWeight: 600, 
-                              color: '#1a365d', 
+                              color: '#1a202c', 
                               mt: 0.5 
                             }}>
                               {viewingAlumni.subdistrict || '-'}
@@ -1562,18 +2091,18 @@ const ManageAlumni = () => {
                         <Grid item xs={6}>
                           <Box sx={{ 
                             p: 1.5, 
-                            bgcolor: 'rgba(255, 152, 0, 0.05)', 
-                            borderRadius: 2,
-                            border: '1px solid rgba(255, 152, 0, 0.1)',
+                            bgcolor: 'rgba(47, 75, 63, 0.05)', 
+                            borderRadius: '12px',
+                            border: '1px solid rgba(47, 75, 63, 0.1)',
                             transition: 'all 0.3s ease',
                             '&:hover': {
-                              bgcolor: 'rgba(255, 152, 0, 0.1)',
+                              bgcolor: 'rgba(47, 75, 63, 0.1)',
                               transform: 'translateY(-1px)',
-                              boxShadow: '0 4px 15px rgba(255, 152, 0, 0.15)'
+                              boxShadow: '0 4px 15px rgba(47, 75, 63, 0.15)'
                             }
                           }}>
                             <Typography variant="caption" sx={{ 
-                              color: '#ff9800', 
+                              color: '#2f4b3f', 
                               fontWeight: 600, 
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px',
@@ -1583,7 +2112,7 @@ const ManageAlumni = () => {
                             </Typography>
                             <Typography variant="body2" sx={{ 
                               fontWeight: 600, 
-                              color: '#1a365d', 
+                              color: '#1a202c', 
                               mt: 0.5 
                             }}>
                               {viewingAlumni.zipcode || '-'}
@@ -2201,15 +2730,16 @@ const ManageAlumni = () => {
                 borderRadius: 3, 
                 px: 4,
                 py: 1,
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+                background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+                boxShadow: '0 4px 12px rgba(249, 199, 79, 0.3)',
                 fontSize: '0.875rem',
                 fontWeight: 600,
                 textTransform: 'none',
+                color: '#2f4b3f',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                  background: 'linear-gradient(135deg, #fbd36b 0%, #f9c74f 100%)',
                   transform: 'translateY(-1px)',
-                  boxShadow: '0 6px 16px rgba(102, 126, 234, 0.4)'
+                  boxShadow: '0 6px 16px rgba(249, 199, 79, 0.4)'
                 }
               }}
             >

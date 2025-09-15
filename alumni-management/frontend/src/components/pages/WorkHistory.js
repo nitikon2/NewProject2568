@@ -103,25 +103,20 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `;
 
-// Styled Components
-const HeroSection = styled(Box)(({ theme }) => ({
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    position: 'relative',
-    overflow: 'hidden'
-}));
-
+// Styled Components - Furni Modern Theme
 const StatsCard = styled(Card)(({ theme }) => ({
-    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-    borderRadius: 16,
+    background: '#ffffff',
+    borderRadius: '1.5rem',
     padding: theme.spacing(3),
-    boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-    border: '1px solid rgba(255,255,255,0.2)',
+    boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)',
+    border: '1px solid #e9ecef',
     transition: 'all 0.3s ease',
     position: 'relative',
     overflow: 'hidden',
     '&:hover': {
-        transform: 'translateY(-4px)',
-        boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
+        transform: 'translateY(-8px)',
+        boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.25)',
+        borderColor: '#fbd36b'
     },
     '&::before': {
         content: '""',
@@ -130,22 +125,28 @@ const StatsCard = styled(Card)(({ theme }) => ({
         left: 0,
         right: 0,
         height: 4,
-        background: 'linear-gradient(90deg, #4299e1, #9f7aea)',
-        borderRadius: '16px 16px 0 0'
+        background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+        opacity: 0,
+        transition: 'opacity 0.3s',
+        borderRadius: '1.5rem 1.5rem 0 0'
+    },
+    '&:hover::before': {
+        opacity: 1
     }
 }));
 
 const WorkCard = styled(Card)(({ theme }) => ({
-    borderRadius: 16,
+    borderRadius: '1.5rem',
     transition: 'all 0.3s ease',
-    border: '1px solid rgba(255,255,255,0.2)',
-    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+    border: '1px solid #e9ecef',
+    background: '#ffffff',
+    boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)',
     overflow: 'hidden',
     position: 'relative',
     '&:hover': {
-        transform: 'translateY(-2px)',
-        boxShadow: '0 8px 30px rgba(0,0,0,0.12)'
+        transform: 'translateY(-8px)',
+        boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.25)',
+        borderColor: '#fbd36b'
     },
     '&::before': {
         content: '""',
@@ -153,27 +154,33 @@ const WorkCard = styled(Card)(({ theme }) => ({
         top: 0,
         left: 0,
         right: 0,
-        height: 3,
-        background: 'linear-gradient(90deg, #4299e1, #9f7aea)'
+        height: 4,
+        background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+        opacity: 0,
+        transition: 'opacity 0.3s'
+    },
+    '&:hover::before': {
+        opacity: 1
     }
 }));
 
 const AnimatedDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialog-paper': {
-        borderRadius: 20,
+        borderRadius: '1.5rem',
         overflow: 'hidden',
-        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-        maxHeight: '90vh'
+        background: '#ffffff',
+        boxShadow: '0 1rem 3rem rgba(47, 75, 63, 0.2)',
+        maxHeight: '90vh',
+        border: '1px solid #e9ecef'
     }
 }));
 
 const FilterBar = styled(Card)(({ theme }) => ({
     padding: theme.spacing(2, 3),
-    borderRadius: 16,
-    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-    border: '1px solid rgba(255,255,255,0.3)',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+    borderRadius: '1.5rem',
+    background: '#ffffff',
+    border: '1px solid #e9ecef',
+    boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)',
     marginBottom: theme.spacing(3)
 }));
 
@@ -181,12 +188,12 @@ const TimelineDot = styled(Box)(({ theme }) => ({
     width: 48,
     height: 48,
     borderRadius: '50%',
-    background: 'linear-gradient(135deg, #4299e1 0%, #9f7aea 100%)',
+    background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     color: 'white',
-    boxShadow: '0 4px 16px rgba(66, 153, 225, 0.4)',
+    boxShadow: '0 0.25rem 0.75rem rgba(47, 75, 63, 0.4)',
     position: 'relative',
     '&::before': {
         content: '""',
@@ -196,29 +203,29 @@ const TimelineDot = styled(Box)(({ theme }) => ({
         right: -4,
         bottom: -4,
         borderRadius: '50%',
-        background: 'linear-gradient(135deg, #4299e1 0%, #9f7aea 100%)',
+        background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
         opacity: 0.3,
         animation: `${pulse} 2s infinite`
     }
 }));
 
 const FloatingActionButton = styled(Button)(({ theme }) => ({
-    borderRadius: 50,
+    borderRadius: '0.75rem',
     padding: theme.spacing(1.5, 4),
-    background: 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)',
-    color: 'white',
+    background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+    color: '#2f4b3f',
     fontWeight: 600,
     textTransform: 'none',
     fontSize: '1rem',
-    boxShadow: '0 8px 32px rgba(72, 187, 120, 0.4)',
+    boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.3)',
     border: 'none',
     transition: 'all 0.3s ease',
     position: 'relative',
     overflow: 'hidden',
     '&:hover': {
-        background: 'linear-gradient(135deg, #38a169 0%, #2f855a 100%)',
+        background: 'linear-gradient(135deg, #f8b42e 0%, #f9c74f 100%)',
         transform: 'translateY(-2px)',
-        boxShadow: '0 12px 40px rgba(72, 187, 120, 0.5)'
+        boxShadow: '0 0.5rem 1rem rgba(249, 199, 79, 0.4)'
     },
     '&::before': {
         content: '""',
@@ -238,10 +245,27 @@ const FloatingActionButton = styled(Button)(({ theme }) => ({
 const EmptyState = styled(Box)(({ theme }) => ({
     textAlign: 'center',
     padding: theme.spacing(8, 4),
-    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-    borderRadius: 20,
-    border: '2px dashed #e2e8f0',
+    background: '#ffffff',
+    borderRadius: '1.5rem',
+    border: '2px dashed #dee2e6',
     animation: `${fadeIn} 0.8s ease-out`
+}));
+
+const HeroSection = styled(Box)(({ theme }) => ({
+    background: 'linear-gradient(135deg, #2f4b3f, #243d33)',
+    position: 'relative',
+    overflow: 'hidden',
+    '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: '50%',
+        background: 'url(\'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.3"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.2"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.4"/><circle cx="90" cy="80" r="0.8" fill="%23f9c74f" opacity="0.3"/></svg>\') repeat',
+        animation: `${float} 20s ease-in-out infinite`,
+        zIndex: 1
+    }
 }));
 
 const WorkHistory = () => {
@@ -280,6 +304,28 @@ const WorkHistory = () => {
     const [provinceOptions, setProvinceOptions] = useState([]);
     const [amphoeOptions, setAmphoeOptions] = useState([]);
     const [districtOptions, setDistrictOptions] = useState([]);
+
+    // Dropdown options for salary range and team size
+    const salaryRanges = [
+        'ต่ำกว่า 20,000 บาท',
+        '20,000 - 30,000 บาท',
+        '30,000 - 40,000 บาท',
+        '40,000 - 50,000 บาท',
+        '50,000 - 70,000 บาท',
+        '70,000 - 100,000 บาท',
+        '100,000 - 150,000 บาท',
+        'มากกว่า 150,000 บาท'
+    ];
+
+    const teamSizes = [
+        '1 คน (งานคนเดียว)',
+        '2-5 คน (ทีมเล็ก)',
+        '6-10 คน (ทีมกลาง)',
+        '11-20 คน (ทีมใหญ่)',
+        '21-50 คน (แผนกขนาดกลาง)',
+        '51-100 คน (แผนกใหญ่)',
+        'มากกว่า 100 คน (องค์กรขนาดใหญ่)'
+    ];
 
     const showSnackbar = (message, severity = 'success') => {
         setSnackbar({ open: true, message, severity });
@@ -581,60 +627,8 @@ const WorkHistory = () => {
     }
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: '#f8fafc' }}>
-            {/* Hero Section */}
-            <HeroSection>
-                <Container maxWidth="lg">
-                    <Slide direction="down" in timeout={800}>
-                        <Box sx={{ textAlign: 'center', py: 8 }}>
-                            <Box sx={{ mb: 4 }}>
-                                <WorkIcon sx={{ 
-                                    fontSize: 80, 
-                                    color: 'white',
-                                    filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
-                                    animation: `${float} 3s ease-in-out infinite`
-                                }} />
-                            </Box>
-                            <Typography 
-                                variant="h2" 
-                                sx={{ 
-                                    color: 'white',
-                                    fontWeight: 800,
-                                    mb: 2,
-                                    textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-                                }}
-                            >
-                                ประวัติการทำงาน
-                            </Typography>
-                            <Typography 
-                                variant="h5" 
-                                sx={{ 
-                                    color: 'rgba(255,255,255,0.9)',
-                                    mb: 4,
-                                    fontWeight: 300
-                                }}
-                            >
-                                จัดการและแสดงประสบการณ์การทำงานของคุณอย่างเป็นระบบ
-                            </Typography>
-                            <FloatingActionButton
-                                onClick={() => setShowForm(true)}
-                                size="large"
-                                sx={{ 
-                                    px: 4, 
-                                    py: 1.5,
-                                    fontSize: '1.1rem',
-                                    fontWeight: 600
-                                }}
-                            >
-                                <AddIcon sx={{ mr: 1 }} />
-                                เพิ่มประวัติการทำงานใหม่
-                            </FloatingActionButton>
-                        </Box>
-                    </Slide>
-                </Container>
-            </HeroSection>
-
-            <Container maxWidth="lg" sx={{ py: 4, mt: -8, position: 'relative', zIndex: 1 }}>
+        <Box sx={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)' }}>
+            <Container maxWidth="lg" sx={{ py: 4 }}>
                 {/* Statistics Cards */}
                 {showStats && (
                     <Fade in timeout={1000}>
@@ -643,14 +637,24 @@ const WorkHistory = () => {
                                 <StatsCard>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <Box>
-                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a365d', mb: 0.5 }}>
+                                            <Typography variant="h4" sx={{ fontWeight: 700, color: '#2a3b3d', mb: 0.5, fontFamily: 'Poppins, sans-serif' }}>
                                                 {stats.total}
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary">
+                                            <Typography variant="body2" sx={{ color: '#6c757d', fontWeight: 500 }}>
                                                 ประสบการณ์ทั้งหมด
                                             </Typography>
                                         </Box>
-                                        <WorkIcon sx={{ fontSize: 40, color: '#4299e1', opacity: 0.7 }} />
+                                        <Box sx={{
+                                            width: 80,
+                                            height: 80,
+                                            borderRadius: '50%',
+                                            background: 'rgba(249, 199, 79, 0.1)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <WorkIcon sx={{ fontSize: 40, color: '#f9c74f' }} />
+                                        </Box>
                                     </Box>
                                 </StatsCard>
                             </Grid>
@@ -658,14 +662,24 @@ const WorkHistory = () => {
                                 <StatsCard>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <Box>
-                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a365d', mb: 0.5 }}>
+                                            <Typography variant="h4" sx={{ fontWeight: 700, color: '#2a3b3d', mb: 0.5, fontFamily: 'Poppins, sans-serif' }}>
                                                 {stats.current}
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary">
+                                            <Typography variant="body2" sx={{ color: '#6c757d', fontWeight: 500 }}>
                                                 ทำงานปัจจุบัน
                                             </Typography>
                                         </Box>
-                                        <TrendingUpIcon sx={{ fontSize: 40, color: '#48bb78', opacity: 0.7 }} />
+                                        <Box sx={{
+                                            width: 80,
+                                            height: 80,
+                                            borderRadius: '50%',
+                                            background: 'rgba(249, 199, 79, 0.1)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <TrendingUpIcon sx={{ fontSize: 40, color: '#f9c74f' }} />
+                                        </Box>
                                     </Box>
                                 </StatsCard>
                             </Grid>
@@ -673,14 +687,24 @@ const WorkHistory = () => {
                                 <StatsCard>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <Box>
-                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a365d', mb: 0.5 }}>
+                                            <Typography variant="h4" sx={{ fontWeight: 700, color: '#2a3b3d', mb: 0.5, fontFamily: 'Poppins, sans-serif' }}>
                                                 {stats.past}
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary">
+                                            <Typography variant="body2" sx={{ color: '#6c757d', fontWeight: 500 }}>
                                                 ประสบการณ์ที่ผ่านมา
                                             </Typography>
                                         </Box>
-                                        <AccessTimeIcon sx={{ fontSize: 40, color: '#ed8936', opacity: 0.7 }} />
+                                        <Box sx={{
+                                            width: 80,
+                                            height: 80,
+                                            borderRadius: '50%',
+                                            background: 'rgba(47, 75, 63, 0.1)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <AccessTimeIcon sx={{ fontSize: 40, color: '#2f4b3f' }} />
+                                        </Box>
                                     </Box>
                                 </StatsCard>
                             </Grid>
@@ -688,14 +712,24 @@ const WorkHistory = () => {
                                 <StatsCard>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <Box>
-                                            <Typography variant="h4" sx={{ fontWeight: 800, color: '#1a365d', mb: 0.5 }}>
+                                            <Typography variant="h4" sx={{ fontWeight: 700, color: '#2a3b3d', mb: 0.5, fontFamily: 'Poppins, sans-serif' }}>
                                                 {stats.totalExperience}
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary">
+                                            <Typography variant="body2" sx={{ color: '#6c757d', fontWeight: 500 }}>
                                                 ปีประสบการณ์
                                             </Typography>
                                         </Box>
-                                        <StarIcon sx={{ fontSize: 40, color: '#f6ad55', opacity: 0.7 }} />
+                                        <Box sx={{
+                                            width: 80,
+                                            height: 80,
+                                            borderRadius: '50%',
+                                            background: 'rgba(249, 199, 79, 0.1)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <StarIcon sx={{ fontSize: 40, color: '#f9c74f' }} />
+                                        </Box>
                                     </Box>
                                 </StatsCard>
                             </Grid>
@@ -706,58 +740,134 @@ const WorkHistory = () => {
                 {/* Filter and Controls */}
                 <Fade in timeout={1200}>
                     <FilterBar>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-                            <TextField
-                                placeholder="ค้นหาบริษัท ตำแหน่ง หรือสถานที่..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                InputProps={{
-                                    startAdornment: <SearchIcon sx={{ color: 'text.secondary', mr: 1 }} />,
-                                }}
-                                sx={{ minWidth: 300 }}
-                                size="small"
-                            />
-                            
-                            <ToggleButtonGroup
-                                value={filterStatus}
-                                exclusive
-                                onChange={(e, newFilter) => newFilter && setFilterStatus(newFilter)}
-                                size="small"
-                            >
-                                <ToggleButton value="all">ทั้งหมด</ToggleButton>
-                                <ToggleButton value="current">ปัจจุบัน</ToggleButton>
-                                <ToggleButton value="past">อดีต</ToggleButton>
-                            </ToggleButtonGroup>
-
-                            <FormControl size="small" sx={{ minWidth: 120 }}>
-                                <InputLabel>เรียงตาม</InputLabel>
-                                <Select
-                                    value={sortBy}
-                                    label="เรียงตาม"
-                                    onChange={(e) => setSortBy(e.target.value)}
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+                                <TextField
+                                    placeholder="ค้นหาบริษัท ตำแหน่ง หรือสถานที่..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    InputProps={{
+                                        startAdornment: <SearchIcon sx={{ color: '#6c757d', mr: 1 }} />,
+                                    }}
+                                    sx={{ 
+                                        minWidth: 300,
+                                        '& .MuiOutlinedInput-root': {
+                                            borderRadius: '0.75rem',
+                                            background: '#f7f5f3',
+                                            border: '2px solid #dee2e6',
+                                            '&:hover': {
+                                                borderColor: '#f9c74f'
+                                            },
+                                            '&.Mui-focused': {
+                                                borderColor: '#f9c74f',
+                                                boxShadow: '0 0 0 0.2rem rgba(249, 199, 79, 0.25)'
+                                            }
+                                        }
+                                    }}
+                                    size="small"
+                                />
+                                
+                                <ToggleButtonGroup
+                                    value={filterStatus}
+                                    exclusive
+                                    onChange={(e, newFilter) => newFilter && setFilterStatus(newFilter)}
+                                    size="small"
+                                    sx={{
+                                        '& .MuiToggleButton-root': {
+                                            borderRadius: '0.75rem',
+                                            border: '2px solid #dee2e6',
+                                            color: '#2a3b3d',
+                                            fontWeight: 600,
+                                            '&.Mui-selected': {
+                                                background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                                                color: '#2f4b3f',
+                                                borderColor: '#f9c74f'
+                                            },
+                                            '&:hover': {
+                                                background: 'rgba(249, 199, 79, 0.1)',
+                                                borderColor: '#f9c74f'
+                                            }
+                                        }
+                                    }}
                                 >
-                                    <MenuItem value="date">วันที่</MenuItem>
-                                    <MenuItem value="company">บริษัท</MenuItem>
-                                    <MenuItem value="position">ตำแหน่ง</MenuItem>
-                                </Select>
-                            </FormControl>
+                                    <ToggleButton value="all">ทั้งหมด</ToggleButton>
+                                    <ToggleButton value="current">ปัจจุบัน</ToggleButton>
+                                    <ToggleButton value="past">อดีต</ToggleButton>
+                                </ToggleButtonGroup>
 
-                            <ToggleButtonGroup
-                                value={viewMode}
-                                exclusive
-                                onChange={(e, newView) => newView && setViewMode(newView)}
-                                size="small"
+                                <FormControl 
+                                    size="small" 
+                                    sx={{ 
+                                        minWidth: 120,
+                                        '& .MuiOutlinedInput-root': {
+                                            borderRadius: '0.75rem',
+                                            background: '#f7f5f3',
+                                            border: '2px solid #dee2e6',
+                                            '&:hover': {
+                                                borderColor: '#f9c74f'
+                                            },
+                                            '&.Mui-focused': {
+                                                borderColor: '#f9c74f'
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <InputLabel>เรียงตาม</InputLabel>
+                                    <Select
+                                        value={sortBy}
+                                        label="เรียงตาม"
+                                        onChange={(e) => setSortBy(e.target.value)}
+                                    >
+                                        <MenuItem value="date">วันที่</MenuItem>
+                                        <MenuItem value="company">บริษัท</MenuItem>
+                                        <MenuItem value="position">ตำแหน่ง</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                                <ToggleButtonGroup
+                                    value={viewMode}
+                                    exclusive
+                                    onChange={(e, newView) => newView && setViewMode(newView)}
+                                    size="small"
+                                    sx={{
+                                        '& .MuiToggleButton-root': {
+                                            borderRadius: '0.75rem',
+                                            border: '2px solid #dee2e6',
+                                            color: '#2a3b3d',
+                                            '&.Mui-selected': {
+                                                background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
+                                                color: 'white',
+                                                borderColor: '#2f4b3f'
+                                            },
+                                            '&:hover': {
+                                                background: 'rgba(47, 75, 63, 0.1)',
+                                                borderColor: '#2f4b3f'
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <ToggleButton value="timeline">
+                                        <TimelineIcon />
+                                    </ToggleButton>
+                                    <ToggleButton value="cards">
+                                        <ViewModuleIcon />
+                                    </ToggleButton>
+                                    <ToggleButton value="list">
+                                        <ViewListIcon />
+                                    </ToggleButton>
+                                </ToggleButtonGroup>
+                            </Box>
+                            
+                            <FloatingActionButton
+                                onClick={() => setShowForm(true)}
+                                sx={{ 
+                                    fontSize: '1rem',
+                                    fontWeight: 600
+                                }}
                             >
-                                <ToggleButton value="timeline">
-                                    <TimelineIcon />
-                                </ToggleButton>
-                                <ToggleButton value="cards">
-                                    <ViewModuleIcon />
-                                </ToggleButton>
-                                <ToggleButton value="list">
-                                    <ViewListIcon />
-                                </ToggleButton>
-                            </ToggleButtonGroup>
+                                <AddIcon sx={{ mr: 1 }} />
+                                เพิ่มประวัติการทำงาน
+                            </FloatingActionButton>
                         </Box>
                     </FilterBar>
                 </Fade>
@@ -766,11 +876,11 @@ const WorkHistory = () => {
                 {filteredWorkHistory.length === 0 ? (
                     <Fade in timeout={1400}>
                         <EmptyState>
-                            <WorkIcon sx={{ fontSize: 80, color: 'text.disabled', mb: 2 }} />
-                            <Typography variant="h5" color="text.secondary" sx={{ mb: 1 }}>
+                            <WorkIcon sx={{ fontSize: 80, color: '#6c757d', mb: 2 }} />
+                            <Typography variant="h5" sx={{ color: '#2a3b3d', mb: 1, fontWeight: 600, fontFamily: 'Poppins, sans-serif' }}>
                                 {workHistory.length === 0 ? 'ยังไม่มีประวัติการทำงาน' : 'ไม่พบข้อมูลที่ค้นหา'}
                             </Typography>
-                            <Typography variant="body1" color="text.disabled" sx={{ mb: 3 }}>
+                            <Typography variant="body1" sx={{ color: '#6c757d', mb: 3 }}>
                                 {workHistory.length === 0 
                                     ? 'เริ่มต้นสร้างประวัติการทำงานของคุณวันนี้'
                                     : 'ลองเปลี่ยนคำค้นหาหรือตัวกรองดู'
@@ -796,7 +906,7 @@ const WorkHistory = () => {
                                         top: 0,
                                         bottom: 0,
                                         width: 4,
-                                        background: 'linear-gradient(to bottom, #4299e1, #9f7aea)',
+                                        background: 'linear-gradient(to bottom, #2f4b3f, #f9c74f)',
                                         borderRadius: 2,
                                         '&::before': {
                                             content: '""',
@@ -806,8 +916,8 @@ const WorkHistory = () => {
                                             width: 8,
                                             height: 8,
                                             borderRadius: '50%',
-                                            background: '#4299e1',
-                                            boxShadow: '0 0 0 4px rgba(66, 153, 225, 0.2)'
+                                            background: '#2f4b3f',
+                                            boxShadow: '0 0 0 4px rgba(47, 75, 63, 0.2)'
                                         }
                                     }} />
                                     
@@ -828,7 +938,7 @@ const WorkHistory = () => {
                                                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                                                             <Box sx={{ flex: 1 }}>
                                                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                                                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a365d' }}>
+                                                                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#2a3b3d', fontFamily: 'Poppins, sans-serif' }}>
                                                                         {item.position}
                                                                     </Typography>
                                                                     {item.is_current && (
@@ -836,15 +946,15 @@ const WorkHistory = () => {
                                                                             label="ปัจจุบัน" 
                                                                             size="small" 
                                                                             sx={{
-                                                                                bgcolor: '#c6f6d5',
-                                                                                color: '#2f855a',
+                                                                                background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                                                                                color: '#2f4b3f',
                                                                                 fontWeight: 600,
                                                                                 animation: `${pulse} 2s infinite`
                                                                             }}
                                                                         />
                                                                     )}
                                                                 </Box>
-                                                                <Typography variant="subtitle1" sx={{ color: '#4299e1', fontWeight: 600, mb: 1 }}>
+                                                                <Typography variant="subtitle1" sx={{ color: '#2f4b3f', fontWeight: 600, mb: 1 }}>
                                                                     <BusinessIcon sx={{ fontSize: 18, mr: 1, verticalAlign: 'middle' }} />
                                                                     {item.company_name}
                                                                 </Typography>
@@ -1151,10 +1261,11 @@ const WorkHistory = () => {
                     fullWidth
                 >
                     <DialogTitle sx={{ 
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
                         color: 'white',
                         fontWeight: 700,
-                        fontSize: '1.5rem'
+                        fontSize: '1.5rem',
+                        fontFamily: 'Poppins, sans-serif'
                     }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             {editingItem ? <EditIcon /> : <AddIcon />}
@@ -1165,7 +1276,32 @@ const WorkHistory = () => {
                     <DialogContent sx={{ p: 0 }}>
                         {/* Stepper */}
                         <Box sx={{ px: 3, pt: 3 }}>
-                            <Stepper activeStep={formStep} alternativeLabel>
+                            <Stepper 
+                                activeStep={formStep} 
+                                alternativeLabel
+                                sx={{
+                                    '& .MuiStepLabel-label': {
+                                        fontWeight: 600,
+                                        color: '#2a3b3d'
+                                    },
+                                    '& .MuiStepLabel-label.Mui-active': {
+                                        color: '#2f4b3f',
+                                        fontWeight: 700
+                                    },
+                                    '& .MuiStepLabel-label.Mui-completed': {
+                                        color: '#f9c74f'
+                                    },
+                                    '& .MuiStepIcon-root': {
+                                        color: '#dee2e6',
+                                        '&.Mui-active': {
+                                            color: '#2f4b3f'
+                                        },
+                                        '&.Mui-completed': {
+                                            color: '#f9c74f'
+                                        }
+                                    }
+                                }}
+                            >
                                 <Step>
                                     <StepLabel>ข้อมูลพื้นฐาน</StepLabel>
                                 </Step>
@@ -1191,7 +1327,28 @@ const WorkHistory = () => {
                                                 onChange={handleInputChange}
                                                 required
                                                 InputProps={{
-                                                    startAdornment: <BusinessIcon sx={{ color: 'text.secondary', mr: 1 }} />
+                                                    startAdornment: <BusinessIcon sx={{ color: '#6c757d', mr: 1 }} />
+                                                }}
+                                                sx={{
+                                                    '& .MuiOutlinedInput-root': {
+                                                        borderRadius: '0.75rem',
+                                                        background: '#f7f5f3',
+                                                        border: '2px solid #dee2e6',
+                                                        '&:hover fieldset': {
+                                                            borderColor: '#f9c74f'
+                                                        },
+                                                        '&.Mui-focused fieldset': {
+                                                            borderColor: '#f9c74f',
+                                                            borderWidth: 2
+                                                        }
+                                                    },
+                                                    '& .MuiInputLabel-root': {
+                                                        color: '#2a3b3d',
+                                                        fontWeight: 600,
+                                                        '&.Mui-focused': {
+                                                            color: '#2f4b3f'
+                                                        }
+                                                    }
                                                 }}
                                             />
                                         </Grid>
@@ -1353,30 +1510,40 @@ const WorkHistory = () => {
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={6}>
-                                            <TextField
-                                                fullWidth
-                                                label="ช่วงเงินเดือน"
-                                                name="salary_range"
-                                                value={formData.salary_range}
-                                                onChange={handleInputChange}
-                                                placeholder="เช่น 25,000 - 30,000 บาท"
-                                                InputProps={{
-                                                    startAdornment: <MoneyIcon sx={{ color: 'text.secondary', mr: 1 }} />
-                                                }}
-                                            />
+                                            <FormControl fullWidth>
+                                                <InputLabel>ช่วงเงินเดือน</InputLabel>
+                                                <Select
+                                                    name="salary_range"
+                                                    value={formData.salary_range}
+                                                    onChange={handleInputChange}
+                                                    label="ช่วงเงินเดือน"
+                                                    startAdornment={<MoneyIcon sx={{ color: 'text.secondary', mr: 1 }} />}
+                                                >
+                                                    {salaryRanges.map((range) => (
+                                                        <MenuItem key={range} value={range}>
+                                                            {range}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
                                         </Grid>
                                         <Grid item xs={12} md={6}>
-                                            <TextField
-                                                fullWidth
-                                                label="ขนาดทีม"
-                                                name="team_size"
-                                                value={formData.team_size}
-                                                onChange={handleInputChange}
-                                                placeholder="เช่น 5-10 คน"
-                                                InputProps={{
-                                                    startAdornment: <TeamIcon sx={{ color: 'text.secondary', mr: 1 }} />
-                                                }}
-                                            />
+                                            <FormControl fullWidth>
+                                                <InputLabel>ขนาดทีม</InputLabel>
+                                                <Select
+                                                    name="team_size"
+                                                    value={formData.team_size}
+                                                    onChange={handleInputChange}
+                                                    label="ขนาดทีม"
+                                                    startAdornment={<TeamIcon sx={{ color: 'text.secondary', mr: 1 }} />}
+                                                >
+                                                    {teamSizes.map((size) => (
+                                                        <MenuItem key={size} value={size}>
+                                                            {size}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
                                         </Grid>
                                     </Grid>
                                 </Fade>
@@ -1462,9 +1629,10 @@ const WorkHistory = () => {
                                     variant="contained"
                                     disabled={formStep === 0 && (!formData.company_name || !formData.position || !formData.start_date)}
                                     sx={{
-                                        background: 'linear-gradient(135deg, #4299e1 0%, #9f7aea 100%)',
+                                        background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
+                                        color: 'white',
                                         '&:hover': {
-                                            background: 'linear-gradient(135deg, #3182ce 0%, #805ad5 100%)'
+                                            background: 'linear-gradient(135deg, #243d33 0%, #2f4b3f 100%)'
                                         }
                                     }}
                                 >
@@ -1477,9 +1645,11 @@ const WorkHistory = () => {
                                     startIcon={<SaveIcon />}
                                     disabled={!formData.company_name || !formData.position || !formData.start_date}
                                     sx={{
-                                        background: 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)',
+                                        background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+                                        color: '#2f4b3f',
+                                        fontWeight: 600,
                                         '&:hover': {
-                                            background: 'linear-gradient(135deg, #38a169 0%, #2f855a 100%)'
+                                            background: 'linear-gradient(135deg, #f8b42e 0%, #f9c74f 100%)'
                                         }
                                     }}
                                 >

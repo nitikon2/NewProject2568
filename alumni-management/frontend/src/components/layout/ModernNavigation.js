@@ -63,70 +63,15 @@ function ModernNavigation() {
   const [scrolled, setScrolled] = useState(false);
   const [notificationMenuAnchor, setNotificationMenuAnchor] = useState(null);
 
-  // ข้อมูลการแจ้งเตือน
-  const [notifications, setNotifications] = useState({
-    events: [
-      {
-        id: 1,
-        title: 'งานสัมมนาศิษย์เก่า 2024',
-        type: 'event',
-        date: '2024-02-15',
-        description: 'งานสัมมนาศิษย์เก่าประจำปี 2024',
-        isNew: true
-      },
-      {
-        id: 2,
-        title: 'กิจกรรมกีฬาสีประจำปี',
-        type: 'event',
-        date: '2024-02-20',
-        description: 'กิจกรรมกีฬาสีประจำปีของมหาวิทยาลัย',
-        isNew: true
-      }
-    ],
-    news: [
-      {
-        id: 3,
-        title: 'ประกาศผลการรับสมัครนิสิตใหม่',
-        type: 'news',
-        date: '2024-02-10',
-        description: 'ประกาศรายชื่อผู้ผ่านการคัดเลือก',
-        isNew: true
-      },
-      {
-        id: 4,
-        title: 'การปรับปรุงระบบสารสนเทศ',
-        type: 'news',
-        date: '2024-02-08',
-        description: 'ประกาศปรับปรุงระบบสารสนเทศของมหาวิทยาลัย',
-        isNew: false
-      }
-    ],
-    updates: [
-      {
-        id: 5,
-        title: 'อัปเดทฟีเจอร์ใหม่ในระบบ',
-        type: 'update',
-        date: '2024-02-12',
-        description: 'เพิ่มฟีเจอร์การค้นหาศิษย์เก่าขั้นสูง',
-        isNew: true
-      },
-      {
-        id: 6,
-        title: 'ปรับปรุงระบบความปลอดภัย',
-        type: 'update',
-        date: '2024-02-05',
-        description: 'เพิ่มระบบรักษาความปลอดภัยข้อมูล',
-        isNew: false
-      }
-    ]
+  // ข้อมูลการแจ้งเตือน (ปิดการใช้งาน)
+  const [notifications] = useState({
+    events: [],
+    news: [],
+    updates: []
   });
 
-  // นับการแจ้งเตือนทั้งหมด
-  const totalNotifications = [
-    ...notifications.events,
-    ...notifications.news,
-    ...notifications.updates
-  ].filter(item => item.isNew).length;
+  // นับการแจ้งเตือนทั้งหมด (ปิดการใช้งาน)
+  const totalNotifications = 0;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -204,9 +149,9 @@ function ModernNavigation() {
       PaperProps={{
         sx: {
           width: 300,
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
           color: 'white',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
+          boxShadow: '0 20px 60px rgba(47, 75, 63, 0.4)'
         }
       }}
       BackdropProps={{
@@ -310,21 +255,6 @@ function ModernNavigation() {
               backdropFilter: 'blur(10px)'
             }} 
           />
-          
-          {/* Notifications Badge in Mobile */}
-          {totalNotifications > 0 && (
-            <Box sx={{ mt: 2 }}>
-              <Chip 
-                label={`การแจ้งเตือน ${totalNotifications} รายการ`}
-                size="small" 
-                color="error"
-                sx={{ 
-                  color: 'white',
-                  fontWeight: 500
-                }} 
-              />
-            </Box>
-          )}
         </Box>
       )}
       
@@ -460,34 +390,6 @@ function ModernNavigation() {
               <ListItemText primary="ประวัติการทำงาน" />
             </ListItem>
             
-            {/* Notifications in Mobile */}
-            <ListItem 
-              onClick={() => {
-                // Show mobile notifications - you could implement a separate mobile notification modal
-                setMobileDrawerOpen(false);
-              }}
-              sx={{ 
-                color: 'white',
-                borderRadius: '12px',
-                mb: 1,
-                cursor: 'pointer',
-                '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
-              }}
-            >
-              <ListItemIcon sx={{ color: 'white', minWidth: 40 }}>
-                <Badge badgeContent={totalNotifications} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </ListItemIcon>
-              <ListItemText 
-                primary="การแจ้งเตือน" 
-                secondary={totalNotifications > 0 ? `${totalNotifications} รายการใหม่` : 'ไม่มีรายการใหม่'}
-                secondaryTypographyProps={{
-                  sx: { color: 'rgba(255,255,255,0.7)', fontSize: '0.7rem' }
-                }}
-              />
-            </ListItem>
-            
             <ListItem 
               onClick={handleLogout}
               sx={{ 
@@ -514,13 +416,12 @@ function ModernNavigation() {
         position="sticky" 
         elevation={0}
         sx={{
-          background: scrolled 
-            ? 'rgba(102, 126, 234, 0.95)' 
-            : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: '#ffffff',
           backdropFilter: 'blur(20px)',
-          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.1)' : 'none',
+          borderBottom: '1px solid rgba(0,0,0,0.1)',
           transition: 'all 0.3s ease',
-          boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.1)' : 'none'
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          color: '#2f4b3f'
         }}
       >
         <Container maxWidth="xl">
@@ -563,12 +464,11 @@ function ModernNavigation() {
                 width: { xs: 45, sm: 50 },
                 height: { xs: 45, sm: 50 },
                 borderRadius: '12px',
-                background: 'rgba(255,255,255,0.15)',
+                background: '#2f4b3f',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.2)',
+                border: '1px solid rgba(47, 75, 63, 0.2)',
                 mr: 1.5
               }}>
                 <img
@@ -583,24 +483,24 @@ function ModernNavigation() {
                     e.target.nextSibling.style.display = 'block';
                   }}
                 />
-                <SchoolIcon sx={{ fontSize: 35, display: 'none' }} />
+                <SchoolIcon sx={{ fontSize: 35, display: 'none', color: '#ffffff' }} />
               </Box>
               <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 <Typography variant="h6" sx={{ 
                   fontWeight: 700, 
                   lineHeight: 1.2,
-                  background: 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)',
-                  backgroundClip: 'text',
-                  color: 'transparent'
+                  color: '#2f4b3f',
+                  fontFamily: 'Poppins, sans-serif'
                 }}>
-                  ระบบศิษย์เก่า
+                  Alumni RMU.
                 </Typography>
                 <Typography variant="caption" sx={{ 
-                  opacity: 0.9, 
+                  color: '#6c757d', 
                   fontSize: '0.75rem',
-                  fontWeight: 400
+                  fontWeight: 400,
+                  fontFamily: 'Source Sans Pro, sans-serif'
                 }}>
-                  มหาวิทยาลัยราชภัฏมหาสารคาม
+                  Alumni Management System
                 </Typography>
               </Box>
             </Box>
@@ -634,14 +534,17 @@ function ModernNavigation() {
                             position: 'relative',
                             transition: 'all 0.3s ease',
                             textTransform: 'none',
+                            color: '#6c757d',
+                            fontFamily: 'Source Sans Pro, sans-serif',
                             '&:hover': {
-                              bgcolor: 'rgba(255,255,255,0.15)',
+                              bgcolor: 'rgba(47, 75, 63, 0.05)',
+                              color: '#2f4b3f',
                               transform: 'translateY(-2px)',
                               boxShadow: '0 8px 25px rgba(0,0,0,0.15)'
                             },
                             ...(isActive && {
-                              bgcolor: 'rgba(255,255,255,0.2)',
-                              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                              color: '#2f4b3f',
+                              fontWeight: 700,
                               '&::after': {
                                 content: '""',
                                 position: 'absolute',
@@ -650,9 +553,9 @@ function ModernNavigation() {
                                 transform: 'translateX(-50%)',
                                 width: '60%',
                                 height: '3px',
-                                bgcolor: 'white',
+                                bgcolor: '#f9c74f',
                                 borderRadius: '2px',
-                                boxShadow: '0 2px 10px rgba(255,255,255,0.3)'
+                                boxShadow: '0 2px 10px rgba(249, 199, 79, 0.3)'
                               }
                             })
                           }}
@@ -668,27 +571,10 @@ function ModernNavigation() {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                   {user ? (
                     <>
-                      {/* Notifications */}
-                      <Tooltip title="การแจ้งเตือน" arrow>
-                        <IconButton
-                          color="inherit"
-                          onClick={(e) => setNotificationMenuAnchor(e.currentTarget)}
-                          sx={{
-                            bgcolor: 'rgba(255,255,255,0.1)',
-                            '&:hover': { bgcolor: 'rgba(255,255,255,0.2)' },
-                            borderRadius: '12px'
-                          }}
-                        >
-                          <Badge badgeContent={totalNotifications} color="error">
-                            <NotificationsIcon />
-                          </Badge>
-                        </IconButton>
-                      </Tooltip>
-
-                      {/* Notification Menu */}
+                      {/* Profile Menu */}
                       <Menu
                         anchorEl={notificationMenuAnchor}
-                        open={Boolean(notificationMenuAnchor)}
+                        open={false}
                         onClose={() => setNotificationMenuAnchor(null)}
                         PaperProps={{
                           sx: {
@@ -900,23 +786,29 @@ function ModernNavigation() {
                         </Box>
                       </Menu>
 
-                      {/* Profile Menu */}
+                      {/* Profile Menu - Furni Modern Style */}
                       <Tooltip title={`สวัสดี ${user.name}`} arrow>
                         <IconButton
                           color="inherit"
                           onClick={(e) => setProfileMenuAnchor(e.currentTarget)}
                           sx={{
                             p: 0.5,
-                            border: '2px solid rgba(255,255,255,0.2)',
-                            borderRadius: '14px',
-                            '&:hover': { borderColor: 'rgba(255,255,255,0.4)' }
+                            border: '2px solid rgba(249, 199, 79, 0.3)',
+                            borderRadius: '1rem',
+                            transition: 'all 0.3s ease',
+                            '&:hover': { 
+                              borderColor: '#f9c74f',
+                              transform: 'scale(1.05)',
+                              boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.3)'
+                            }
                           }}
                         >
                           <Avatar 
                             sx={{ 
                               width: 40, 
                               height: 40, 
-                              bgcolor: 'rgba(255,255,255,0.2)',
+                              background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                              color: 'white',
                               fontWeight: 600,
                               fontSize: '1.1rem'
                             }}
@@ -933,61 +825,108 @@ function ModernNavigation() {
                         PaperProps={{
                           sx: {
                             mt: 2,
-                            borderRadius: '16px',
-                            minWidth: 240,
-                            boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
-                            border: '1px solid rgba(0,0,0,0.05)',
-                            overflow: 'hidden'
+                            borderRadius: '1.25rem',
+                            minWidth: 280,
+                            boxShadow: '0 1.5rem 3rem rgba(47, 75, 63, 0.2)',
+                            border: '1px solid rgba(47, 75, 63, 0.08)',
+                            overflow: 'hidden',
+                            backdropFilter: 'blur(10px)',
+                            background: 'rgba(255, 255, 255, 0.95)'
                           }
                         }}
                         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                       >
-                        {/* Profile Header */}
+                        {/* Profile Header - Furni Modern Style */}
                         <Box sx={{ 
-                          px: 3, 
-                          py: 2.5, 
-                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                          color: 'white'
+                          px: 4, 
+                          py: 3, 
+                          background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
+                          color: 'white',
+                          position: 'relative',
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: '70%',
+                            background: 'url("data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'20\' cy=\'20\' r=\'1.5\' fill=\'%23f9c74f\' opacity=\'0.3\'/><circle cx=\'80\' cy=\'30\' r=\'1\' fill=\'%23f9c74f\' opacity=\'0.2\'/><circle cx=\'40\' cy=\'70\' r=\'1.2\' fill=\'%23f9c74f\' opacity=\'0.4\'/></svg>") repeat',
+                            opacity: 0.3
+                          }
                         }}>
-                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, position: 'relative', zIndex: 1 }}>
                             <Avatar sx={{ 
-                              width: 45, 
-                              height: 45, 
-                              bgcolor: 'rgba(255,255,255,0.2)',
-                              mr: 2,
-                              fontWeight: 600
+                              width: 50, 
+                              height: 50, 
+                              background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                              color: 'white',
+                              mr: 2.5,
+                              fontWeight: 700,
+                              fontSize: '1.25rem',
+                              boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.3)'
                             }}>
                               {user.name?.charAt(0)}
                             </Avatar>
                             <Box>
-                              <Typography variant="subtitle1" fontWeight="600">
+                              <Typography 
+                                variant="subtitle1" 
+                                sx={{ 
+                                  fontFamily: "'Poppins', sans-serif",
+                                  fontWeight: 600,
+                                  mb: 0.5
+                                }}
+                              >
                                 {user.name}
                               </Typography>
-                              <Typography variant="caption" sx={{ opacity: 0.9 }}>
+                              <Typography 
+                                variant="caption" 
+                                sx={{ 
+                                  opacity: 0.9,
+                                  fontSize: '0.8rem',
+                                  letterSpacing: '0.025em'
+                                }}
+                              >
                                 {user.faculty || 'ศิษย์เก่า'}
                               </Typography>
                             </Box>
                           </Box>
                         </Box>
 
-                        {/* Menu Items */}
+                        {/* Menu Items - Enhanced Furni Style */}
                         <MenuItem 
                           component={Link} 
                           to="/profile"
                           onClick={() => setProfileMenuAnchor(null)}
                           sx={{ 
-                            py: 1.5, 
-                            px: 3,
-                            '&:hover': { bgcolor: 'rgba(102, 126, 234, 0.05)' }
+                            py: 2, 
+                            px: 4,
+                            transition: 'all 0.3s ease',
+                            '&:hover': { 
+                              bgcolor: 'rgba(249, 199, 79, 0.08)',
+                              transform: 'translateX(4px)'
+                            }
                           }}
                         >
-                          <PersonIcon sx={{ mr: 2, fontSize: 20, color: '#667eea' }} />
+                          <PersonIcon sx={{ mr: 2.5, fontSize: 22, color: '#f9c74f' }} />
                           <Box>
-                            <Typography variant="body2" fontWeight="500">
+                            <Typography 
+                              variant="body2" 
+                              sx={{ 
+                                fontWeight: 500,
+                                color: '#2f4b3f',
+                                mb: 0.25
+                              }}
+                            >
                               โปรไฟล์
                             </Typography>
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography 
+                              variant="caption" 
+                              sx={{ 
+                                color: '#6c757d',
+                                fontSize: '0.75rem'
+                              }}
+                            >
                               จัดการข้อมูลส่วนตัว
                             </Typography>
                           </Box>
@@ -998,17 +937,34 @@ function ModernNavigation() {
                           to="/work-history"
                           onClick={() => setProfileMenuAnchor(null)}
                           sx={{ 
-                            py: 1.5, 
-                            px: 3,
-                            '&:hover': { bgcolor: 'rgba(102, 126, 234, 0.05)' }
+                            py: 2, 
+                            px: 4,
+                            transition: 'all 0.3s ease',
+                            '&:hover': { 
+                              bgcolor: 'rgba(249, 199, 79, 0.08)',
+                              transform: 'translateX(4px)'
+                            }
                           }}
                         >
-                          <WorkIcon sx={{ mr: 2, fontSize: 20, color: '#667eea' }} />
+                          <WorkIcon sx={{ mr: 2.5, fontSize: 22, color: '#2f4b3f' }} />
                           <Box>
-                            <Typography variant="body2" fontWeight="500">
+                            <Typography 
+                              variant="body2" 
+                              sx={{ 
+                                fontWeight: 500,
+                                color: '#2f4b3f',
+                                mb: 0.25
+                              }}
+                            >
                               ประวัติการทำงาน
                             </Typography>
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography 
+                              variant="caption" 
+                              sx={{ 
+                                color: '#6c757d',
+                                fontSize: '0.75rem'
+                              }}
+                            >
                               จัดการประวัติการทำงาน
                             </Typography>
                           </Box>
@@ -1020,38 +976,66 @@ function ModernNavigation() {
                             to="/admin"
                             onClick={() => setProfileMenuAnchor(null)}
                             sx={{ 
-                              py: 1.5, 
-                              px: 3,
-                              '&:hover': { bgcolor: 'rgba(102, 126, 234, 0.05)' }
+                              py: 2, 
+                              px: 4,
+                              transition: 'all 0.3s ease',
+                              '&:hover': { 
+                                bgcolor: 'rgba(249, 199, 79, 0.08)',
+                                transform: 'translateX(4px)'
+                              }
                             }}
                           >
-                            <DashboardIcon sx={{ mr: 2, fontSize: 20, color: '#667eea' }} />
+                            <DashboardIcon sx={{ mr: 2.5, fontSize: 22, color: '#f9c74f' }} />
                             <Box>
-                              <Typography variant="body2" fontWeight="500">
+                              <Typography 
+                                variant="body2" 
+                                sx={{ 
+                                  fontWeight: 500,
+                                  color: '#2f4b3f',
+                                  mb: 0.25
+                                }}
+                              >
                                 แผงควบคุม
                               </Typography>
-                              <Typography variant="caption" color="text.secondary">
+                              <Typography 
+                                variant="caption" 
+                                sx={{ 
+                                  color: '#6c757d',
+                                  fontSize: '0.75rem'
+                                }}
+                              >
                                 จัดการระบบ
                               </Typography>
                             </Box>
                           </MenuItem>
                         )}
 
-                        <Divider sx={{ my: 1 }} />
+                        <Divider sx={{ my: 1.5, bgcolor: 'rgba(47, 75, 63, 0.1)' }} />
 
                         <MenuItem 
                           onClick={handleLogout}
                           sx={{ 
-                            py: 1.5, 
-                            px: 3,
-                            color: 'error.main',
-                            '&:hover': { bgcolor: 'rgba(211, 47, 47, 0.05)' }
+                            py: 2, 
+                            px: 4,
+                            transition: 'all 0.3s ease',
+                            '&:hover': { 
+                              bgcolor: 'rgba(239, 68, 68, 0.08)',
+                              transform: 'translateX(4px)'
+                            }
                           }}
                         >
-                          <LogoutIcon sx={{ mr: 2, fontSize: 20 }} />
-                          <Typography variant="body2" fontWeight="500">
-                            ออกจากระบบ
-                          </Typography>
+                          <LogoutIcon sx={{ mr: 2.5, fontSize: 22, color: '#ef4444' }} />
+                          <Box>
+                            <Typography 
+                              variant="body2" 
+                              sx={{ 
+                                fontWeight: 500,
+                                color: '#ef4444'
+                              }}
+                            >
+                              ออกจากระบบ
+                            </Typography>
+                          </Box>
                         </MenuItem>
                       </Menu>
                     </>
@@ -1068,7 +1052,9 @@ function ModernNavigation() {
                           px: 2.5,
                           py: 1,
                           fontWeight: 600,
-                          '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                          color: '#6c757d',
+                          fontFamily: 'Source Sans Pro, sans-serif',
+                          '&:hover': { bgcolor: 'rgba(47, 75, 63, 0.05)', color: '#2f4b3f' }
                         }}
                       >
                         เข้าสู่ระบบ
@@ -1079,15 +1065,16 @@ function ModernNavigation() {
                         variant="outlined"
                         startIcon={<RegisterIcon />}
                         sx={{
-                          color: 'white',
-                          borderColor: 'rgba(255,255,255,0.3)',
+                          color: '#2f4b3f',
+                          borderColor: '#2f4b3f',
                           borderRadius: '12px',
                           px: 2.5,
                           py: 1,
                           fontWeight: 600,
+                          fontFamily: 'Source Sans Pro, sans-serif',
                           '&:hover': {
-                            borderColor: 'white',
-                            bgcolor: 'rgba(255,255,255,0.1)'
+                            borderColor: '#2f4b3f',
+                            bgcolor: 'rgba(47, 75, 63, 0.05)'
                           }
                         }}
                       >

@@ -85,7 +85,7 @@ const Login = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
         display: 'flex',
         alignItems: 'center',
         py: { xs: 4, md: 0 }
@@ -259,11 +259,11 @@ const Login = () => {
                     borderRadius: 2,
                     fontWeight: 600,
                     fontSize: '1.1rem',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)',
+                      background: 'linear-gradient(135deg, #3a5c4b 0%, #2d4a3a 100%)',
                       transform: 'translateY(-2px)',
-                      boxShadow: '0 8px 25px rgba(102, 126, 234, 0.3)'
+                      boxShadow: '0 8px 25px rgba(47, 75, 63, 0.3)'
                     },
                     '&:disabled': {
                       background: '#e2e8f0'

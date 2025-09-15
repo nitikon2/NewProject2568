@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Management System - Furni Enhanced Green Theme</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Furni Enhanced Green Theme Variables */
+        :root {
+            /* Primary Colors - Furni Deep Green */
+            --rmsu-primary: #2f4b3f;
+            --rmsu-primary-light: #3a5c4b;
+            --rmsu-primary-dark: #243d33;
+            
+            /* Secondary Colors - Bright Yellow Accent */
+            --rmsu-gold: #f9c74f;
+            --rmsu-gold-light: #fbd36b;
+            --rmsu-gold-dark: #f8b42e;
+            
+            /* Background Colors - Warm Cream */
+            --rmsu-bg-primary: #f7f5f3;
+            --rmsu-bg-secondary: #f0ede8;
+            --rmsu-bg-card: #ffffff;
+            --rmsu-bg-dark: #2a3b3d;
+            
+            /* Text Colors */
+            --rmsu-text-primary: #2a3b3d;
+            --rmsu-text-secondary: #6c757d;
+            --rmsu-text-muted: #adb5bd;
+            --rmsu-text-white: #ffffff;
+            
+            /* Border Colors */
+            --rmsu-border-light: #e9ecef;
+            --rmsu-border-medium: #dee2e6;
+            --rmsu-border-dark: #ced4da;
+            
+            /* Gradients */
+            --rmsu-gradient-primary: linear-gradient(135deg, #2f4b3f, #3a5c4b);
+            --rmsu-gradient-gold: linear-gradient(135deg, #f9c74f, #fbd36b);
+            --rmsu-gradient-bg: linear-gradient(135deg, #f7f5f3, #f0ede8);
+            --rmsu-gradient-hero: linear-gradient(135deg, #2f4b3f, #243d33);
+            
+            /* Shadows */
+            --rmsu-shadow-light: 0 0.125rem 0.25rem rgba(47, 75, 63, 0.1);
+            --rmsu-shadow-medium: 0 0.5rem 1rem rgba(47, 75, 63, 0.15);
+            --rmsu-shadow-heavy: 0 1rem 3rem rgba(47, 75, 63, 0.2);
+            --rmsu-shadow-elevated: 0 1rem 2rem rgba(47, 75, 63, 0.25);
+            --rmsu-shadow-orange: 0 0.25rem 0.75rem rgba(249, 199, 79, 0.3);
+            
+            /* Effects */
+            --rmsu-hover-overlay: rgba(47, 75, 63, 0.08);
+            --rmsu-orange-overlay: rgba(249, 199, 79, 0.1);
+            
+            /* Other */
+            --rmsu-radius-small: 0.5rem;
+            --rmsu-radius-medium: 0.75rem;
+            --rmsu-radius-large: 1rem;
+            --rmsu-radius-xl: 1.5rem;
+            --rmsu-transition-fast: 0.2s ease;
+            --rmsu-transition-medium: 0.3s ease;
+        }
+
+        /* Global Styles */
+        * {
+            font-family: 'Source Sans Pro', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6, .heading {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        body {
+            background: var(--rmsu-gradient-bg);
+            color: var(--rmsu-text-primary);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: var(--rmsu-bg-card) !important;
+            box-shadow: var(--rmsu-shadow-medium);
+            border-bottom: 1px solid var(--rmsu-border-light);
+            padding: 1rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--rmsu-primary) !important;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar .nav-link {
+            color: var(--rmsu-text-secondary) !important;
+            font-weight: 500;
+            font-size: 1rem;
+            margin-right: 1.5rem;
+            transition: var(--rmsu-transition-medium);
+            border-radius: var(--rmsu-radius-small);
+            padding: 0.5rem 1rem;
+            position: relative;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            color: var(--rmsu-primary) !important;
+            background: var(--rmsu-hover-overlay);
+        }
+
+        .navbar .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: var(--rmsu-gold);
+            border-radius: 2px;
+        }
+
+        /* Buttons */
+        .btn {
+            font-weight: 600;
+            border-radius: var(--rmsu-radius-medium);
+            transition: var(--rmsu-transition-medium);
+            border-width: 2px;
+            font-size: 0.95rem;
+            letter-spacing: 0.025em;
+            padding: 0.75rem 2rem;
+        }
+
+        .btn-primary {
+            background: var(--rmsu-gradient-gold);
+            border-color: var(--rmsu-gold);
+            color: var(--rmsu-text-white);
+            box-shadow: var(--rmsu-shadow-orange);
+        }
+
+        .btn-primary:hover {
+            background: var(--rmsu-gold-dark);
+            border-color: var(--rmsu-gold-dark);
+            color: var(--rmsu-text-white);
+            transform: translateY(-2px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .btn-secondary {
+            background: var(--rmsu-gradient-primary);
+            border-color: var(--rmsu-primary);
+            color: var(--rmsu-text-white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--rmsu-primary-dark);
+            border-color: var(--rmsu-primary-dark);
+            color: var(--rmsu-text-white);
+            transform: translateY(-2px);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--rmsu-bg-card);
+            border: 1px solid var(--rmsu-border-light);
+            border-radius: var(--rmsu-radius-xl);
+            box-shadow: var(--rmsu-shadow-light);
+            transition: var(--rmsu-transition-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--rmsu-shadow-elevated);
+            border-color: var(--rmsu-gold-light);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--rmsu-gradient-gold);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            background: var(--rmsu-bg-secondary);
+            border-bottom: 1px solid var(--rmsu-border-light);
+            padding: 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--rmsu-text-primary);
+            border-radius: var(--rmsu-radius-xl) var(--rmsu-radius-xl) 0 0;
+        }
+
+        .card-header.bg-primary {
+            background: var(--rmsu-gradient-primary) !important;
+            color: var(--rmsu-text-white);
+            border-bottom: none;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Alumni Profile Cards */
+        .alumni-card {
+            text-align: center;
+            background: var(--rmsu-bg-card);
+            border-radius: var(--rmsu-radius-xl);
+            padding: 2rem;
+            box-shadow: var(--rmsu-shadow-light);
+            border: 1px solid var(--rmsu-border-light);
+            transition: var(--rmsu-transition-medium);
+        }
+
+        .alumni-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .alumni-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--rmsu-gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--rmsu-text-white);
+            font-size: 3rem;
+            margin: 0 auto 1.5rem auto;
+            border: 4px solid var(--rmsu-gold-light);
+        }
+
+        .alumni-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--rmsu-text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .alumni-title {
+            color: var(--rmsu-text-secondary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Stat Cards */
+        .stat-card {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            background: var(--rmsu-bg-card);
+            border-radius: var(--rmsu-radius-xl);
+            border: 1px solid var(--rmsu-border-light);
+            transition: var(--rmsu-transition-medium);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            color: var(--rmsu-gold);
+            margin-bottom: 1rem;
+            background: var(--rmsu-orange-overlay);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--rmsu-text-primary);
+            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--rmsu-text-secondary);
+        }
+
+        /* Form Elements */
+        .form-control,
+        .form-select {
+            background: var(--rmsu-bg-card);
+            border: 2px solid var(--rmsu-border-medium);
+            color: var(--rmsu-text-primary);
+            border-radius: var(--rmsu-radius-medium);
+            transition: var(--rmsu-transition-medium);
+            font-size: 0.95rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background: var(--rmsu-bg-card);
+            border-color: var(--rmsu-gold);
+            color: var(--rmsu-text-primary);
+            box-shadow: 0 0 0 0.2rem rgba(249, 199, 79, 0.25);
+        }
+
+        .form-label {
+            color: var(--rmsu-text-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Table */
+        .table {
+            background: var(--rmsu-bg-card);
+            border-radius: var(--rmsu-radius-medium);
+            overflow: hidden;
+            box-shadow: var(--rmsu-shadow-light);
+            border: 1px solid var(--rmsu-border-light);
+        }
+
+        .table thead th {
+            background: var(--rmsu-bg-secondary);
+            color: var(--rmsu-text-primary);
+            border: none;
+            padding: 1.2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .table tbody td {
+            color: var(--rmsu-text-primary);
+            border-color: var(--rmsu-border-light);
+            padding: 1rem 1.2rem;
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background: var(--rmsu-orange-overlay);
+        }
+
+        /* Badges */
+        .badge {
+            font-weight: 600;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--rmsu-radius-medium);
+            font-size: 0.75rem;
+        }
+
+        .badge-primary {
+            background: var(--rmsu-gradient-gold);
+            color: var(--rmsu-text-white);
+        }
+
+        .badge-secondary {
+            background: var(--rmsu-gradient-primary);
+            color: var(--rmsu-text-white);
+        }
+
+        .badge-success {
+            background: var(--rmsu-primary);
+            color: var(--rmsu-text-white);
+        }
+
+        /* Alert */
+        .alert {
+            border: none;
+            border-radius: var(--rmsu-radius-medium);
+            box-shadow: var(--rmsu-shadow-light);
+            border-left: 4px solid;
+            font-weight: 500;
+        }
+
+        .alert-info {
+            background-color: var(--rmsu-orange-overlay);
+            color: var(--rmsu-text-primary);
+            border-left-color: var(--rmsu-gold);
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .card-body {
+                padding: 1.5rem;
+            }
+            
+            .alumni-card {
+                padding: 1.5rem;
+            }
+            
+            .alumni-avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-graduation-cap me-2"></i>Alumni Management
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active" href="#">หน้าหลัก</a>
+                <a class="nav-link" href="#">Alumni</a>
+                <a class="nav-link" href="#">Events</a>
+                <a class="nav-link" href="#">Reports</a>
+                <a class="nav-link" href="#">ลงทะเบียน</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Theme Info Alert -->
+        <div class="alert alert-info fade-in mb-4">
+            <h5><i class="fas fa-palette me-2"></i>Alumni Management System - Furni Enhanced Green Theme</h5>
+            <p class="mb-0">ธีมสีเขียวเข้มแบบ Furni พร้อมสีเหลืองสว่างสำหรับ accent - เน้นสีเขียวป่าที่สวยงามเหมือนในภาพที่คุณแชร์</p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="row mb-5">
+            <div class="col-md-3 mb-4">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">2,568</div>
+                    <div class="stat-label">Total Alumni</div>
+                    <span class="badge badge-primary mt-2">+12% this month</span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-number">48</div>
+                    <div class="stat-label">Events</div>
+                    <span class="badge badge-secondary mt-2">Annual</span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="stat-number">1,894</div>
+                    <div class="stat-label">Employed</div>
+                    <span class="badge badge-success mt-2">74% of total</span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card fade-in">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-number">327</div>
+                    <div class="stat-label">Studying</div>
+                    <span class="badge badge-secondary mt-2">13% of total</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alumni Profiles Section -->
+        <div class="row mb-5">
+            <div class="col-12 mb-4">
+                <h2 class="heading text-center">Featured Alumni</h2>
+                <p class="text-center text-muted">บุคลากรที่มีความโดดเด่นในสาขาต่าง ๆ</p>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="alumni-card fade-in">
+                    <div class="alumni-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="alumni-name">สมจิตร จิตใส</div>
+                    <div class="alumni-title">นักวิจัย - มหาวิทยาลัยเชียงใหม่</div>
+                    <div class="text-start">
+                        <small class="text-muted">
+                            <i class="fas fa-calendar me-1"></i>จบการศึกษา: 2565<br>
+                            <i class="fas fa-map-marker-alt me-1"></i>เชียงใหม่<br>
+                            <i class="fas fa-envelope me-1"></i>somjit@cmu.ac.th
+                        </small>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary btn-sm me-2">
+                            <i class="fas fa-eye me-1"></i>View Profile
+                        </button>
+                        <button class="btn btn-secondary btn-sm">
+                            <i class="fas fa-envelope me-1"></i>Contact
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="alumni-card fade-in">
+                    <div class="alumni-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="alumni-name">ประยุทธ มั่นใจ</div>
+                    <div class="alumni-title">ผู้จัดการ - บริษัท เทคโนโลยี จำกัด</div>
+                    <div class="text-start">
+                        <small class="text-muted">
+                            <i class="fas fa-calendar me-1"></i>จบการศึกษา: 2563<br>
+                            <i class="fas fa-map-marker-alt me-1"></i>กรุงเทพมหานคร<br>
+                            <i class="fas fa-envelope me-1"></i>prayuth@tech.co.th
+                        </small>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary btn-sm me-2">
+                            <i class="fas fa-eye me-1"></i>View Profile
+                        </button>
+                        <button class="btn btn-secondary btn-sm">
+                            <i class="fas fa-envelope me-1"></i>Contact
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="alumni-card fade-in">
+                    <div class="alumni-avatar">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="alumni-name">ชาลิดา ศรีสุข</div>
+                    <div class="alumni-title">ครู - โรงเรียนมัธยมปลาย</div>
+                    <div class="text-start">
+                        <small class="text-muted">
+                            <i class="fas fa-calendar me-1"></i>จบการศึกษา: 2564<br>
+                            <i class="fas fa-map-marker-alt me-1"></i>มหาสารคาม<br>
+                            <i class="fas fa-envelope me-1"></i>chalida@school.ac.th
+                        </small>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary btn-sm me-2">
+                            <i class="fas fa-eye me-1"></i>View Profile
+                        </button>
+                        <button class="btn btn-secondary btn-sm">
+                            <i class="fas fa-envelope me-1"></i>Contact
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Forms Section -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card fade-in">
+                    <div class="card-header bg-primary">
+                        <i class="fas fa-user-plus me-2"></i>ลงทะเบียน Alumni ใหม่
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">ชื่อ</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="ชื่อจริง">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">นามสกุล</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="นามสกุล">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">อีเมล</label>
+                                <input type="email" class="form-control" id="email" placeholder="example@email.com">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="faculty" class="form-label">คณะ</label>
+                                    <select class="form-select" id="faculty">
+                                        <option>เลือกคณะ</option>
+                                        <option>ครุศาสตร์</option>
+                                        <option>มนุษยศาสตร์และสังคมศาสตร์</option>
+                                        <option>วิทยาศาสตร์และเทคโนโลยี</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="graduationYear" class="form-label">ปีที่จบการศึกษา</label>
+                                    <select class="form-select" id="graduationYear">
+                                        <option>เลือกปี</option>
+                                        <option>2567</option>
+                                        <option>2566</option>
+                                        <option>2565</option>
+                                        <option>2564</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="currentJob" class="form-label">อาชีพปัจจุบัน</label>
+                                <input type="text" class="form-control" id="currentJob" placeholder="ตำแหน่งงานปัจจุบัน">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-save me-2"></i>บันทึกข้อมูล Alumni
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <i class="fas fa-search me-2"></i>ค้นหา Alumni
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="searchName" class="form-label">ชื่อ-นามสกุล</label>
+                                <input type="text" class="form-control" id="searchName" placeholder="ค้นหาจากชื่อ">
+                            </div>
+                            <div class="mb-3">
+                                <label for="searchFaculty" class="form-label">คณะ</label>
+                                <select class="form-select" id="searchFaculty">
+                                    <option>ทุกคณะ</option>
+                                    <option>ครุศาสตร์</option>
+                                    <option>มนุษยศาสตร์และสังคมศาสตร์</option>
+                                    <option>วิทยาศาสตร์และเทคโนโลยี</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="searchYear" class="form-label">ปีที่จบ</label>
+                                <select class="form-select" id="searchYear">
+                                    <option>ทุกปี</option>
+                                    <option>2567</option>
+                                    <option>2566</option>
+                                    <option>2565</option>
+                                    <option>2564</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="searchStatus" class="form-label">สถานะปัจจุบัน</label>
+                                <select class="form-select" id="searchStatus">
+                                    <option>ทุกสถานะ</option>
+                                    <option>ทำงาน</option>
+                                    <option>ศึกษาต่อ</option>
+                                    <option>ประกอบธุรกิจส่วนตัว</option>
+                                    <option>ว่างงาน</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-secondary w-100">
+                                <i class="fas fa-search me-2"></i>ค้นหา Alumni
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alumni Data Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <i class="fas fa-table me-2"></i>ข้อมูล Alumni ล่าสุด
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>ชื่อ-นามสกุล</th>
+                                    <th>คณะ</th>
+                                    <th>ปีที่จบ</th>
+                                    <th>อาชีพปัจจุบัน</th>
+                                    <th>สถานะ</th>
+                                    <th>จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>สมจิตร จิตใส</strong></td>
+                                    <td>วิทยาศาสตร์และเทคโนโลยี</td>
+                                    <td>2565</td>
+                                    <td>นักวิจัย</td>
+                                    <td><span class="badge badge-success">ทำงาน</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary me-1">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-secondary me-1">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-primary">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ประยุทธ มั่นใจ</strong></td>
+                                    <td>วิทยาศาสตร์และเทคโนโลยี</td>
+                                    <td>2563</td>
+                                    <td>ผู้จัดการ</td>
+                                    <td><span class="badge badge-success">ทำงาน</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary me-1">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-secondary me-1">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-primary">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ชาลิดา ศรีสุข</strong></td>
+                                    <td>ครุศาสตร์</td>
+                                    <td>2564</td>
+                                    <td>ครู</td>
+                                    <td><span class="badge badge-success">ทำงาน</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary me-1">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-secondary me-1">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-primary">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>อนุชา ดีใจ</strong></td>
+                                    <td>มนุษยศาสตร์และสังคมศาสตร์</td>
+                                    <td>2566</td>
+                                    <td>นักศึกษาปริญญาโท</td>
+                                    <td><span class="badge badge-secondary">ศึกษาต่อ</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary me-1">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-secondary me-1">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-primary">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>วิไล สุขสม</strong></td>
+                                    <td>ครุศาสตร์</td>
+                                    <td>2567</td>
+                                    <td>ผู้ประกอบการ</td>
+                                    <td><span class="badge badge-primary">ธุรกิจส่วนตัว</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary me-1">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-secondary me-1">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-primary">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="container mt-5 mb-4">
+        <div class="text-center">
+            <div class="card fade-in">
+                <div class="card-body">
+                    <h3 class="heading text-primary">
+                        <i class="fas fa-graduation-cap me-2"></i>Alumni Management System
+                    </h3>
+                    <p class="text-muted mb-3">
+                        ระบบบริหารจัดการศิษย์เก่า - มหาวิทยาลัยราชภัฏมหาสารคาม<br>
+                        <small>พัฒนาด้วยธีม Furni Enhanced Green Design</small>
+                    </p>
+                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-users me-1"></i>จัดการ Alumni
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-calendar me-1"></i>Events
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-chart-bar me-1"></i>Reports
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Add stagger animation to cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.fade-in');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Add hover effects
+        document.querySelectorAll('.card, .alumni-card, .stat-card').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+
+        // Mock form submission
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('ฟีเจอร์นี้จะพัฒนาในระยะถัดไป - Demo Purpose Only');
+            });
+        });
+    </script>
+</body>
+</html>

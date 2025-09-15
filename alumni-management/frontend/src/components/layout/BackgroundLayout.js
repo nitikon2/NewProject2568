@@ -8,7 +8,7 @@ const BackgroundLayout = ({ children }) => (
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'linear-gradient(135deg, #fafbfc 0%, #f8fafc 25%, #f1f5f9 50%, #f8fafc 75%, #ffffff 100%)',
+      background: 'linear-gradient(135deg, #f7f5f3 0%, #f0ede8 25%, #f7f5f3 50%, #f0ede8 75%, #ffffff 100%)',
       position: 'relative',
       overflow: 'hidden',
     }}
@@ -20,7 +20,7 @@ const BackgroundLayout = ({ children }) => (
       left: '-200px',
       width: '400px',
       height: '400px',
-      background: 'rgba(59, 130, 246, 0.03)',
+      background: 'rgba(47, 75, 63, 0.03)',
       borderRadius: '50%',
       zIndex: 0,
     }} />
@@ -30,7 +30,7 @@ const BackgroundLayout = ({ children }) => (
       right: '-150px',
       width: '300px',
       height: '300px',
-      background: 'rgba(124, 58, 237, 0.02)',
+      background: 'rgba(249, 199, 79, 0.04)',
       borderRadius: '50%',
       zIndex: 0,
     }} />
@@ -40,7 +40,7 @@ const BackgroundLayout = ({ children }) => (
       right: '10%',
       width: '150px',
       height: '150px',
-      background: 'rgba(236, 72, 153, 0.02)',
+      background: 'rgba(58, 92, 75, 0.02)',
       borderRadius: '50%',
       zIndex: 0,
     }} />

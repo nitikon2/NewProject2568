@@ -49,12 +49,12 @@ function Register() {
       '&:hover': {
         backgroundColor: 'rgba(255, 255, 255, 0.95)',
         '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#3b82f6'
+          borderColor: '#2f4b3f'
         }
       },
       '&.Mui-focused': {
         backgroundColor: 'white',
-        boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)'
+        boxShadow: '0 0 0 3px rgba(47, 75, 63, 0.1)'
       }
     }
   };
@@ -222,19 +222,9 @@ function Register() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(145deg, #fef7ff 0%, #f3e8ff 25%, #e9d5ff 50%, #ddd6fe 75%, #c4b5fd 100%)',
+        background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
         py: 4,
-        position: 'relative',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'radial-gradient(circle at 20% 50%, rgba(147, 51, 234, 0.08) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.08) 0%, transparent 50%)',
-          zIndex: 0
-        }
+        position: 'relative'
       }}
     >
       <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
@@ -245,29 +235,19 @@ function Register() {
             overflow: 'hidden',
             background: 'rgba(255, 255, 255, 0.95)',
             backdropFilter: 'blur(20px)',
-            boxShadow: '0 15px 30px -8px rgba(147, 51, 234, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.1)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
+            boxShadow: '0 15px 30px -8px rgba(47, 75, 63, 0.12), 0 0 0 1px rgba(47, 75, 63, 0.1)',
+            border: '1px solid rgba(47, 75, 63, 0.3)',
             maxWidth: 900
           }}
         >
           {/* Header */}
           <Box
             sx={{
-              background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 25%, #7c3aed 50%, #a855f7 75%, #ec4899 100%)',
+              background: 'linear-gradient(135deg, #2f4b3f 0%, #1f3329 100%)',
               color: 'white',
               p: 3,
               textAlign: 'center',
-              position: 'relative',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)'
-              }
+              position: 'relative'
             }}
           >
             <Box sx={{ position: 'relative', zIndex: 1 }}>
@@ -363,7 +343,7 @@ function Register() {
                         left: 0,
                         right: 0,
                         height: '3px',
-                        background: 'linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%)',
+                        background: 'linear-gradient(90deg, #2f4b3f 0%, #3a5c4b 100%)',
                         borderRadius: '8px 8px 0 0'
                       }
                     }}
@@ -375,13 +355,13 @@ function Register() {
                         mb: 1.5, 
                         display: 'flex', 
                         alignItems: 'center',
-                        color: '#1e40af',
+                        color: '#2f4b3f',
                         fontSize: { xs: '1.1rem', md: '1.25rem' }
                       }}
                     >
                       <Box
                         sx={{
-                          background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                          background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
                           borderRadius: '50%',
                           p: 1,
                           mr: 1.5,
@@ -419,6 +399,7 @@ function Register() {
                     label="ชื่อ *"
                     value={formData.firstName}
                     onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                    helperText="กรุณาระบุชื่อจริงตามเอกสารทางราชการ"
                     sx={textFieldStyles}
                   />
                 </Grid>
@@ -429,6 +410,7 @@ function Register() {
                     label="นามสกุล *"
                     value={formData.lastName}
                     onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    helperText="กรุณาระบุนามสกุลตามเอกสารทางราชการ"
                     sx={textFieldStyles}
                   />
                 </Grid>
@@ -440,6 +422,7 @@ function Register() {
                     label="อีเมล *"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    helperText="ใช้สำหรับเข้าสู่ระบบและรับข่าวสาร (เช่น example@email.com)"
                     sx={textFieldStyles}
                     InputProps={{
                       startAdornment: (
@@ -457,7 +440,7 @@ function Register() {
                     label="เบอร์โทรศัพท์ *"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    helperText="10 หลัก"
+                    helperText="หมายเลขโทรศัพท์มือถือ 10 หลัก (เช่น 0812345678)"
                     sx={textFieldStyles}
                     InputProps={{
                       startAdornment: (
@@ -476,7 +459,7 @@ function Register() {
                     label="รหัสผ่าน *"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    helperText="อย่างน้อย 6 ตัวอักษร"
+                    helperText="ความยาวอย่างน้อย 6 ตัวอักษร ควรผสมตัวเลขและตัวอักษร"
                     sx={textFieldStyles}
                     InputProps={{
                       endAdornment: (
@@ -502,7 +485,7 @@ function Register() {
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                     error={formData.password !== formData.confirmPassword && formData.confirmPassword !== ''}
-                    helperText={formData.password !== formData.confirmPassword && formData.confirmPassword !== '' ? 'รหัสผ่านไม่ตรงกัน' : ''}
+                    helperText={formData.password !== formData.confirmPassword && formData.confirmPassword !== '' ? 'รหัสผ่านไม่ตรงกัน' : 'กรุณาใส่รหัสผ่านเดียวกันเพื่อยืนยัน'}
                     sx={textFieldStyles}
                     InputProps={{
                       endAdornment: (
@@ -537,7 +520,7 @@ function Register() {
                         left: 0,
                         right: 0,
                         height: '3px',
-                        background: 'linear-gradient(90deg, #059669 0%, #10b981 100%)',
+                        background: 'linear-gradient(90deg, #2f4b3f 0%, #3a5c4b 100%)',
                         borderRadius: '8px 8px 0 0'
                       }
                     }}
@@ -555,7 +538,7 @@ function Register() {
                     >
                       <Box
                         sx={{
-                          background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+                          background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
                           borderRadius: '50%',
                           p: 1,
                           mr: 1.5,
@@ -578,7 +561,7 @@ function Register() {
                     label="รหัสนักศึกษา *"
                     value={formData.student_id}
                     onChange={(e) => setFormData({ ...formData, student_id: e.target.value })}
-                    helperText="12 หลัก"
+                    helperText="รหัสนักศึกษาเดิมของคุณ 12 หลัก (เช่น 123456789012)"
                     sx={textFieldStyles}
                   />
                 </Grid>
@@ -590,6 +573,7 @@ function Register() {
                     label="ปีที่จบ *"
                     value={formData.graduation_year}
                     onChange={(e) => setFormData({ ...formData, graduation_year: e.target.value })}
+                    helperText="ปีที่จบการศึกษาตามปฏิทิน พ.ศ. (เช่น 2567)"
                     inputProps={{ min: 2500, max: new Date().getFullYear() + 543 }}
                     sx={textFieldStyles}
                   />
@@ -642,7 +626,7 @@ function Register() {
                         left: 0,
                         right: 0,
                         height: '3px',
-                        background: 'linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%)',
+                        background: 'linear-gradient(90deg, #f9c74f 0%, #f7b32b 100%)',
                         borderRadius: '8px 8px 0 0'
                       }
                     }}
@@ -660,7 +644,7 @@ function Register() {
                     >
                       <Box
                         sx={{
-                          background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
+                          background: 'linear-gradient(135deg, #f9c74f 0%, #f7b32b 100%)',
                           borderRadius: '50%',
                           p: 1,
                           mr: 1.5,
@@ -686,6 +670,7 @@ function Register() {
                     value={formData.address}
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                     placeholder="บ้านเลขที่ หมู่บ้าน ซอย ถนน"
+                    helperText="ที่อยู่ปัจจุบันของคุณ"
                     sx={textFieldStyles}
                   />
                 </Grid>
@@ -741,6 +726,7 @@ function Register() {
                     label="รหัสไปรษณีย์"
                     value={postcode}
                     InputProps={{ readOnly: true }}
+                    helperText="ระบบจะกรอกให้อัตโนมัติเมื่อเลือกตำบล"
                     sx={textFieldStyles}
                   />
                 </Grid>
@@ -759,35 +745,15 @@ function Register() {
                     borderRadius: 3,
                     fontWeight: 700,
                     fontSize: '1.1rem',
-                    background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 25%, #7c3aed 50%, #a855f7 75%, #ec4899 100%)',
+                    background: '#2f4b3f',
                     minWidth: 220,
                     minHeight: 48,
-                    boxShadow: '0 10px 25px rgba(59, 130, 246, 0.3)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: '-100%',
-                      width: '100%',
-                      height: '100%',
-                      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
-                      transition: 'left 0.5s'
-                    },
+                    boxShadow: '0 8px 20px rgba(47, 75, 63, 0.3)',
+                    border: '1px solid rgba(47, 75, 63, 0.2)',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #2563eb 0%, #1e40af 25%, #6d28d9 50%, #9333ea 75%, #db2777 100%)',
-                      transform: 'translateY(-3px)',
-                      boxShadow: '0 15px 35px rgba(59, 130, 246, 0.4)',
-                      '&::before': {
-                        left: '100%'
-                      }
-                    },
-                    '&:active': {
-                      transform: 'translateY(-1px)'
-                    },
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                      background: '#1f3329',
+                      boxShadow: '0 10px 25px rgba(47, 75, 63, 0.4)',
+                    }
                   }}
                 >
                   {loading ? 'กำลังลงทะเบียน...' : 'ลงทะเบียนเข้าร่วม'}
@@ -815,7 +781,7 @@ function Register() {
                 sx={{ 
                   fontWeight: 700,
                   fontSize: '1rem',
-                  color: '#3b82f6',
+                  color: '#2f4b3f',
                   textDecoration: 'none',
                   position: 'relative',
                   '&::after': {
@@ -825,12 +791,12 @@ function Register() {
                     height: '2px',
                     bottom: 0,
                     left: '50%',
-                    backgroundColor: '#3b82f6',
+                    backgroundColor: '#2f4b3f',
                     transition: 'all 0.3s ease'
                   },
                   '&:hover': { 
                     backgroundColor: 'transparent',
-                    color: '#1d4ed8',
+                    color: '#1f3329',
                     '&::after': {
                       width: '100%',
                       left: '0'

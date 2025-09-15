@@ -24,7 +24,8 @@ import {
   CircularProgress,
   Paper,
   Collapse,
-  Badge
+  Badge,
+  Fade
 } from '@mui/material';
 import {
   Forum as ForumIcon,
@@ -38,12 +39,48 @@ import {
   Person as PersonIcon,
   Image as ImageIcon,
   Close as CloseIcon,
-  PhotoCamera as PhotoCameraIcon
+  PhotoCamera as PhotoCameraIcon,
+  ChatBubble as ChatBubbleIcon,
+  Favorite as FavoriteIcon,
+  Share as ShareIcon
 } from '@mui/icons-material';
 import BackgroundLayout from '../layout/BackgroundLayout';
 import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/th';
+
+// Furni Modern Theme CSS Animations
+const furniForumAnimations = `
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200px 0; }
+    100% { background-position: 200px 0; }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+`;
+
+// Insert animations into head
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.textContent = furniForumAnimations;
+  if (!document.head.querySelector('style[data-furni-forum-animations]')) {
+    style.setAttribute('data-furni-forum-animations', 'true');
+    document.head.appendChild(style);
+  }
+}
 
 function Forum() {
   // Main state declarations
@@ -288,46 +325,113 @@ function Forum() {
   };
 
   const renderComments = (commentsArr, postId, level = 0) => {
-    return commentsArr.map(comment => {
+    return commentsArr.map((comment, index) => {
       const isReply = level > 0;
       return (
-        <Box key={comment.id} sx={{ 
-          display: 'flex', 
-          mb: 1,
-          ml: isReply ? 3 : 0
-        }}>
+        <Box 
+          key={comment.id} 
+          sx={{ 
+            display: 'flex', 
+            mb: 2,
+            ml: isReply ? 4 : 0,
+            animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`
+          }}
+        >
           {isReply && (
             <Box sx={{ 
-              width: 2, 
-              bgcolor: 'divider', 
-              mr: 2, 
-              borderRadius: 1 
+              width: 3, 
+              background: 'linear-gradient(180deg, #f9c74f, #fbd36b)',
+              mr: 3, 
+              borderRadius: '0.2rem',
+              minHeight: '100%'
             }} />
           )}
           <Box sx={{ flex: 1 }}>
             <Paper sx={{
-              p: 2,
-              backgroundColor: isReply ? 'grey.50' : 'background.paper',
-              borderRadius: 2,
-              border: isReply ? 1 : 0,
-              borderColor: 'divider'
+              p: 3,
+              background: isReply 
+                ? 'linear-gradient(135deg, rgba(247, 245, 243, 0.6), rgba(255, 255, 255, 0.8))'
+                : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(247, 245, 243, 0.7))',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '1rem',
+              border: `1px solid ${isReply ? 'rgba(249, 199, 79, 0.2)' : 'rgba(47, 75, 63, 0.08)'}`,
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 0.75rem 1.5rem rgba(47, 75, 63, 0.08)',
+                borderColor: isReply ? '#f9c74f' : 'rgba(47, 75, 63, 0.15)'
+              }
             }}>
-              <Typography variant="subtitle2" fontWeight="bold" color="primary">
-                {comment.author_name}
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
+              <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
+                <Avatar sx={{
+                  width: isReply ? 32 : 40,
+                  height: isReply ? 32 : 40,
+                  background: isReply 
+                    ? 'linear-gradient(135deg, #fbd36b, #f9c74f)'
+                    : 'linear-gradient(135deg, #2f4b3f, #3d5f51)',
+                  color: 'white',
+                  fontSize: isReply ? '0.9rem' : '1rem',
+                  fontWeight: 600
+                }}>
+                  {comment.author_name ? comment.author_name.charAt(0).toUpperCase() : '?'}
+                </Avatar>
+                <Box sx={{ flex: 1 }}>
+                  <Typography 
+                    variant={isReply ? "body2" : "subtitle1"} 
+                    sx={{ 
+                      fontFamily: "'Poppins', sans-serif",
+                      fontWeight: 600, 
+                      color: '#2f4b3f',
+                      mb: 0.5
+                    }}
+                  >
+                    {comment.author_name}
+                  </Typography>
+                  <Typography 
+                    variant="caption" 
+                    sx={{ 
+                      color: '#6c757d',
+                      fontWeight: 400
+                    }}
+                  >
+                    {moment(comment.created_at).locale('th').fromNow()}
+                  </Typography>
+                </Box>
+              </Stack>
+              
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  mb: 2,
+                  lineHeight: 1.6,
+                  color: '#5a6c57',
+                  fontSize: isReply ? '0.9rem' : '1rem'
+                }}
+              >
                 {comment.content}
               </Typography>
+              
               <Stack direction="row" spacing={2} alignItems="center">
-                <Typography variant="caption" color="text.secondary">
-                  {moment(comment.created_at).locale('th').fromNow()}
-                </Typography>
                 {user && (
                   <Button
                     size="small"
                     startIcon={<ReplyIcon />}
                     onClick={() => setReplyingTo({ ...replyingTo, [postId]: comment.id })}
-                    sx={{ fontSize: '0.75rem' }}
+                    sx={{ 
+                      fontSize: '0.8rem',
+                      borderRadius: '0.5rem',
+                      background: 'rgba(247, 245, 243, 0.8)',
+                      color: '#5a6c57',
+                      border: '1px solid rgba(47, 75, 63, 0.1)',
+                      fontWeight: 500,
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                        color: 'white',
+                        transform: 'translateY(-1px)',
+                        boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.3)'
+                      }
+                    }}
                   >
                     ตอบกลับ
                   </Button>
@@ -373,119 +477,282 @@ function Forum() {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f8fafc' }}>
-      {/* Hero Section - เหมือนหน้าข่าวสาร */}
+    <Box sx={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)',
+      fontFamily: "'Source Sans Pro', 'Segoe UI', system-ui, sans-serif"
+    }}>
+      {/* Hero Section - Furni Modern Style */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: 'linear-gradient(135deg, #2f4b3f, #243d33)',
           color: 'white',
-          py: 8,
-          textAlign: 'center'
+          py: { xs: 6, md: 10 },
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: '50%',
+            background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.3"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.2"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.4"/><circle cx="90" cy="80" r="0.8" fill="%23f9c74f" opacity="0.3"/></svg>') repeat`,
+            animation: 'float 20s ease-in-out infinite'
+          }
         }}
       >
-        <Container maxWidth="lg">
-          <Typography variant="h2" fontWeight={700} mb={2}>
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+          <Typography 
+            variant="h1" 
+            sx={{
+              fontFamily: "'Poppins', 'Inter', sans-serif",
+              fontWeight: 700,
+              fontSize: { xs: '2.5rem', md: '3.5rem' },
+              lineHeight: 1.2,
+              mb: 3
+            }}
+          >
             กระดานสนทนา
           </Typography>
-          <Typography variant="h6" sx={{ opacity: 0.9 }}>
-            พื้นที่แบ่งปันความคิดเห็นและประสบการณ์ระหว่างศิษย์เก่า
+          <Typography 
+            variant="h5" 
+            sx={{ 
+              opacity: 0.9,
+              lineHeight: 1.6,
+              fontSize: { xs: '1rem', md: '1.2rem' },
+              fontWeight: 400,
+              mb: 4,
+              maxWidth: '600px',
+              mx: 'auto'
+            }}
+          >
+            พื้นที่แบ่งปันความคิดเห็นและประสบการณ์ระหว่างศิษย์เก่า เชื่อมต่อและสร้างชุมชนแห่งการเรียนรู้
           </Typography>
+          
+          {/* Hero Icon */}
+          <Box sx={{ 
+            fontSize: { xs: '8rem', md: '12rem' }, 
+            color: 'rgba(249, 199, 79, 0.3)',
+            mb: 2
+          }}>
+            <ChatBubbleIcon sx={{ fontSize: 'inherit' }} />
+          </Box>
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-
-        {/* Error Alert */}
+      <Container maxWidth="lg" sx={{ py: 6 }}>
+        {/* Error Alert - Furni Style */}
         {error && (
-          <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>
+          <Alert 
+            severity="error" 
+            sx={{ 
+              mb: 4, 
+              borderRadius: '0.75rem',
+              boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)',
+              borderLeft: '4px solid #f9c74f',
+              fontWeight: 500,
+              backgroundColor: 'rgba(249, 199, 79, 0.1)',
+              color: '#2a3b3d'
+            }}
+          >
             {error}
           </Alert>
         )}
 
-        {/* Loading State - เหมือนหน้าข่าวสาร */}
+        {/* Loading State - Furni Style */}
         {loading ? (
-          <Stack spacing={3}>
+          <Stack spacing={4}>
             {[...Array(3)].map((_, index) => (
-              <Card key={index} sx={{ borderRadius: 4, border: '1px solid #e2e8f0' }}>
-                <CardContent sx={{ p: 3 }}>
-                  <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-                    <Box sx={{ width: 48, height: 48, borderRadius: '50%', bgcolor: 'grey.200' }} />
+              <Card 
+                key={index}
+                elevation={0}
+                sx={{
+                  background: 'white',
+                  border: '1px solid #e9ecef',
+                  borderRadius: '1.5rem',
+                  boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)',
+                  overflow: 'hidden'
+                }}
+              >
+                <CardContent sx={{ p: 4 }}>
+                  <Stack direction="row" spacing={3} sx={{ mb: 3 }}>
+                    <Box
+                      sx={{
+                        width: 56,
+                        height: 56,
+                        borderRadius: '50%',
+                        background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                        backgroundSize: '200px 100%',
+                        animation: 'shimmer 1.5s infinite'
+                      }}
+                    />
                     <Box sx={{ flex: 1 }}>
-                      <Box sx={{ width: '60%', height: 20, bgcolor: 'grey.200', borderRadius: 1, mb: 1 }} />
-                      <Box sx={{ width: '40%', height: 16, bgcolor: 'grey.200', borderRadius: 1 }} />
+                      <Box
+                        sx={{
+                          height: 20,
+                          width: '40%',
+                          borderRadius: '0.5rem',
+                          background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                          backgroundSize: '200px 100%',
+                          animation: 'shimmer 1.5s infinite',
+                          mb: 1
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          height: 16,
+                          width: '25%',
+                          borderRadius: '0.5rem',
+                          background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                          backgroundSize: '200px 100%',
+                          animation: 'shimmer 1.5s infinite'
+                        }}
+                      />
                     </Box>
                   </Stack>
-                  <Box sx={{ width: '90%', height: 16, bgcolor: 'grey.200', borderRadius: 1, mb: 1 }} />
-                  <Box sx={{ width: '80%', height: 16, bgcolor: 'grey.200', borderRadius: 1, mb: 1 }} />
-                  <Box sx={{ width: '70%', height: 16, bgcolor: 'grey.200', borderRadius: 1 }} />
+                  <Box
+                    sx={{
+                      height: 24,
+                      width: '80%',
+                      borderRadius: '0.5rem',
+                      background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                      backgroundSize: '200px 100%',
+                      animation: 'shimmer 1.5s infinite',
+                      mb: 2
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      height: 60,
+                      width: '100%',
+                      borderRadius: '0.5rem',
+                      background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                      backgroundSize: '200px 100%',
+                      animation: 'shimmer 1.5s infinite'
+                    }}
+                  />
                 </CardContent>
               </Card>
             ))}
           </Stack>
         ) : posts.length === 0 ? (
-          /* Empty State */
-          <Box textAlign="center" py={8}>
-            <ForumIcon sx={{ fontSize: 80, color: 'grey.300', mb: 2 }} />
-            <Typography variant="h5" fontWeight="bold" color="text.secondary" sx={{ mb: 1 }}>
-              ยังไม่มีโพสต์ในขณะนี้
+          /* Empty State - Furni Style */
+          <Box sx={{ textAlign: 'center', py: 10 }}>
+            <Box 
+              sx={{ 
+                width: 120,
+                height: 120,
+                borderRadius: '50%',
+                background: 'rgba(249, 199, 79, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mx: 'auto',
+                mb: 3
+              }}
+            >
+              <ChatBubbleIcon sx={{ fontSize: 60, color: '#f9c74f' }} />
+            </Box>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                fontFamily: "'Poppins', 'Inter', sans-serif",
+                fontWeight: 600, 
+                color: '#2a3b3d', 
+                mb: 2 
+              }}
+            >
+              ยังไม่มีโพสต์
             </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-              มาเริ่มพูดคุยกันเป็นคนแรก!
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                color: '#6c757d',
+                fontWeight: 400,
+                maxWidth: '400px',
+                mx: 'auto',
+                mb: 4
+              }}
+            >
+              มาเริ่มพูดคุยกันเป็นคนแรก! แบ่งปันความคิดเห็นและประสบการณ์ของคุณ
             </Typography>
-            {user && (
-              <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                onClick={() => setShowModal(true)}
-                sx={{ 
-                  borderRadius: 3,
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  '&:hover': {
-                    background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)'
-                  }
-                }}
-              >
-                สร้างโพสต์แรก
-              </Button>
-            )}
           </Box>
         ) : (
           /* Posts List - ธีมเหมือนหน้าข่าวสาร */
-          <Stack spacing={3}>
-            {posts.map(post => (
-              <Card key={post.id} elevation={0} sx={{
-                borderRadius: 4,
-                border: '1px solid #e2e8f0',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                  borderColor: '#667eea'
-                }
-              }}>
-                <CardContent sx={{ p: 3 }}>
-                  {/* Post Header - ธีมเหมือนหน้าข่าวสาร */}
-                  <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                      <Avatar sx={{
-                        width: 48,
-                        height: 48,
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        color: 'white'
-                      }}>
-                        <PersonIcon />
+          <Stack spacing={3} sx={{ animation: 'fadeIn 0.6s ease-out' }}>
+            {posts.map((post, index) => (
+              <Card 
+                key={post.id} 
+                elevation={0} 
+                sx={{
+                  borderRadius: '1.25rem',
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(47, 75, 63, 0.08)',
+                  overflow: 'hidden',
+                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                  animation: `fadeIn 0.6s ease-out ${index * 0.1}s both`,
+                  '&:hover': {
+                    transform: 'translateY(-8px) scale(1.02)',
+                    boxShadow: '0 1.5rem 3rem rgba(47, 75, 63, 0.12)',
+                    borderColor: '#f9c74f',
+                    '& .post-content': {
+                      color: '#2f4b3f'
+                    },
+                    '& .author-avatar': {
+                      transform: 'scale(1.1)',
+                      boxShadow: '0 0.5rem 1rem rgba(249, 199, 79, 0.3)'
+                    }
+                  }
+                }}
+              >
+                <CardContent sx={{ p: 4 }}>
+                  {/* Post Header - Furni Modern Design */}
+                  <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
+                    <Stack direction="row" alignItems="center" spacing={3}>
+                      <Avatar 
+                        className="author-avatar"
+                        sx={{
+                          width: 56,
+                          height: 56,
+                          background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                          color: 'white',
+                          fontWeight: 600,
+                          fontSize: '1.25rem',
+                          transition: 'all 0.3s ease',
+                          boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.2)'
+                        }}
+                      >
+                        {post.author_name ? post.author_name.charAt(0).toUpperCase() : <PersonIcon />}
                       </Avatar>
                       <Box>
-                        <Typography variant="h6" fontWeight={600} color="primary">
+                        <Typography 
+                          variant="h6" 
+                          sx={{ 
+                            fontFamily: "'Poppins', sans-serif",
+                            fontWeight: 600, 
+                            color: '#2f4b3f',
+                            mb: 0.5
+                          }}
+                        >
                           {post.author_name}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            color: '#6c757d',
+                            fontWeight: 400,
+                            letterSpacing: '0.025em'
+                          }}
+                        >
                           {moment(post.created_at).locale('th').fromNow()}
                         </Typography>
                       </Box>
                     </Stack>
                     
-                    {/* Post Menu - ตกแต่งจุด 3 จุด */}
+                    {/* Post Menu - Furni Modern Style */}
                     {user && user.id === post.user_id && (
                       <>
                         <IconButton
@@ -494,20 +761,23 @@ function Forum() {
                             setShowMoreMenu(showMoreMenu === post.id ? null : post.id);
                           }}
                           sx={{
-                            width: 44,
-                            height: 44,
-                            borderRadius: '50%',
-                            background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
-                            border: '1px solid #e2e8f0',
-                            transition: 'all 0.3s ease',
+                            width: 48,
+                            height: 48,
+                            borderRadius: '0.75rem',
+                            background: 'rgba(247, 245, 243, 0.8)',
+                            backdropFilter: 'blur(10px)',
+                            border: '1px solid rgba(47, 75, 63, 0.1)',
+                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            color: '#6c757d',
                             '&:hover': {
-                              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                              background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
                               color: 'white',
-                              transform: 'scale(1.05)',
-                              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)'
+                              transform: 'translateY(-2px) scale(1.05)',
+                              boxShadow: '0 0.75rem 1.5rem rgba(249, 199, 79, 0.3)',
+                              borderColor: '#f9c74f'
                             },
                             '&:active': {
-                              transform: 'scale(0.95)'
+                              transform: 'translateY(0) scale(0.98)'
                             }
                           }}
                         >
@@ -591,17 +861,39 @@ function Forum() {
                     )}
                   </Stack>
 
-                  {/* Post Content */}
-                  <Typography variant="h5" fontWeight="bold" gutterBottom>
+                  {/* Post Content - Furni Modern Design */}
+                  <Typography 
+                    variant="h5" 
+                    className="post-content"
+                    sx={{ 
+                      fontFamily: "'Poppins', sans-serif",
+                      fontWeight: 600,
+                      color: '#2a3b3d',
+                      mb: 2,
+                      lineHeight: 1.4,
+                      letterSpacing: '-0.025em',
+                      transition: 'color 0.3s ease'
+                    }}
+                  >
                     {post.title}
                   </Typography>
-                  <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.6 }}>
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      mb: 3, 
+                      lineHeight: 1.7,
+                      color: '#5a6c57',
+                      fontSize: '1.1rem',
+                      fontWeight: 400,
+                      letterSpacing: '0.025em'
+                    }}
+                  >
                     {post.content}
                   </Typography>
 
-                  {/* Post Image */}
+                  {/* Post Image - Enhanced with Furni styling */}
                   {post.image_url && (
-                    <Box sx={{ mb: 2, textAlign: 'center' }}>
+                    <Box sx={{ mb: 3, textAlign: 'center' }}>
                       <Box
                         component="img"
                         src={`http://localhost:5000${post.image_url}`}
@@ -610,30 +902,67 @@ function Forum() {
                           maxWidth: '100%',
                           maxHeight: 400,
                           objectFit: 'cover',
-                          borderRadius: 2,
-                          boxShadow: '0 4px 16px rgba(0,0,0,0.1)'
+                          borderRadius: '1rem',
+                          boxShadow: '0 0.75rem 2rem rgba(47, 75, 63, 0.15)',
+                          transition: 'all 0.3s ease',
+                          '&:hover': {
+                            transform: 'scale(1.02)',
+                            boxShadow: '0 1.5rem 3rem rgba(47, 75, 63, 0.2)'
+                          }
                         }}
                       />
                     </Box>
                   )}
                 </CardContent>
 
-                <CardActions sx={{ px: 3, pb: 3 }}>
+                {/* Card Actions - Furni Modern Style */}
+                <CardActions sx={{ px: 4, pb: 4, pt: 0 }}>
                   <Button
                     startIcon={<CommentIcon />}
                     onClick={() => toggleComments(post.id)}
-                    sx={{ borderRadius: 3 }}
+                    sx={{ 
+                      borderRadius: '0.75rem',
+                      background: 'rgba(247, 245, 243, 0.5)',
+                      border: '1px solid rgba(47, 75, 63, 0.1)',
+                      color: '#5a6c57',
+                      fontWeight: 500,
+                      px: 3,
+                      py: 1.5,
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                      '&:hover': {
+                        background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                        color: 'white',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 0.5rem 1rem rgba(249, 199, 79, 0.3)',
+                        borderColor: '#f9c74f'
+                      }
+                    }}
                   >
-                    <Badge badgeContent={post.comment_count} color="primary">
+                    <Badge 
+                      badgeContent={post.comment_count} 
+                      sx={{
+                        '& .MuiBadge-badge': {
+                          background: 'linear-gradient(135deg, #2f4b3f, #3d5f51)',
+                          color: 'white',
+                          fontWeight: 600
+                        }
+                      }}
+                    >
                       ความคิดเห็น
                     </Badge>
                   </Button>
                 </CardActions>
 
-                {/* Comments Section */}
+                {/* Comments Section - Enhanced Design */}
                 <Collapse in={showComments[post.id]}>
-                  <Box sx={{ px: 3, pb: 3 }}>
-                    <Paper sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 2 }}>
+                  <Box sx={{ px: 4, pb: 4 }}>
+                    <Paper sx={{ 
+                      p: 3, 
+                      background: 'linear-gradient(135deg, rgba(247, 245, 243, 0.8), rgba(255, 255, 255, 0.9))',
+                      backdropFilter: 'blur(10px)',
+                      borderRadius: '1rem',
+                      border: '1px solid rgba(47, 75, 63, 0.08)'
+                    }}>
                       {/* Comments List */}
                       {comments[post.id]?.length === 0 ? (
                         <Typography variant="body2" color="text.secondary" textAlign="center">
@@ -683,50 +1012,182 @@ function Forum() {
           </Stack>
         )}
 
-        {/* Create Post Dialog */}
+        {/* Create Post Dialog - Furni Modern Theme */}
         <Dialog 
           open={showModal} 
           onClose={handleCloseModal}
-          maxWidth="sm"
+          maxWidth="md"
           fullWidth
-          PaperProps={{ sx: { borderRadius: 4 } }}
+          PaperProps={{ 
+            sx: { 
+              borderRadius: '1.5rem',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(247, 245, 243, 0.9))',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(47, 75, 63, 0.08)',
+              boxShadow: '0 1.5rem 3rem rgba(47, 75, 63, 0.15)',
+              overflow: 'hidden'
+            } 
+          }}
         >
           <DialogTitle sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #2f4b3f, #243d33)',
             color: 'white',
             display: 'flex',
             alignItems: 'center',
-            gap: 2
+            gap: 2,
+            py: 3,
+            px: 4,
+            position: 'relative',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: '60%',
+              background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.3"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.2"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.4"/></svg>') repeat`,
+            }
           }}>
-            <AddIcon />
-            สร้างโพสต์ใหม่
+            <Box sx={{
+              width: 48,
+              height: 48,
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 2
+            }}>
+              <AddIcon sx={{ fontSize: '1.5rem', color: 'white' }} />
+            </Box>
+            <Typography 
+              variant="h5" 
+              sx={{ 
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: 600,
+                zIndex: 2
+              }}
+            >
+              สร้างโพสต์ใหม่
+            </Typography>
           </DialogTitle>
           
           <Box component="form" onSubmit={handleSubmit}>
-            <DialogContent sx={{ bgcolor: '#f8fafc', p: 3 }}>
-              <Stack spacing={3} sx={{ mt: 1 }}>
+            <DialogContent sx={{ 
+              background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)',
+              p: 4 
+            }}>
+              <Stack spacing={4} sx={{ mt: 2 }}>
+                {/* Author Info Card */}
+                <Paper sx={{
+                  p: 3,
+                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(247, 245, 243, 0.7))',
+                  borderRadius: '1rem',
+                  border: '1px solid rgba(47, 75, 63, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 3
+                }}>
+                  <Avatar sx={{
+                    width: 56,
+                    height: 56,
+                    background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                    color: 'white',
+                    fontWeight: 600,
+                    fontSize: '1.25rem'
+                  }}>
+                    {user?.first_name ? user.first_name.charAt(0).toUpperCase() : '?'}
+                  </Avatar>
+                  <Box>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        fontFamily: "'Poppins', sans-serif",
+                        fontWeight: 600, 
+                        color: '#2f4b3f',
+                        mb: 0.5
+                      }}
+                    >
+                      {user?.first_name && user?.last_name ? `${user.first_name} ${user.last_name}` : 'ผู้ใช้งาน'}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      กำลังสร้างโพสต์ใหม่
+                    </Typography>
+                  </Box>
+                </Paper>
+
                 <TextField
-                  label="หัวข้อ"
+                  label="หัวข้อโพสต์"
                   value={newPost.title}
                   onChange={(e) => setNewPost({...newPost, title: e.target.value})}
                   error={!!validationError.title}
                   helperText={validationError.title}
                   fullWidth
                   required
+                  placeholder="ระบุหัวข้อโพสต์ที่น่าสนใจ..."
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '0.75rem',
+                      fontSize: '1.1rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        borderColor: 'rgba(249, 199, 79, 0.5)'
+                      },
+                      '&.Mui-focused': {
+                        backgroundColor: 'white',
+                        borderColor: '#f9c74f',
+                        boxShadow: '0 0 0 3px rgba(249, 199, 79, 0.1)'
+                      }
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontWeight: 500,
+                      '&.Mui-focused': {
+                        color: '#f9c74f'
+                      }
+                    }
+                  }}
                 />
                 
                 <TextField
-                  label="เนื้อหา"
+                  label="เนื้อหาโพสต์"
                   multiline
-                  rows={5}
+                  rows={6}
                   value={newPost.content}
                   onChange={(e) => setNewPost({...newPost, content: e.target.value})}
                   error={!!validationError.content}
                   helperText={validationError.content}
                   fullWidth
                   required
+                  placeholder="แบ่งปันความคิดเห็น ประสบการณ์ หรือเรื่องราวของคุณ..."
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '0.75rem',
+                      fontSize: '1rem',
+                      lineHeight: 1.7,
+                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        borderColor: 'rgba(249, 199, 79, 0.5)'
+                      },
+                      '&.Mui-focused': {
+                        backgroundColor: 'white',
+                        borderColor: '#f9c74f',
+                        boxShadow: '0 0 0 3px rgba(249, 199, 79, 0.1)'
+                      }
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontWeight: 500,
+                      '&.Mui-focused': {
+                        color: '#f9c74f'
+                      }
+                    }
+                  }}
                 />
 
+                {/* Image Upload Section */}
                 <Box>
                   <input
                     accept="image/*"
@@ -741,9 +1202,33 @@ function Forum() {
                       component="span"
                       startIcon={<PhotoCameraIcon />}
                       fullWidth
-                      sx={{ py: 2, borderRadius: 2 }}
+                      sx={{ 
+                        py: 2.5,
+                        borderRadius: '0.75rem',
+                        borderStyle: 'dashed',
+                        borderWidth: 2,
+                        borderColor: 'rgba(249, 199, 79, 0.4)',
+                        color: '#5a6c57',
+                        fontWeight: 500,
+                        backgroundColor: 'rgba(249, 199, 79, 0.05)',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          borderColor: '#f9c74f',
+                          backgroundColor: 'rgba(249, 199, 79, 0.1)',
+                          color: '#f9c74f',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 0.5rem 1rem rgba(249, 199, 79, 0.2)'
+                        }
+                      }}
                     >
-                      เพิ่มรูปภาพ (ไม่จำเป็น)
+                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+                        <Typography variant="body1" fontWeight={600}>
+                          เพิ่มรูปภาพ (ไม่จำเป็น)
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          รองรับไฟล์ JPG, PNG ขนาดไม่เกิน 5MB
+                        </Typography>
+                      </Box>
                     </Button>
                   </label>
                   
@@ -752,15 +1237,29 @@ function Forum() {
                       {validationError.image}
                     </Typography>
                   )}
-                  
-                  <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                    รองรับไฟล์ JPG, PNG ขนาดไม่เกิน 5MB
-                  </Typography>
                 </Box>
 
+                {/* Image Preview */}
                 {imagePreview && (
-                  <Paper sx={{ p: 2, textAlign: 'center' }}>
-                    <Typography variant="subtitle2" gutterBottom>
+                  <Paper 
+                    sx={{ 
+                      p: 3, 
+                      textAlign: 'center',
+                      borderRadius: '1rem',
+                      background: 'linear-gradient(135deg, rgba(249, 199, 79, 0.1), rgba(255, 255, 255, 0.9))',
+                      border: '1px solid rgba(249, 199, 79, 0.2)',
+                      boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.1)'
+                    }}
+                  >
+                    <Typography 
+                      variant="subtitle2" 
+                      gutterBottom
+                      sx={{
+                        fontWeight: 600,
+                        color: '#2f4b3f',
+                        mb: 2
+                      }}
+                    >
                       ตัวอย่างรูปภาพ:
                     </Typography>
                     <Box
@@ -768,10 +1267,14 @@ function Forum() {
                       src={imagePreview}
                       alt="Preview"
                       sx={{
-                        maxHeight: 200,
+                        maxHeight: 250,
                         maxWidth: '100%',
-                        borderRadius: 2,
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                        borderRadius: '0.75rem',
+                        boxShadow: '0 0.5rem 1rem rgba(47, 75, 63, 0.15)',
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                          transform: 'scale(1.02)'
+                        }
                       }}
                     />
                     <Button
@@ -780,7 +1283,18 @@ function Forum() {
                         setImagePreview(null);
                         setNewPost({...newPost, image: null});
                       }}
-                      sx={{ mt: 1 }}
+                      sx={{ 
+                        mt: 2,
+                        borderRadius: '0.5rem',
+                        color: '#6c757d',
+                        fontWeight: 500,
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          color: '#f44336',
+                          backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                          transform: 'translateY(-1px)'
+                        }
+                      }}
                     >
                       ลบรูปภาพ
                     </Button>
@@ -789,24 +1303,62 @@ function Forum() {
               </Stack>
             </DialogContent>
             
-            <DialogActions sx={{ p: 3, bgcolor: 'white', borderTop: '1px solid #e2e8f0' }}>
-              <Button onClick={handleCloseModal} sx={{ borderRadius: 3 }}>
+            <Divider sx={{ borderColor: 'rgba(47, 75, 63, 0.08)' }} />
+            
+            <DialogActions sx={{ 
+              p: 4, 
+              background: 'linear-gradient(135deg, rgba(247, 245, 243, 0.8), rgba(255, 255, 255, 0.9))',
+              gap: 2
+            }}>
+              <Button 
+                onClick={handleCloseModal} 
+                sx={{ 
+                  borderRadius: '0.75rem',
+                  px: 4,
+                  py: 1.5,
+                  fontWeight: 500,
+                  color: '#5a6c57',
+                  border: '1px solid rgba(47, 75, 63, 0.2)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    borderColor: '#5a6c57',
+                    backgroundColor: 'rgba(90, 108, 87, 0.1)',
+                    transform: 'translateY(-2px)'
+                  }
+                }}
+              >
                 ยกเลิก
               </Button>
               <Button
                 type="submit"
                 variant="contained"
                 disabled={submitting}
-                startIcon={submitting ? <CircularProgress size={20} /> : <SendIcon />}
+                startIcon={submitting ? <CircularProgress size={20} color="inherit" /> : <SendIcon />}
                 sx={{ 
-                  borderRadius: 3,
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  borderRadius: '0.75rem',
+                  px: 4,
+                  py: 1.5,
+                  fontWeight: 600,
+                  background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                  color: 'white',
+                  boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.3)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)'
+                    background: 'linear-gradient(135deg, #f8b42e, #f9c74f)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 0.5rem 1.5rem rgba(249, 199, 79, 0.4)'
+                  },
+                  '&:active': {
+                    transform: 'translateY(0)'
+                  },
+                  '&:disabled': {
+                    background: 'linear-gradient(135deg, #e0e0e0, #f0f0f0)',
+                    color: '#9e9e9e',
+                    boxShadow: 'none'
                   }
                 }}
               >
-                โพสต์
+                {submitting ? 'กำลังสร้างโพสต์...' : 'สร้างโพสต์'}
               </Button>
             </DialogActions>
           </Box>
@@ -839,45 +1391,140 @@ function Forum() {
           </DialogActions>
         </Dialog>
 
-        {/* Edit Post Dialog */}
+        {/* Edit Post Dialog - Furni Modern Theme */}
         <Dialog 
           open={!!showEditModal} 
           onClose={() => setShowEditModal(null)}
-          maxWidth="sm"
+          maxWidth="md"
           fullWidth
-          PaperProps={{ sx: { borderRadius: 4 } }}
+          PaperProps={{ 
+            sx: { 
+              borderRadius: '1.5rem',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(247, 245, 243, 0.9))',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(47, 75, 63, 0.08)',
+              boxShadow: '0 1.5rem 3rem rgba(47, 75, 63, 0.15)',
+              overflow: 'hidden'
+            } 
+          }}
         >
           <DialogTitle sx={{
-            background: 'linear-gradient(135deg, #e0e7ff 60%, #fff 100%)',
+            background: 'linear-gradient(135deg, #2f4b3f, #243d33)',
+            color: 'white',
             display: 'flex',
             alignItems: 'center',
-            gap: 2
+            gap: 2,
+            py: 3,
+            px: 4,
+            position: 'relative',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: '60%',
+              background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.3"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.2"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.4"/></svg>') repeat`,
+            }
           }}>
-            <EditIcon color="primary" />
-            แก้ไขโพสต์
+            <Box sx={{
+              width: 48,
+              height: 48,
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 2
+            }}>
+              <EditIcon sx={{ fontSize: '1.5rem', color: 'white' }} />
+            </Box>
+            <Typography 
+              variant="h5" 
+              sx={{ 
+                fontFamily: "'Poppins', sans-serif",
+                fontWeight: 600,
+                zIndex: 2
+              }}
+            >
+              แก้ไขโพสต์
+            </Typography>
           </DialogTitle>
           
           <Box component="form" onSubmit={handleEditPost}>
-            <DialogContent sx={{ background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)' }}>
-              <Stack spacing={3} sx={{ mt: 1 }}>
+            <DialogContent sx={{ 
+              background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)',
+              p: 4 
+            }}>
+              <Stack spacing={4} sx={{ mt: 2 }}>
                 <TextField
-                  label="หัวข้อ"
+                  label="หัวข้อโพสต์"
                   value={editPost.title}
                   onChange={e => setEditPost({ ...editPost, title: e.target.value })}
                   fullWidth
                   required
+                  placeholder="แก้ไขหัวข้อโพสต์..."
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '0.75rem',
+                      fontSize: '1.1rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        borderColor: 'rgba(249, 199, 79, 0.5)'
+                      },
+                      '&.Mui-focused': {
+                        backgroundColor: 'white',
+                        borderColor: '#f9c74f',
+                        boxShadow: '0 0 0 3px rgba(249, 199, 79, 0.1)'
+                      }
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontWeight: 500,
+                      '&.Mui-focused': {
+                        color: '#f9c74f'
+                      }
+                    }
+                  }}
                 />
                 
                 <TextField
-                  label="เนื้อหา"
+                  label="เนื้อหาโพสต์"
                   multiline
-                  rows={5}
+                  rows={6}
                   value={editPost.content}
                   onChange={e => setEditPost({ ...editPost, content: e.target.value })}
                   fullWidth
                   required
+                  placeholder="แก้ไขเนื้อหาโพสต์..."
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '0.75rem',
+                      fontSize: '1rem',
+                      lineHeight: 1.7,
+                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        borderColor: 'rgba(249, 199, 79, 0.5)'
+                      },
+                      '&.Mui-focused': {
+                        backgroundColor: 'white',
+                        borderColor: '#f9c74f',
+                        boxShadow: '0 0 0 3px rgba(249, 199, 79, 0.1)'
+                      }
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontWeight: 500,
+                      '&.Mui-focused': {
+                        color: '#f9c74f'
+                      }
+                    }
+                  }}
                 />
 
+                {/* Image Upload Section */}
                 <Box>
                   <input
                     accept="image/*"
@@ -896,16 +1543,57 @@ function Forum() {
                       component="span"
                       startIcon={<PhotoCameraIcon />}
                       fullWidth
-                      sx={{ py: 2, borderRadius: 2 }}
+                      sx={{ 
+                        py: 2.5,
+                        borderRadius: '0.75rem',
+                        borderStyle: 'dashed',
+                        borderWidth: 2,
+                        borderColor: 'rgba(249, 199, 79, 0.4)',
+                        color: '#5a6c57',
+                        fontWeight: 500,
+                        backgroundColor: 'rgba(249, 199, 79, 0.05)',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          borderColor: '#f9c74f',
+                          backgroundColor: 'rgba(249, 199, 79, 0.1)',
+                          color: '#f9c74f',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 0.5rem 1rem rgba(249, 199, 79, 0.2)'
+                        }
+                      }}
                     >
-                      เปลี่ยนรูปภาพ
+                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+                        <Typography variant="body1" fontWeight={600}>
+                          เปลี่ยนรูปภาพ
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          รองรับไฟล์ JPG, PNG ขนาดไม่เกิน 5MB
+                        </Typography>
+                      </Box>
                     </Button>
                   </label>
                 </Box>
 
                 {editImagePreview && (
-                  <Paper sx={{ p: 2, textAlign: 'center' }}>
-                    <Typography variant="subtitle2" gutterBottom>
+                  <Paper sx={{ 
+                    p: 3, 
+                    textAlign: 'center',
+                    background: 'linear-gradient(135deg, #f7f5f3 60%, #f0ede8 100%)',
+                    borderRadius: '1.5rem',
+                    border: '1px solid rgba(47, 75, 63, 0.1)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                    backdropFilter: 'blur(8px)'
+                  }}>
+                    <Typography 
+                      variant="subtitle2" 
+                      gutterBottom
+                      sx={{
+                        color: '#2f4b3f',
+                        fontFamily: 'Poppins, sans-serif',
+                        fontWeight: 600,
+                        marginBottom: 2
+                      }}
+                    >
                       ตัวอย่างรูปภาพ:
                     </Typography>
                     <Box
@@ -915,8 +1603,14 @@ function Forum() {
                       sx={{
                         maxHeight: 200,
                         maxWidth: '100%',
-                        borderRadius: 2,
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                        borderRadius: '1.5rem',
+                        boxShadow: '0 8px 24px rgba(47, 75, 63, 0.2)',
+                        border: '2px solid rgba(249, 199, 79, 0.3)',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'scale(1.02)',
+                          boxShadow: '0 12px 32px rgba(47, 75, 63, 0.3)'
+                        }
                       }}
                     />
                     <Button
@@ -926,7 +1620,24 @@ function Forum() {
                         setEditPost({ ...editPost, image: null });
                         setRemoveImage(true);
                       }}
-                      sx={{ mt: 1 }}
+                      sx={{ 
+                        mt: 2,
+                        borderRadius: '1.5rem',
+                        background: 'linear-gradient(135deg, #ff6b6b, #ee5a52)',
+                        color: 'white',
+                        fontFamily: 'Poppins, sans-serif',
+                        fontWeight: 500,
+                        px: 3,
+                        py: 1,
+                        textTransform: 'none',
+                        transition: 'all 0.3s ease',
+                        border: '2px solid transparent',
+                        '&:hover': {
+                          background: 'linear-gradient(135deg, #ee5a52, #d63031)',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 8px 20px rgba(238, 90, 82, 0.4)'
+                        }
+                      }}
                     >
                       ลบรูปภาพ
                     </Button>
@@ -935,16 +1646,63 @@ function Forum() {
               </Stack>
             </DialogContent>
             
-            <DialogActions sx={{ p: 3, background: 'linear-gradient(135deg, #e0e7ff 60%, #fff 100%)' }}>
-              <Button onClick={() => setShowEditModal(null)} sx={{ borderRadius: 3 }}>
+            <DialogActions sx={{ 
+              p: 3, 
+              background: 'linear-gradient(135deg, #f7f5f3 60%, #f0ede8 100%)',
+              backdropFilter: 'blur(8px)',
+              borderTop: '1px solid rgba(47, 75, 63, 0.1)',
+              borderBottomLeftRadius: '1.5rem',
+              borderBottomRightRadius: '1.5rem',
+              gap: 2
+            }}>
+              <Button 
+                onClick={() => setShowEditModal(null)} 
+                sx={{ 
+                  borderRadius: '1.5rem',
+                  color: '#2f4b3f',
+                  border: '2px solid #2f4b3f',
+                  fontFamily: 'Poppins, sans-serif',
+                  fontWeight: 500,
+                  px: 4,
+                  py: 1.5,
+                  textTransform: 'none',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: 'rgba(47, 75, 63, 0.1)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 6px 16px rgba(47, 75, 63, 0.2)'
+                  }
+                }}
+              >
                 ยกเลิก
               </Button>
               <Button
                 type="submit"
                 variant="contained"
                 disabled={submitting}
-                startIcon={submitting ? <CircularProgress size={20} /> : <EditIcon />}
-                sx={{ borderRadius: 3 }}
+                startIcon={submitting ? <CircularProgress size={20} sx={{color: 'white'}} /> : <EditIcon />}
+                sx={{ 
+                  borderRadius: '1.5rem',
+                  background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                  color: '#2f4b3f',
+                  fontFamily: 'Poppins, sans-serif',
+                  fontWeight: 600,
+                  px: 4,
+                  py: 1.5,
+                  textTransform: 'none',
+                  border: '2px solid transparent',
+                  boxShadow: '0 4px 12px rgba(249, 199, 79, 0.3)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: 'linear-gradient(135deg, #fbd36b, #f9c74f)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 20px rgba(249, 199, 79, 0.4)'
+                  },
+                  '&:disabled': {
+                    background: 'rgba(249, 199, 79, 0.5)',
+                    color: 'rgba(47, 75, 63, 0.7)'
+                  }
+                }}
               >
                 บันทึก
               </Button>
@@ -952,18 +1710,32 @@ function Forum() {
           </Box>
         </Dialog>
 
-        {/* Floating Action Button - ธีมเหมือนหน้าข่าวสาร */}
+        {/* Floating Action Button - Furni Modern Style */}
         {user && (
           <Fab
-            color="primary"
             sx={{
               position: 'fixed',
-              bottom: 24,
-              right: 24,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              bottom: 32,
+              right: 32,
+              width: 64,
+              height: 64,
+              background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+              color: 'white',
+              boxShadow: '0 1rem 2rem rgba(249, 199, 79, 0.4)',
+              animation: 'float 3s ease-in-out infinite',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               '&:hover': {
-                background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)',
-                transform: 'scale(1.1)'
+                background: 'linear-gradient(135deg, #f8b42e, #f9c74f)',
+                transform: 'scale(1.15) translateY(-5px)',
+                boxShadow: '0 1.5rem 3rem rgba(249, 199, 79, 0.5)',
+                animation: 'none'
+              },
+              '&:active': {
+                transform: 'scale(1.05) translateY(-2px)'
+              },
+              '& .MuiSvgIcon-root': {
+                fontSize: '1.75rem',
+                fontWeight: 600
               }
             }}
             onClick={() => setShowModal(true)}

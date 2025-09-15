@@ -4,8 +4,12 @@ import {
   Container,
   Grid,
   Paper,
-  Typography,
-  Avatar,
+  Typograp  '&:hover::before': {
+    opacity: 1,
+  }
+}));
+
+const ActionBtn = styled(Button)(({ theme, variant: btnVariant }) => ({tar,
   Button,
   TextField,
   IconButton,
@@ -59,11 +63,21 @@ const ProfileContainer = styled(Container)(({ theme }) => ({
 
 const ProfileHeroCard = styled(Card)(({ theme }) => ({
   borderRadius: '24px',
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
   color: 'white',
   position: 'relative',
   overflow: 'hidden',
-  marginBottom: theme.spacing(3)
+  marginBottom: theme.spacing(3),
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: '50%',
+    background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.3"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.2"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.4"/></svg>') repeat`,
+    backgroundSize: '100px 100px',
+  }
 }));
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
@@ -71,27 +85,33 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   height: 120,
   fontSize: '3rem',
   fontWeight: 'bold',
-  border: '4px solid white',
-  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+  border: '4px solid #f9c74f',
+  boxShadow: '0 8px 32px rgba(249, 199, 79, 0.4)',
   cursor: 'pointer',
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+  color: '#2f4b3f',
   '&:hover': {
     transform: 'scale(1.05)',
-    boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4)'
+    boxShadow: '0 12px 40px rgba(249, 199, 79, 0.6)',
+    border: '4px solid #fbd36b'
   }
 }));
 
 const InfoCard = styled(Card)(({ theme }) => ({
   borderRadius: '20px',
-  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-  border: '1px solid #f0f0f0',
+  background: 'rgba(255, 255, 255, 0.95)',
+  backdropFilter: 'blur(15px)',
+  border: '2px solid rgba(249, 199, 79, 0.2)',
+  boxShadow: '0 8px 32px rgba(47, 75, 63, 0.1)',
   marginBottom: theme.spacing(3),
   overflow: 'hidden',
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
   position: 'relative',
   '&:hover': {
-    transform: 'translateY(-4px)',
-    boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)'
+    transform: 'translateY(-5px)',
+    boxShadow: '0 16px 48px rgba(47, 75, 63, 0.15)',
+    borderColor: 'rgba(249, 199, 79, 0.4)',
   },
   '&::before': {
     content: '""',
@@ -100,7 +120,12 @@ const InfoCard = styled(Card)(({ theme }) => ({
     left: 0,
     right: 0,
     height: '4px',
-    background: 'linear-gradient(90deg, #667eea, #764ba2)'
+    background: 'linear-gradient(90deg, #2f4b3f, #f9c74f)',
+    opacity: 0,
+    transition: 'opacity 0.3s ease',
+  },
+  '&:hover::before': {
+    opacity: 1,
   }
 }));
 
@@ -111,7 +136,7 @@ const SectionTitle = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(2),
   fontWeight: 600,
   fontSize: '1.1rem',
-  color: '#2d3748'
+  color: '#2f4b3f'
 }));
 
 
@@ -119,15 +144,18 @@ const SectionTitle = styled(Box)(({ theme }) => ({
 
 
 const ActionButton = styled(Button)(({ theme }) => ({
-  borderRadius: '12px',
-  padding: '8px 24px',
+  borderRadius: '16px',
+  padding: '12px 32px',
   fontWeight: 600,
   textTransform: 'none',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-  transition: 'all 0.2s ease',
+  background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+  color: '#2f4b3f',
+  boxShadow: '0 4px 16px rgba(249, 199, 79, 0.4)',
+  transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
   '&:hover': {
     transform: 'translateY(-2px)',
-    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
+    boxShadow: '0 8px 24px rgba(249, 199, 79, 0.6)',
+    background: 'linear-gradient(135deg, #f8b42e, #f9c74f)',
   }
 }));
 
@@ -428,7 +456,7 @@ function NewProfilePage() {
           <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500 }}>
             {label}
           </Typography>
-          <Typography variant="body1" sx={{ mt: 0.5, color: '#2d3748' }}>
+          <Typography variant="body1" sx={{ mt: 0.5, color: '#2f4b3f' }}>
             {displayValue || (name === 'address' ? 'ยังไม่มีข้อมูล' : 'ไม่ระบุ')}
           </Typography>
         </Box>
@@ -518,7 +546,7 @@ function NewProfilePage() {
           <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500 }}>
             {label}
           </Typography>
-          <Typography variant="body1" sx={{ mt: 0.5, color: '#2d3748' }}>
+          <Typography variant="body1" sx={{ mt: 0.5, color: '#2f4b3f' }}>
             {value || 'ไม่ระบุ'}
           </Typography>
         </Box>
@@ -669,7 +697,7 @@ function NewProfilePage() {
                             size="small"
                             sx={{
                               bgcolor: 'white',
-                              color: '#667eea',
+                              color: '#f9c74f',
                               '&:hover': { bgcolor: '#f8f9fa' },
                               boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
                             }}
@@ -785,7 +813,7 @@ function NewProfilePage() {
               <InfoCard>
                 <CardContent sx={{ p: 4 }}>
                   <SectionTitle>
-                    <PersonIcon sx={{ color: '#667eea' }} />
+                    <PersonIcon sx={{ color: '#2f4b3f' }} />
                     ข้อมูลส่วนตัวและการติดต่อ
                   </SectionTitle>
                   
@@ -815,7 +843,7 @@ function NewProfilePage() {
               <InfoCard>
                 <CardContent sx={{ p: 4 }}>
                   <SectionTitle>
-                    <SchoolIcon sx={{ color: '#f59e0b' }} />
+                    <SchoolIcon sx={{ color: '#2f4b3f' }} />
                     การศึกษาและประสบการณ์การทำงาน
                   </SectionTitle>
                   
@@ -840,7 +868,7 @@ function NewProfilePage() {
               <InfoCard>
                 <CardContent sx={{ p: 3 }}>
                   <SectionTitle>
-                    <LocationIcon sx={{ color: '#10b981' }} />
+                    <LocationIcon sx={{ color: '#2f4b3f' }} />
                     ที่อยู่
                   </SectionTitle>
                   
@@ -876,7 +904,15 @@ function NewProfilePage() {
         {/* Progress Bar */}
         {(saving || uploadingImage) && (
           <Box sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 2000 }}>
-            <LinearProgress />
+            <LinearProgress 
+              sx={{
+                height: 4,
+                background: 'rgba(249, 199, 79, 0.1)',
+                '& .MuiLinearProgress-bar': {
+                  background: 'linear-gradient(45deg, #2f4b3f, #f9c74f)',
+                }
+              }}
+            />
           </Box>
         )}
 

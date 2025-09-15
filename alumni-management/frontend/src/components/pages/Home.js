@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import BackgroundLayout from '../layout/BackgroundLayout';
 import 'animate.css';
 import { 
   Container, 
@@ -27,7 +26,10 @@ import {
   School as SchoolIcon,
   Celebration as CelebrationIcon,
   ArrowForward as ArrowIcon,
-  NotificationsActive as NotificationIcon
+  NotificationsActive as NotificationIcon,
+  Work as WorkIcon,
+  PersonAdd as PersonAddIcon,
+  BusinessCenter as BusinessIcon
 } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
@@ -38,6 +40,102 @@ function Home() {
   const user = JSON.parse(localStorage.getItem('user'));
   const [latestNews, setLatestNews] = useState(null);
   const [latestEvent, setLatestEvent] = useState(null);
+  
+  // States for tabs and modal
+  const [activeTab, setActiveTab] = useState('home');
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+
+  // Services data
+  const services = [
+    {
+      title: 'จัดการข้อมูลส่วนตัว',
+      description: 'อัปเดตข้อมูลส่วนตัวและประวัติการศึกษา',
+      icon: 'fas fa-user-edit',
+      content: 'ระบบจัดการข้อมูลส่วนตัวที่ครบครันและปลอดภัย ช่วยให้คุณสามารถอัปเดตข้อมูลได้ตลอดเวลา',
+      features: [
+        'แก้ไขข้อมูลส่วนตัว',
+        'อัปเดตข้อมูลการติดต่อ', 
+        'จัดการรูปโปรไฟล์',
+        'ตั้งค่าความเป็นส่วนตัว'
+      ]
+    },
+    {
+      title: 'เครือข่ายศิษย์เก่า',
+      description: 'เชื่อมต่อกับเพื่อนศิษย์เก่าและสร้างเครือข่าย',
+      icon: 'fas fa-users',
+      content: 'ค้นหาและเชื่อมต่อกับเพื่อนร่วมรุ่น เพื่อนร่วมคณะ และสร้างเครือข่ายทางวิชาชีพ',
+      features: [
+        'ค้นหาศิษย์เก่า',
+        'แชท์ส่วนตัว',
+        'สร้างกลุ่มสนทนา', 
+        'แบ่งปันประสบการณ์'
+      ]
+    },
+    {
+      title: 'ข่าวสารและกิจกรรม',
+      description: 'ติดตามข่าวสารและเข้าร่วมกิจกรรมต่าง ๆ',
+      icon: 'fas fa-calendar-alt',
+      content: 'อัปเดตข่าวสาร ประกาศ และกิจกรรมของมหาวิทยาลัยและชุมชนศิษย์เก่า',
+      features: [
+        'ข่าวสารล่าสุด',
+        'ลงทะเบียนกิจกรรม',
+        'ปฏิทินกิจกรรม',
+        'แจ้งเตือนอัตโนมัติ'
+      ]
+    },
+    {
+      title: 'ประวัติการทำงาน',
+      description: 'บันทึกและแบ่งปันประสบการณ์การทำงาน',
+      icon: 'fas fa-briefcase',
+      content: 'จัดการข้อมูลประวัติการทำงาน ตำแหน่งงาน และแบ่งปันประสบการณ์กับรุ่นน้อง',
+      features: [
+        'บันทึกประวัติงาน',
+        'แบ่งปันประสบการณ์',
+        'หางานและโอกาส',
+        'ให้คำปรึกษาแนะนำ'
+      ]
+    },
+    {
+      title: 'ฟอรัมและชุมชน',
+      description: 'พูดคุยและแบ่งปันความรู้ในชุมชนศิษย์เก่า',
+      icon: 'fas fa-comments',
+      content: 'พื้นที่สำหรับการแลกเปลี่ยนความคิดเห็น ถามตอบ และสร้างชุมชนแห่งการเรียนรู้',
+      features: [
+        'ตั้งกระทู้ถามตอบ',
+        'แบ่งปันความรู้',
+        'กลุ่มความสนใจ',
+        'ระบบโหวตและไลค์'
+      ]
+    },
+    {
+      title: 'บริการสนับสนุน',
+      description: 'รับการช่วยเหลือและสนับสนุนจากทีมงาน',
+      icon: 'fas fa-headset',
+      content: 'ทีมงานพร้อมให้บริการช่วยเหลือและตอบข้อสงสัยเกี่ยวกับการใช้งานระบบ',
+      features: [
+        'แชท์สดกับทีมงาน',
+        'คู่มือการใช้งาน',
+        'รายงานปัญหา',
+        'ข้อเสนอแนะ'
+      ]
+    }
+  ];
+
+  // Modal functions
+  const openModal = (title, content, icon, features) => {
+    setModalContent({ title, content, icon, features });
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setModalContent(null);
+  };
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
 
   useEffect(() => {
     // Fetch latest news
@@ -57,68 +155,73 @@ function Home() {
   }, []);
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f8fafc' }}>
-      {/* Hero Section with Gradient Background */}
+    <Box sx={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)',
+      fontFamily: 'Source Sans Pro, sans-serif'
+    }}>
+      {/* Hero Section - Furni Modern Style */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
+          background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
+          color: '#ffffff',
           py: { xs: 8, md: 12 },
           position: 'relative',
           overflow: 'hidden'
         }}
       >
-        {/* Decorative shapes */}
+        {/* Furni-style decorative elements */}
         <Box sx={{ 
           position: 'absolute', 
-          top: -50, 
-          right: -50, 
-          width: 200, 
-          height: 200, 
-          background: 'rgba(255,255,255,0.1)', 
-          borderRadius: '50%',
-          animation: 'float 6s ease-in-out infinite'
-        }} />
-        <Box sx={{ 
-          position: 'absolute', 
-          bottom: -30, 
-          left: -30, 
-          width: 150, 
-          height: 150, 
-          background: 'rgba(255,255,255,0.05)', 
-          borderRadius: '50%',
-          animation: 'float 8s ease-in-out infinite reverse'
+          top: 0, 
+          right: 0, 
+          bottom: 0, 
+          left: '50%',
+          background: 'url("data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'20\' cy=\'20\' r=\'1.5\' fill=\'%23f9c74f\' opacity=\'0.3\'/><circle cx=\'80\' cy=\'30\' r=\'1\' fill=\'%23f9c74f\' opacity=\'0.2\'/><circle cx=\'40\' cy=\'70\' r=\'1.2\' fill=\'%23f9c74f\' opacity=\'0.4\'/><circle cx=\'90\' cy=\'80\' r=\'0.8\' fill=\'%23f9c74f\' opacity=\'0.3\'/></svg>") repeat',
+          backgroundSize: '100px 100px',
+          animation: 'float 20s ease-in-out infinite',
+          '@keyframes float': {
+            '0%, 100%': { transform: 'translateY(0px)' },
+            '50%': { transform: 'translateY(-10px)' }
+          }
         }} />
         
         <Container maxWidth="xl">
           <Grid container alignItems="center" spacing={4}>
-            <Grid item xs={12} md={8}>
-              <Box className="animate__animated animate__fadeInLeft">
+            <Grid item xs={12} md={7}>
+              <Box className="animate__animated animate__fadeInLeft" sx={{ position: 'relative', zIndex: 2 }}>
                 <Typography 
-                  variant="h2" 
-                  fontWeight={800} 
+                  variant="h1" 
                   sx={{ 
                     fontSize: { xs: '2.5rem', md: '3.5rem' },
+                    fontWeight: 700,
+                    lineHeight: 1.2,
                     mb: 2,
-                    lineHeight: 1.1
+                    fontFamily: 'Poppins, sans-serif'
                   }}
                 >
-                  ยินดีต้อนรับสู่ชุมชน
-                  <Box component="span" sx={{ color: '#ffd700', display: 'block' }}>
-                    ศิษย์เก่า RMU
+                  เชื่อมต่อศิษย์เก่า
+                  <Box component="span" sx={{ 
+                    color: '#f9c74f', 
+                    display: 'block',
+                    fontSize: { xs: '2rem', md: '2.5rem' }
+                  }}>
+                    สร้างเครือข่ายแห่งอนาคต
                   </Box>
                 </Typography>
                 <Typography 
-                  variant="h5" 
+                  variant="h6" 
                   sx={{ 
                     mb: 4, 
                     opacity: 0.9,
-                    fontSize: { xs: '1.2rem', md: '1.5rem' },
-                    fontWeight: 400
+                    fontSize: { xs: '1.1rem', md: '1.2rem' },
+                    fontWeight: 400,
+                    lineHeight: 1.6,
+                    maxWidth: 600
                   }}
                 >
-                  เชื่อมต่อ แบ่งปัน และเติบโตไปด้วยกันกับเครือข่ายศิษย์เก่า
-                  <br />มหาวิทยาลัยราชภัฏมหาสารคาม
+                  ระบบจัดการข้อมูลศิษย์เก่าที่ทันสมัย ช่วยให้คุณเชื่อมต่อกับเพื่อนร่วมรุ่น 
+                  แบ่งปันประสบการณ์ และสร้างเครือข่ายทางวิชาชีพ
                 </Typography>
                 
                 {user ? (
@@ -130,276 +233,405 @@ function Home() {
                       gap: 2, 
                       px: 3, 
                       py: 2.5, 
-                      borderRadius: 3,
-                      background: 'rgba(255,255,255,0.15)',
-                      backdropFilter: 'blur(10px)',
+                      borderRadius: '1.5rem',
+                      background: 'rgba(255,255,255,0.9)',
+                      backdropFilter: 'blur(15px)',
                       border: '1px solid rgba(255,255,255,0.2)',
-                      maxWidth: 500
+                      maxWidth: 500,
+                      boxShadow: '0 0.5rem 1rem rgba(47, 75, 63, 0.15)'
                     }}
                     className="animate__animated animate__fadeIn animate__delay-1s"
                   >
-                    <Avatar sx={{ width: 50, height: 50, bgcolor: 'rgba(255,255,255,0.2)' }}>
+                    <Avatar sx={{ 
+                      width: 50, 
+                      height: 50, 
+                      bgcolor: '#2f4b3f',
+                      color: '#ffffff',
+                      fontWeight: 600
+                    }}>
                       {user.name?.charAt(0)}
                     </Avatar>
                     <Box>
-                      <Typography variant="h6" fontWeight={600}>
-                        สวัสดี, {user.name}
+                      <Typography variant="h6" fontWeight={600} sx={{ color: '#2f4b3f' }}>
+                        ยินดีต้อนรับ, {user.name}
                       </Typography>
                       <Chip 
-                        label={user.faculty} 
+                        label={user.faculty || 'ศิษย์เก่า'} 
                         size="small" 
                         sx={{ 
-                          bgcolor: 'rgba(255,255,255,0.2)', 
-                          color: 'white',
-                          fontWeight: 500
+                          background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                          color: '#ffffff',
+                          fontWeight: 600
                         }} 
                       />
                     </Box>
                   </Paper>
                 ) : (
-                  <Stack direction="row" spacing={2} className="animate__animated animate__fadeIn animate__delay-1s">
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} className="animate__animated animate__fadeIn animate__delay-1s">
                     <Button
                       component={RouterLink}
                       to="/register"
                       variant="contained"
                       size="large"
                       sx={{
-                        bgcolor: '#ffd700',
-                        color: '#1a1a1a',
-                        px: 4,
+                        background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                        color: '#ffffff',
+                        px: { xs: 3, md: 4 },
                         py: 1.5,
-                        borderRadius: 3,
+                        borderRadius: '0.75rem',
                         fontWeight: 600,
+                        fontSize: '0.95rem',
+                        letterSpacing: '0.025em',
+                        border: '2px solid #f9c74f',
+                        boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.3)',
                         '&:hover': {
-                          bgcolor: '#ffed4e',
-                          transform: 'translateY(-2px)'
+                          background: '#f8b42e',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.25)'
                         }
                       }}
+                      startIcon={<PersonAddIcon />}
                     >
                       เริ่มต้นใช้งาน
                     </Button>
                     <Button
                       component={RouterLink}
-                      to="/login"
+                      to="/alumni"
                       variant="outlined"
                       size="large"
                       sx={{
-                        color: 'white',
-                        borderColor: 'rgba(255,255,255,0.5)',
-                        px: 4,
+                        color: '#ffffff',
+                        borderColor: 'rgba(255,255,255,0.3)',
+                        px: { xs: 3, md: 4 },
                         py: 1.5,
-                        borderRadius: 3,
+                        borderRadius: '0.75rem',
                         fontWeight: 600,
+                        fontSize: '0.95rem',
+                        borderWidth: '2px',
                         '&:hover': {
-                          borderColor: 'white',
-                          bgcolor: 'rgba(255,255,255,0.1)'
+                          borderColor: '#ffffff',
+                          bgcolor: 'rgba(255,255,255,0.1)',
+                          transform: 'translateY(-2px)'
                         }
                       }}
+                      startIcon={<PeopleIcon />}
                     >
-                      เข้าสู่ระบบ
+                      ดูทำเนียบศิษย์เก่า
                     </Button>
                   </Stack>
                 )}
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <Box 
+                sx={{ 
+                  textAlign: 'center',
+                  position: 'relative',
+                  zIndex: 2
+                }} 
+                className="animate__animated animate__fadeInRight"
+              >
+                <Box sx={{ 
+                  fontSize: { xs: '8rem', md: '12rem' }, 
+                  color: 'rgba(249, 199, 79, 0.3)',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                  <SchoolIcon sx={{ fontSize: 'inherit' }} />
+                </Box>
               </Box>
             </Grid>
           </Grid>
         </Container>
       </Box>
 
-      {/* Quick Access Cards */}
+      {/* Product Showcase - Furni Style */}
       <Container maxWidth="xl" sx={{ py: 8 }}>
-        <Typography 
-          variant="h4" 
-          fontWeight={700} 
-          textAlign="center" 
-          mb={6}
-          className="animate__animated animate__fadeInUp"
-        >
-          เข้าถึงได้ง่าย ใช้งานได้ทันที
-        </Typography>
-        
-        <Grid container spacing={4} className="animate__animated animate__fadeInUp">
-          {/* Latest News Card */}
-          <Grid item xs={12} md={6} lg={4}>
-            <Card 
-              elevation={0}
-              sx={{ 
-                height: '100%', 
-                borderRadius: 4,
-                border: '1px solid #e2e8f0',
-                transition: 'all 0.3s ease',
-                '&:hover': { 
-                  transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                  borderColor: '#667eea'
-                }
-              }}
-            >
-              <Box sx={{ position: 'relative' }}>
-                <CardMedia
-                  component="img"
-                  image={latestNews?.image_url ? `http://localhost:5000${latestNews.image_url}` : process.env.PUBLIC_URL + "/images/news.jpg"}
-                  alt="ข่าวสารล่าสุด"
-                  sx={{ height: 200, objectFit: 'cover' }}
-                  onError={e => { 
-                    e.target.onerror = null; 
-                    e.target.src = process.env.PUBLIC_URL + "/images/news.jpg"; 
-                  }}
-                />
-                <Chip
-                  icon={<TrendingIcon />}
-                  label="ข่าวใหม่"
-                  size="small"
-                  sx={{
-                    position: 'absolute',
-                    top: 16,
-                    right: 16,
-                    bgcolor: '#ff6b6b',
-                    color: 'white',
-                    fontWeight: 600
-                  }}
-                />
-              </Box>
-              <CardContent sx={{ p: 3 }}>
-                <Typography variant="h6" fontWeight={600} mb={2}>
-                  {latestNews?.title || "ข่าวสารล่าสุด"}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" mb={3}>
-                  {latestNews?.content?.substring(0, 100) || "ติดตามข่าวสารและประกาศสำคัญสำหรับศิษย์เก่า"}...
-                </Typography>
-                <Button
-                  component={RouterLink}
-                  to="/news"
-                  variant="contained"
-                  fullWidth
-                  endIcon={<ArrowIcon />}
-                  sx={{ borderRadius: 2 }}
-                >
-                  ดูข่าวทั้งหมด
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
+        <Box textAlign="center" mb={6}>
+          <Typography 
+            variant="h4" 
+            sx={{
+              fontWeight: 600,
+              fontFamily: 'Poppins, sans-serif',
+              color: '#2a3b3d',
+              mb: 2
+            }}
+            className="animate__animated animate__fadeInUp"
+          >
+            บริการเด่นสำหรับศิษย์เก่า
+          </Typography>
+          <Typography 
+            variant="h6" 
+            sx={{
+              color: '#adb5bd',
+              fontSize: '1rem',
+              fontWeight: 500
+            }}
+            className="animate__animated animate__fadeInUp"
+          >
+            ครบครันทุกความต้องการสำหรับชุมชนศิษย์เก่า พร้อมระบบที่ทันสมัย
+          </Typography>
+        </Box>
 
-          {/* Latest Event Card */}
-          <Grid item xs={12} md={6} lg={4}>
-            <Card 
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={4}>
+            <Card
               elevation={0}
-              sx={{ 
-                height: '100%', 
-                borderRadius: 4,
-                border: '1px solid #e2e8f0',
+              sx={{
+                height: '100%',
+                background: 'transparent',
+                borderRadius: '1.5rem',
                 transition: 'all 0.3s ease',
-                '&:hover': { 
-                  transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                  borderColor: '#ffd700'
+                position: 'relative',
+                overflow: 'hidden',
+                '&:hover': {
+                  transform: 'translateY(-10px)',
+                  boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.15)'
                 }
               }}
+              className="animate__animated animate__fadeInUp"
             >
-              <Box sx={{ position: 'relative' }}>
-                <CardMedia
-                  component="img"
-                  image={latestEvent?.image_url ? `http://localhost:5000${latestEvent.image_url}` : process.env.PUBLIC_URL + "/images/events.jpg"}
-                  alt="กิจกรรมล่าสุด"
-                  sx={{ height: 200, objectFit: 'cover' }}
-                  onError={e => { 
-                    e.target.onerror = null; 
-                    e.target.src = process.env.PUBLIC_URL + "/images/events.jpg"; 
-                  }}
-                />
-                <Chip
-                  icon={<EventIcon />}
-                  label="กิจกรรม"
-                  size="small"
-                  sx={{
+              <Box
+                sx={{
+                  height: 250,
+                  background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff',
+                  fontSize: '4rem',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&::before': {
+                    content: '""',
                     position: 'absolute',
-                    top: 16,
-                    right: 16,
-                    bgcolor: '#ffd700',
-                    color: '#1a1a1a',
-                    fontWeight: 600
-                  }}
-                />
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'linear-gradient(45deg, transparent 30%, rgba(249, 199, 79, 0.1) 50%, transparent 70%)',
+                    transform: 'translateX(-100%)',
+                    transition: 'transform 0.6s'
+                  }
+                }}
+              >
+                <PeopleIcon sx={{ fontSize: 'inherit' }} />
               </Box>
-              <CardContent sx={{ p: 3 }}>
-                <Typography variant="h6" fontWeight={600} mb={2}>
-                  {latestEvent?.title || "กิจกรรมที่กำลังจะมาถึง"}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" mb={3}>
-                  {latestEvent?.description?.substring(0, 100) || "กิจกรรมและงานสังสรรค์ศิษย์เก่าที่น่าสนใจ"}...
-                </Typography>
-                <Button
-                  component={RouterLink}
-                  to="/events"
-                  variant="contained"
-                  fullWidth
-                  endIcon={<ArrowIcon />}
-                  sx={{ 
-                    borderRadius: 2,
-                    bgcolor: '#ffd700',
-                    color: '#1a1a1a',
-                    '&:hover': { bgcolor: '#ffed4e' }
+              <CardContent sx={{ padding: '1.5rem', textAlign: 'center', background: 'transparent' }}>
+                <Typography 
+                  variant="h6" 
+                  sx={{
+                    fontSize: '1.25rem',
+                    fontWeight: 600,
+                    color: '#2a3b3d',
+                    marginBottom: '0.5rem'
                   }}
                 >
-                  ดูกิจกรรมทั้งหมด
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Alumni Directory Card */}
-          <Grid item xs={12} md={6} lg={4}>
-            <Card 
-              elevation={0}
-              sx={{ 
-                height: '100%', 
-                borderRadius: 4,
-                border: '1px solid #e2e8f0',
-                transition: 'all 0.3s ease',
-                '&:hover': { 
-                  transform: 'translateY(-8px)',
-                  boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                  borderColor: '#10b981'
-                }
-              }}
-            >
-              <Box sx={{ position: 'relative', height: 200, bgcolor: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <PeopleIcon sx={{ fontSize: 80, color: '#10b981' }} />
-                <Chip
-                  icon={<PeopleIcon />}
-                  label="ทำเนียบ"
-                  size="small"
-                  sx={{
-                    position: 'absolute',
-                    top: 16,
-                    right: 16,
-                    bgcolor: '#10b981',
-                    color: 'white',
-                    fontWeight: 600
-                  }}
-                />
-              </Box>
-              <CardContent sx={{ p: 3 }}>
-                <Typography variant="h6" fontWeight={600} mb={2}>
                   ทำเนียบศิษย์เก่า
                 </Typography>
-                <Typography variant="body2" color="text.secondary" mb={3}>
-                  ค้นหาและติดต่อเพื่อนร่วมรุ่นของคุณ เชื่อมต่อกับเครือข่ายศิษย์เก่า
+                <Typography 
+                  variant="h5" 
+                  sx={{
+                    fontSize: '1.5rem',
+                    fontWeight: 700,
+                    color: '#f8b42e',
+                    marginBottom: '1rem'
+                  }}
+                >
+                  2,568 คน
                 </Typography>
                 <Button
                   component={RouterLink}
                   to="/alumni"
-                  variant="contained"
-                  fullWidth
-                  endIcon={<ArrowIcon />}
-                  sx={{ 
-                    borderRadius: 2,
-                    bgcolor: '#10b981',
-                    '&:hover': { bgcolor: '#059669' }
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: '50%',
+                    background: '#f0ede8',
+                    border: '2px solid #dee2e6',
+                    color: '#6c757d',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto',
+                    transition: 'all 0.3s ease',
+                    fontSize: '1.2rem',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                      borderColor: '#f9c74f',
+                      color: '#ffffff',
+                      transform: 'scale(1.1)'
+                    }
                   }}
                 >
-                  ดูทำเนียบศิษย์เก่า
+                  <ArrowIcon />
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Card
+              elevation={0}
+              sx={{
+                height: '100%',
+                background: 'transparent',
+                borderRadius: '1.5rem',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden',
+                '&:hover': {
+                  transform: 'translateY(-10px)',
+                  boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.15)'
+                }
+              }}
+              className="animate__animated animate__fadeInUp"
+            >
+              <Box
+                sx={{
+                  height: 250,
+                  background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff',
+                  fontSize: '4rem'
+                }}
+              >
+                <EventIcon sx={{ fontSize: 'inherit' }} />
+              </Box>
+              <CardContent sx={{ padding: '1.5rem', textAlign: 'center', background: 'transparent' }}>
+                <Typography 
+                  variant="h6" 
+                  sx={{
+                    fontSize: '1.25rem',
+                    fontWeight: 600,
+                    color: '#2a3b3d',
+                    marginBottom: '0.5rem'
+                  }}
+                >
+                  กิจกรรมศิษย์เก่า
+                </Typography>
+                <Typography 
+                  variant="h5" 
+                  sx={{
+                    fontSize: '1.5rem',
+                    fontWeight: 700,
+                    color: '#f8b42e',
+                    marginBottom: '1rem'
+                  }}
+                >
+                  156 กิจกรรม
+                </Typography>
+                <Button
+                  component={RouterLink}
+                  to="/events"
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: '50%',
+                    background: '#f0ede8',
+                    border: '2px solid #dee2e6',
+                    color: '#6c757d',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto',
+                    transition: 'all 0.3s ease',
+                    fontSize: '1.2rem',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                      borderColor: '#f9c74f',
+                      color: '#ffffff',
+                      transform: 'scale(1.1)'
+                    }
+                  }}
+                >
+                  <ArrowIcon />
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Card
+              elevation={0}
+              sx={{
+                height: '100%',
+                background: 'transparent',
+                borderRadius: '1.5rem',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden',
+                '&:hover': {
+                  transform: 'translateY(-10px)',
+                  boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.15)'
+                }
+              }}
+              className="animate__animated animate__fadeInUp"
+            >
+              <Box
+                sx={{
+                  height: 250,
+                  background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff',
+                  fontSize: '4rem'
+                }}
+              >
+                <ForumIcon sx={{ fontSize: 'inherit' }} />
+              </Box>
+              <CardContent sx={{ padding: '1.5rem', textAlign: 'center', background: 'transparent' }}>
+                <Typography 
+                  variant="h6" 
+                  sx={{
+                    fontSize: '1.25rem',
+                    fontWeight: 600,
+                    color: '#2a3b3d',
+                    marginBottom: '0.5rem'
+                  }}
+                >
+                  ฟอรัมพูดคุย
+                </Typography>
+                <Typography 
+                  variant="h5" 
+                  sx={{
+                    fontSize: '1.5rem',
+                    fontWeight: 700,
+                    color: '#f8b42e',
+                    marginBottom: '1rem'
+                  }}
+                >
+                  เริ่มใช้งาน
+                </Typography>
+                <Button
+                  component={RouterLink}
+                  to="/forum"
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: '50%',
+                    background: '#f0ede8',
+                    border: '2px solid #dee2e6',
+                    color: '#6c757d',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto',
+                    transition: 'all 0.3s ease',
+                    fontSize: '1.2rem',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                      borderColor: '#f9c74f',
+                      color: '#ffffff',
+                      transform: 'scale(1.1)'
+                    }
+                  }}
+                >
+                  <ArrowIcon />
                 </Button>
               </CardContent>
             </Card>
@@ -407,168 +639,230 @@ function Home() {
         </Grid>
       </Container>
 
-      {/* Features Section */}
-      <Box sx={{ bgcolor: 'white', py: 8 }}>
+      {/* Features Grid */}
+      <Box sx={{ background: '#ffffff', py: 8 }}>
         <Container maxWidth="xl">
-          <Typography 
-            variant="h4" 
-            fontWeight={700} 
-            textAlign="center" 
-            mb={2}
-            className="animate__animated animate__fadeInUp"
-          >
-            ฟีเจอร์เด่นของระบบ
-          </Typography>
-          <Typography 
-            variant="h6" 
-            textAlign="center" 
-            color="text.secondary" 
-            mb={6}
-            className="animate__animated animate__fadeInUp"
-          >
-            ครบครันทุกความต้องการสำหรับชุมชนศิษย์เก่า
-          </Typography>
-          
-          <Grid container spacing={4}>
-            <Grid item xs={12} sm={6} md={3}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 4,
-                  height: '100%',
-                  textAlign: 'center',
-                  borderRadius: 4,
-                  border: '1px solid #e2e8f0',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-5px)',
-                    boxShadow: '0 15px 35px rgba(0,0,0,0.1)',
-                    borderColor: '#667eea'
-                  }
-                }}
-                className="animate__animated animate__fadeInUp"
-              >
-                <Box sx={{ mb: 3 }}>
-                  <NotificationIcon sx={{ fontSize: 48, color: '#667eea' }} />
-                </Box>
-                <Typography variant="h6" fontWeight={600} mb={2}>
-                  ข่าวสารและประกาศ
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  ติดตามข่าวสาร กิจกรรม และประกาศสำคัญจากมหาวิทยาลัย
-                </Typography>
-              </Paper>
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Box
+                    sx={{
+                      background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
+                      borderRadius: '1.5rem',
+                      height: 420,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ffffff',
+                      fontSize: '2.5rem'
+                    }}
+                  >
+                    <WorkIcon sx={{ fontSize: 'inherit' }} />
+                  </Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box
+                    sx={{
+                      background: 'linear-gradient(135deg, #a8dadc, #457b9d)',
+                      borderRadius: '1.5rem',
+                      height: 200,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ffffff',
+                      fontSize: '2.5rem',
+                      mb: 2
+                    }}
+                  >
+                    <NotificationIcon sx={{ fontSize: 'inherit' }} />
+                  </Box>
+                  <Box
+                    sx={{
+                      background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                      borderRadius: '1.5rem',
+                      height: 200,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ffffff',
+                      fontSize: '2.5rem'
+                    }}
+                  >
+                    <BusinessIcon sx={{ fontSize: 'inherit' }} />
+                  </Box>
+                </Grid>
+              </Grid>
             </Grid>
-
-            <Grid item xs={12} sm={6} md={3}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 4,
-                  height: '100%',
-                  textAlign: 'center',
-                  borderRadius: 4,
-                  border: '1px solid #e2e8f0',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-5px)',
-                    boxShadow: '0 15px 35px rgba(0,0,0,0.1)',
-                    borderColor: '#ffd700'
-                  }
-                }}
-                className="animate__animated animate__fadeInUp"
-              >
-                <Box sx={{ mb: 3 }}>
-                  <CelebrationIcon sx={{ fontSize: 48, color: '#ffd700' }} />
+            <Grid item xs={12} md={6}>
+              <Box>
+                <Typography 
+                  variant="h4" 
+                  sx={{
+                    fontWeight: 600,
+                    fontFamily: 'Poppins, sans-serif',
+                    color: '#2a3b3d',
+                    mb: 4
+                  }}
+                >
+                  ระบบที่ครบครันสำหรับศิษย์เก่า
+                </Typography>
+                <Typography 
+                  variant="body1" 
+                  sx={{
+                    color: '#adb5bd',
+                    mb: 4,
+                    lineHeight: 1.7
+                  }}
+                >
+                  ระบบจัดการข้อมูลศิษย์เก่าที่ทันสมัย ช่วยให้คุณเชื่อมต่อกับเพื่อนร่วมรุ่น 
+                  แบ่งปันประสบการณ์ และสร้างเครือข่ายทางวิชาชีพได้อย่างง่ายดาย
+                </Typography>
+                <Box component="ul" sx={{ listStyle: 'none', p: 0 }}>
+                  <Box component="li" sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ 
+                      width: 20, 
+                      height: 20, 
+                      borderRadius: '50%', 
+                      background: '#28a745', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      mr: 2,
+                      fontSize: '0.8rem',
+                      color: 'white'
+                    }}>
+                      ✓
+                    </Box>
+                    <Typography variant="body2">
+                      จัดการข้อมูลส่วนตัวและประวัติการศึกษา
+                    </Typography>
+                  </Box>
+                  <Box component="li" sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ 
+                      width: 20, 
+                      height: 20, 
+                      borderRadius: '50%', 
+                      background: '#28a745', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      mr: 2,
+                      fontSize: '0.8rem',
+                      color: 'white'
+                    }}>
+                      ✓
+                    </Box>
+                    <Typography variant="body2">
+                      เครือข่ายศิษย์เก่าและการติดต่อ
+                    </Typography>
+                  </Box>
+                  <Box component="li" sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ 
+                      width: 20, 
+                      height: 20, 
+                      borderRadius: '50%', 
+                      background: '#28a745', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      mr: 2,
+                      fontSize: '0.8rem',
+                      color: 'white'
+                    }}>
+                      ✓
+                    </Box>
+                    <Typography variant="body2">
+                      ข่าวสารและกิจกรรมต่างๆ
+                    </Typography>
+                  </Box>
+                  <Box component="li" sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ 
+                      width: 20, 
+                      height: 20, 
+                      borderRadius: '50%', 
+                      background: '#28a745', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      mr: 2,
+                      fontSize: '0.8rem',
+                      color: 'white'
+                    }}>
+                      ✓
+                    </Box>
+                    <Typography variant="body2">
+                      ฟอรัมและชุมชนออนไลน์
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h6" fontWeight={600} mb={2}>
-                  กิจกรรมศิษย์เก่า
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  เข้าร่วมกิจกรรมและงานสังสรรค์กับเพื่อนศิษย์เก่า
-                </Typography>
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={3}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 4,
-                  height: '100%',
-                  textAlign: 'center',
-                  borderRadius: 4,
-                  border: '1px solid #e2e8f0',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-5px)',
-                    boxShadow: '0 15px 35px rgba(0,0,0,0.1)',
-                    borderColor: '#10b981'
-                  }
-                }}
-                className="animate__animated animate__fadeInUp"
-              >
-                <Box sx={{ mb: 3 }}>
-                  <SchoolIcon sx={{ fontSize: 48, color: '#10b981' }} />
-                </Box>
-                <Typography variant="h6" fontWeight={600} mb={2}>
-                  เครือข่ายศิษย์เก่า
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  ค้นหาและติดต่อเพื่อนร่วมรุ่นได้ง่ายดาย
-                </Typography>
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={3}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 4,
-                  height: '100%',
-                  textAlign: 'center',
-                  borderRadius: 4,
-                  border: '1px solid #e2e8f0',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-5px)',
-                    boxShadow: '0 15px 35px rgba(0,0,0,0.1)',
-                    borderColor: '#f59e0b'
-                  }
-                }}
-                className="animate__animated animate__fadeInUp"
-              >
-                <Box sx={{ mb: 3 }}>
-                  <ForumIcon sx={{ fontSize: 48, color: '#f59e0b' }} />
-                </Box>
-                <Typography variant="h6" fontWeight={600} mb={2}>
-                  ฟอรัมพูดคุย
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  แบ่งปันประสบการณ์และสร้างเครือข่ายใหม่ๆ
-                </Typography>
-              </Paper>
+                <Button
+                  component={RouterLink}
+                  to="/register"
+                  variant="contained"
+                  sx={{
+                    background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
+                    color: '#ffffff',
+                    px: 4,
+                    py: 1.5,
+                    borderRadius: '0.75rem',
+                    fontWeight: 600,
+                    border: '2px solid #2f4b3f',
+                    '&:hover': {
+                      background: '#243d33',
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                  startIcon={<ArrowIcon />}
+                >
+                  เริ่มใช้งาน
+                </Button>
+              </Box>
             </Grid>
           </Grid>
         </Container>
       </Box>
 
-      {/* Call to Action Section */}
+      {/* Call to Action - Furni Style */}
       {!user && (
         <Box
           sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
+            background: '#f0ede8',
             py: 8,
-            textAlign: 'center'
+            position: 'relative',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(249, 199, 79, 0.1)'
+            }
           }}
         >
-          <Container maxWidth="md">
-            <Typography variant="h4" fontWeight={700} mb={2}>
+          <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
+            <Typography 
+              variant="h4" 
+              sx={{
+                fontWeight: 600,
+                fontFamily: 'Poppins, sans-serif',
+                color: '#2a3b3d',
+                mb: 2
+              }}
+            >
               พร้อมเข้าร่วมชุมชนศิษย์เก่าแล้วหรือยัง?
             </Typography>
-            <Typography variant="h6" mb={4} sx={{ opacity: 0.9 }}>
-              สมัครสมาชิกวันนี้และเชื่อมต่อกับเพื่อนศิษย์เก่า
+            <Typography 
+              variant="h6" 
+              sx={{
+                color: '#6c757d',
+                mb: 4,
+                fontSize: '1rem',
+                fontWeight: 500
+              }}
+            >
+              สมัครสมาชิกวันนี้และเชื่อมต่อกับเพื่อนศิษย์เก่า ติดตามข่าวสาร และเข้าร่วมกิจกรรมต่างๆ
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
               <Button
@@ -577,17 +871,21 @@ function Home() {
                 variant="contained"
                 size="large"
                 sx={{
-                  bgcolor: '#ffd700',
-                  color: '#1a1a1a',
+                  background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                  color: '#ffffff',
                   px: 4,
                   py: 1.5,
-                  borderRadius: 3,
+                  borderRadius: '0.75rem',
                   fontWeight: 600,
+                  border: '2px solid #f9c74f',
+                  boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.3)',
                   '&:hover': {
-                    bgcolor: '#ffed4e',
-                    transform: 'translateY(-2px)'
+                    background: '#f8b42e',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.25)'
                   }
                 }}
+                startIcon={<PersonAddIcon />}
               >
                 เริ่มต้นใช้งาน
               </Button>
@@ -597,17 +895,20 @@ function Home() {
                 variant="outlined"
                 size="large"
                 sx={{
-                  color: 'white',
-                  borderColor: 'rgba(255,255,255,0.5)',
+                  color: '#2f4b3f',
+                  borderColor: '#2f4b3f',
                   px: 4,
                   py: 1.5,
-                  borderRadius: 3,
+                  borderRadius: '0.75rem',
                   fontWeight: 600,
+                  borderWidth: '2px',
                   '&:hover': {
-                    borderColor: 'white',
-                    bgcolor: 'rgba(255,255,255,0.1)'
+                    borderColor: '#2f4b3f',
+                    bgcolor: 'rgba(47, 75, 63, 0.05)',
+                    transform: 'translateY(-2px)'
                   }
                 }}
+                startIcon={<ArrowIcon />}
               >
                 เรียนรู้เพิ่มเติม
               </Button>
@@ -615,8 +916,6 @@ function Home() {
           </Container>
         </Box>
       )}
-
-      {/* Floating animation is handled by Material-UI keyframes */}
     </Box>
   );
 }

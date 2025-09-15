@@ -1,0 +1,163 @@
+/* Furni Modern Theme Variables - Enhanced Green Focus */
+:root {
+    /* Primary Colors - Furni Deep Green */
+    --rmsu-primary: #2f4b3f;
+    --rmsu-primary-light: #3a5c4b;
+    --rmsu-primary-dark: #243d33;
+    
+    /* Secondary Colors - Bright Yellow Accent */
+    --rmsu-gold: #f9c74f;
+    --rmsu-gold-light: #fbd36b;
+    --rmsu-gold-dark: #f8b42e;
+    
+    /* Background Colors - Warm Cream */
+    --rmsu-bg-primary: #f7f5f3;
+    --rmsu-bg-secondary: #f0ede8;
+    --rmsu-bg-card: #ffffff;
+    --rmsu-bg-dark: #2a3b3d;
+    
+    /* Text Colors */
+    --rmsu-text-primary: #2a3b3d;
+    --rmsu-text-secondary: #6c757d;
+    --rmsu-text-muted: #adb5bd;
+    --rmsu-text-white: #ffffff;
+    --rmsu-text-cream: #f7f5f3;
+    
+    /* Border Colors */
+    --rmsu-border-light: #e9ecef;
+    --rmsu-border-medium: #dee2e6;
+    --rmsu-border-dark: #ced4da;
+    
+    /* Gradients */
+    --rmsu-gradient-primary: linear-gradient(135deg, #2f4b3f, #3a5c4b);
+    --rmsu-gradient-gold: linear-gradient(135deg, #f9c74f, #fbd36b);
+    --rmsu-gradient-bg: linear-gradient(135deg, #f7f5f3, #f0ede8);
+    --rmsu-gradient-hero: linear-gradient(135deg, #2f4b3f, #243d33);
+    
+    /* Shadows */
+    --rmsu-shadow-light: 0 0.125rem 0.25rem rgba(47, 75, 63, 0.1);
+    --rmsu-shadow-medium: 0 0.5rem 1rem rgba(47, 75, 63, 0.15);
+    --rmsu-shadow-heavy: 0 1rem 3rem rgba(47, 75, 63, 0.2);
+    --rmsu-shadow-elevated: 0 1rem 2rem rgba(47, 75, 63, 0.25);
+    --rmsu-shadow-orange: 0 0.25rem 0.75rem rgba(249, 199, 79, 0.3);
+    
+    /* Effects */
+    --rmsu-hover-overlay: rgba(47, 75, 63, 0.08);
+    --rmsu-orange-overlay: rgba(249, 199, 79, 0.1);
+    --rmsu-glass-bg: rgba(255, 255, 255, 0.9);
+    
+    /* Other */
+    --rmsu-radius-small: 0.5rem;
+    --rmsu-radius-medium: 0.75rem;
+    --rmsu-radius-large: 1rem;
+    --rmsu-radius-xl: 1.5rem;
+    --rmsu-transition-fast: 0.2s ease;
+    --rmsu-transition-medium: 0.3s ease;
+}
+
+/* Global Styles */
+* {
+    font-family: 'Source Sans Pro', 'Segoe UI', system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .heading {
+    font-family: 'Poppins', 'Inter', sans-serif;
+    font-weight: 600;
+}
+
+body {
+    background: var(--rmsu-gradient-bg);
+    color: var(--rmsu-text-primary);
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+/* Navbar - Clean Modern Style - ตรงตาม demo */
+.navbar {
+    background: var(--rmsu-bg-card) !important;
+    box-shadow: var(--rmsu-shadow-medium);
+    border-bottom: 1px solid var(--rmsu-border-light);
+    padding: 1rem 0;
+    backdrop-filter: blur(10px);
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--rmsu-primary) !important;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+}
+
+.navbar-brand:hover {
+    color: var(--rmsu-primary-light) !important;
+}
+
+.navbar .nav-link {
+    color: var(--rmsu-text-secondary) !important;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-right: 1.5rem;
+    transition: var(--rmsu-transition-medium);
+    border-radius: var(--rmsu-radius-small);
+    padding: 0.5rem 1rem;
+    position: relative;
+    text-decoration: none;
+}
+
+.navbar .nav-link:hover {
+    color: var(--rmsu-primary) !important;
+    background: var(--rmsu-hover-overlay);
+}
+
+.navbar .nav-link.active {
+    color: var(--rmsu-primary) !important;
+    background: var(--rmsu-hover-overlay);
+}
+
+.navbar .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: var(--rmsu-gold);
+    border-radius: 2px;
+}
+
+/* Mobile Menu Styles */
+.navbar-toggler {
+    border: none;
+    color: var(--rmsu-primary);
+    font-size: 1.2rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+    
+    .navbar .nav-link {
+        margin-right: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        padding: 0.75rem 0;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+}

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iStudio Dark Theme Demo - Alumni Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* iStudio Dark Theme Variables */
+        :root {
+            /* Primary Colors - Dark Theme */
+            --rmsu-primary: #1a1a1a;
+            --rmsu-primary-light: #2d2d2d;
+            --rmsu-primary-dark: #0d0d0d;
+            
+            /* Accent Colors - Gold */
+            --rmsu-gold: #ffd700;
+            --rmsu-gold-light: #ffed4e;
+            --rmsu-gold-dark: #cc9900;
+            
+            /* Background Colors */
+            --rmsu-bg-primary: #0a0a0a;
+            --rmsu-bg-secondary: #1a1a1a;
+            --rmsu-bg-card: #242424;
+            
+            /* Text Colors */
+            --rmsu-text-primary: #ffffff;
+            --rmsu-text-secondary: #cccccc;
+            --rmsu-text-muted: #888888;
+            --rmsu-text-white: #ffffff;
+            --rmsu-text-dark: #1a1a1a;
+            
+            /* Border Colors */
+            --rmsu-border-light: #333333;
+            --rmsu-border-medium: #444444;
+            --rmsu-border-dark: #555555;
+            
+            /* Gradients */
+            --rmsu-gradient-primary: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            --rmsu-gradient-gold: linear-gradient(135deg, #ffd700, #ffed4e);
+            --rmsu-gradient-bg: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            
+            /* Shadows */
+            --rmsu-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --rmsu-shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --rmsu-shadow-heavy: 0 8px 20px rgba(0, 0, 0, 0.5);
+            --rmsu-shadow-elevated: 0 12px 30px rgba(0, 0, 0, 0.6);
+            --rmsu-shadow-gold: 0 4px 20px rgba(255, 215, 0, 0.3);
+            
+            /* Effects */
+            --rmsu-neon-glow: 0 0 20px rgba(255, 215, 0, 0.5);
+            --rmsu-glass-bg: rgba(255, 255, 255, 0.05);
+            --rmsu-glass-border: rgba(255, 255, 255, 0.1);
+            --rmsu-hover-overlay: rgba(255, 215, 0, 0.1);
+            
+            /* Other */
+            --rmsu-radius-small: 8px;
+            --rmsu-radius-medium: 12px;
+            --rmsu-radius-large: 16px;
+            --rmsu-radius-xl: 20px;
+            --rmsu-transition-fast: 0.2s ease;
+            --rmsu-transition-medium: 0.3s ease;
+            --rmsu-transition-slow: 0.5s ease;
+        }
+
+        /* Global Styles */
+        body {
+            background: var(--rmsu-gradient-bg);
+            color: var(--rmsu-text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar - iStudio Style */
+        .navbar {
+            background: var(--rmsu-gradient-primary) !important;
+            box-shadow: var(--rmsu-shadow-heavy);
+            border-radius: 0 0 var(--rmsu-radius-large) var(--rmsu-radius-large);
+            padding: 1rem 0;
+            backdrop-filter: blur(20px);
+            position: relative;
+            border-bottom: 1px solid var(--rmsu-border-light);
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--rmsu-glass-bg);
+            border-radius: 0 0 var(--rmsu-radius-large) var(--rmsu-radius-large);
+            border: 1px solid var(--rmsu-glass-border);
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--rmsu-text-white) !important;
+            letter-spacing: 1.5px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .navbar .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-right: 1.5rem;
+            transition: var(--rmsu-transition-medium);
+            border-radius: var(--rmsu-radius-small);
+            padding: 0.5rem 1.2rem;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar .nav-link:hover {
+            color: var(--rmsu-gold) !important;
+            background: var(--rmsu-hover-overlay);
+            transform: translateY(-2px);
+            text-shadow: var(--rmsu-neon-glow);
+        }
+
+        /* Buttons - Premium Style */
+        .btn {
+            font-weight: 600;
+            border-radius: var(--rmsu-radius-medium);
+            transition: var(--rmsu-transition-medium);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--rmsu-gradient-gold);
+            border: 2px solid var(--rmsu-gold);
+            color: var(--rmsu-text-dark);
+            box-shadow: var(--rmsu-shadow-gold);
+        }
+
+        .btn-primary:hover {
+            background: var(--rmsu-gold-dark);
+            color: var(--rmsu-text-white);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--rmsu-neon-glow);
+        }
+
+        .btn-secondary {
+            background: var(--rmsu-gradient-primary);
+            border: 2px solid var(--rmsu-border-light);
+            color: var(--rmsu-text-white);
+            box-shadow: var(--rmsu-shadow-medium);
+        }
+
+        .btn-secondary:hover {
+            background: var(--rmsu-primary-light);
+            border-color: var(--rmsu-gold);
+            transform: translateY(-3px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .btn-outline-primary {
+            color: var(--rmsu-gold);
+            border: 2px solid var(--rmsu-gold);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--rmsu-gold);
+            color: var(--rmsu-text-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--rmsu-neon-glow);
+        }
+
+        /* Cards - Premium Dark */
+        .card {
+            background: var(--rmsu-bg-card);
+            border: 1px solid var(--rmsu-border-light);
+            border-radius: var(--rmsu-radius-xl);
+            box-shadow: var(--rmsu-shadow-heavy);
+            transition: var(--rmsu-transition-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--rmsu-gradient-gold);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--rmsu-shadow-elevated);
+            border-color: var(--rmsu-gold);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            background: var(--rmsu-gradient-primary);
+            color: var(--rmsu-text-white);
+            border: none;
+            border-radius: var(--rmsu-radius-xl) var(--rmsu-radius-xl) 0 0;
+            padding: 1.8rem 2.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--rmsu-gold);
+        }
+
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        /* Form Elements */
+        .form-control,
+        .form-select {
+            background: var(--rmsu-bg-secondary);
+            border: 2px solid var(--rmsu-border-light);
+            color: var(--rmsu-text-primary);
+            border-radius: var(--rmsu-radius-medium);
+            transition: var(--rmsu-transition-medium);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background: var(--rmsu-bg-card);
+            border-color: var(--rmsu-gold);
+            color: var(--rmsu-text-primary);
+            box-shadow: var(--rmsu-shadow-gold);
+        }
+
+        .form-label {
+            color: var(--rmsu-text-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        /* Alerts */
+        .alert {
+            border: none;
+            border-radius: var(--rmsu-radius-medium);
+            box-shadow: var(--rmsu-shadow-medium);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #1e7e34, #28a745);
+            color: var(--rmsu-text-white);
+            border-left: 4px solid #00d563;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: var(--rmsu-gold);
+            border-left: 4px solid var(--rmsu-gold);
+        }
+
+        /* Badges */
+        .badge {
+            font-weight: 600;
+            padding: 0.5rem 0.8rem;
+            border-radius: var(--rmsu-radius-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-primary {
+            background: var(--rmsu-gradient-gold);
+            color: var(--rmsu-text-dark);
+        }
+
+        .badge-secondary {
+            background: var(--rmsu-gradient-primary);
+            color: var(--rmsu-text-white);
+        }
+
+        /* Table */
+        .table {
+            background: var(--rmsu-bg-card);
+            border-radius: var(--rmsu-radius-medium);
+            overflow: hidden;
+            box-shadow: var(--rmsu-shadow-medium);
+        }
+
+        .table thead th {
+            background: var(--rmsu-gradient-primary);
+            color: var(--rmsu-text-white);
+            border: none;
+            padding: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody td {
+            color: var(--rmsu-text-primary);
+            border-color: var(--rmsu-border-light);
+            padding: 1rem 1.2rem;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(255, 215, 0, 0.05);
+            transform: scale(1.01);
+        }
+
+        /* Animations */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+            }
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--rmsu-bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--rmsu-gold);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--rmsu-gold-dark);
+        }
+
+        /* Demo specific */
+        .demo-section {
+            margin: 2rem 0;
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--rmsu-gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-graduation-cap me-2"></i>iSTUDIO ALUMNI SYSTEM
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="#"><i class="fas fa-home me-1"></i>HOME</a>
+                <a class="nav-link" href="#"><i class="fas fa-users me-1"></i>ALUMNI</a>
+                <a class="nav-link" href="#"><i class="fas fa-calendar me-1"></i>EVENTS</a>
+                <a class="nav-link" href="#"><i class="fas fa-chart-bar me-1"></i>REPORTS</a>
+                <button class="btn btn-primary ms-2">
+                    <i class="fas fa-sign-in-alt me-1"></i>LOGIN
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Hero Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <h4 class="glow-text"><i class="fas fa-palette me-2"></i>iSTUDIO DARK THEME DEMO</h4>
+                    <p class="mb-0">ธีมสีแบบ Premium Dark Design ที่ได้แรงบันดาลใจจาก iStudio.com - มีสีดำ เทาเข้ม และทองคำ</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="demo-section">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="card text-center pulse">
+                        <div class="card-body">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h5 class="card-title glow-text">TOTAL ALUMNI</h5>
+                            <h2 class="text-white">2,568</h2>
+                            <span class="badge badge-primary">+12% THIS MONTH</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <h5 class="card-title">EVENTS</h5>
+                            <h2 class="text-white">48</h2>
+                            <span class="badge badge-secondary">ANNUAL</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="stat-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <h5 class="card-title">EMPLOYED</h5>
+                            <h2 class="text-white">1,894</h2>
+                            <span class="badge badge-primary">74% OF TOTAL</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="stat-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h5 class="card-title">STUDYING</h5>
+                            <h2 class="text-white">327</h2>
+                            <span class="badge badge-secondary">13% OF TOTAL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button Demo -->
+        <div class="demo-section">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-mouse-pointer me-2"></i>BUTTON STYLES
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-3">
+                                <button class="btn btn-primary btn-lg">
+                                    <i class="fas fa-plus me-2"></i>PRIMARY BUTTON
+                                </button>
+                                <button class="btn btn-secondary btn-lg">
+                                    <i class="fas fa-star me-2"></i>SECONDARY BUTTON
+                                </button>
+                                <button class="btn btn-outline-primary btn-lg">
+                                    <i class="fas fa-edit me-2"></i>OUTLINE BUTTON
+                                </button>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary btn-sm flex-fill">SMALL</button>
+                                    <button class="btn btn-secondary btn-sm flex-fill">MEDIUM</button>
+                                    <button class="btn btn-outline-primary btn-sm flex-fill">LARGE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-edit me-2"></i>FORM ELEMENTS
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">FULL NAME</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter your full name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">EMAIL ADDRESS</label>
+                                    <input type="email" class="form-control" id="email" placeholder="example@email.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="department" class="form-label">FACULTY</label>
+                                    <select class="form-select" id="department">
+                                        <option>SELECT FACULTY</option>
+                                        <option>EDUCATION</option>
+                                        <option>HUMANITIES & SOCIAL SCIENCES</option>
+                                        <option>SCIENCE & TECHNOLOGY</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-save me-2"></i>SAVE DATA
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Demo -->
+        <div class="demo-section">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-table me-2"></i>RECENT ALUMNI
+                </div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>NAME</th>
+                                <th>FACULTY</th>
+                                <th>GRADUATION YEAR</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>SOMJAI JAIDEE</strong></td>
+                                <td>EDUCATION</td>
+                                <td>2566</td>
+                                <td><span class="badge badge-primary">EMPLOYED</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>PRAYUTH MANJAI</strong></td>
+                                <td>SCIENCE & TECHNOLOGY</td>
+                                <td>2565</td>
+                                <td><span class="badge badge-secondary">STUDYING</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>CHALIDA SRISUK</strong></td>
+                                <td>HUMANITIES & SOCIAL SCIENCES</td>
+                                <td>2564</td>
+                                <td><span class="badge badge-primary">EMPLOYED</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Demo -->
+        <div class="demo-section">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="alert alert-success">
+                        <h6><i class="fas fa-check-circle me-2"></i>SUCCESS!</h6>
+                        <p class="mb-0">Alumni data has been saved successfully</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle me-2"></i>INFORMATION</h6>
+                        <p class="mb-0">System will backup data automatically every day</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-5 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="glow-text">
+                        <i class="fas fa-university me-2"></i>
+                        RAJABHAT MAHA SARAKHAM UNIVERSITY
+                    </h4>
+                    <p class="text-muted mb-3">
+                        ALUMNI MANAGEMENT SYSTEM - iSTUDIO DARK THEME<br>
+                        <small>Premium Dark Design ที่ได้แรงบันดาลใจจาก iStudio.com</small>
+                    </p>
+                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-palette me-1"></i>PREMIUM DESIGN
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-star me-1"></i>DARK THEME
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-gem me-1"></i>GOLD ACCENTS
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Add some interactive effects -->
+    <script>
+        // Add glow effect on hover for cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 12px 30px rgba(255, 215, 0, 0.2)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '';
+            });
+        });
+
+        // Add click effect for buttons
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Create ripple effect
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(255, 215, 0, 0.5);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

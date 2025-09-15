@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%);
   color: white;
 }
 
@@ -124,7 +124,7 @@
   justify-content: center;
   font-size: 4rem;
   font-weight: bold;
-  color: #667eea;
+  color: #2f4b3f;
 }
 
 .image-upload-section {
@@ -372,7 +372,7 @@
 }
 
 .card-icon.bio {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%);
 }
 
 .card-header h2 {
@@ -428,7 +428,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #2f4b3f;
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
 }

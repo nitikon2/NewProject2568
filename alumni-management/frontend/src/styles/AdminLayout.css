@@ -1,3 +1,6 @@
+/* Import RMSU Theme Variables */
+@import url('./rmsu-theme.css');
+
 .admin-layout {
   display: flex;
   min-height: 100vh;
@@ -9,18 +12,19 @@
   left: 0;
   height: 100vh;
   width: min(340px, 28vw); /* ปรับ sidebar ให้เหมาะกับขนาดจอ */
-  background: #2d3e50;
-  color: #fff;
+  background: var(--rmsu-primary);
+  color: var(--rmsu-text-white);
   z-index: 1000;
   overflow-y: auto;
   /* ป้องกัน sidebar เลื่อนตาม scroll */
 }
 
 .admin-sidebar h2 {
-  color: #ecf0f1;
+  color: var(--rmsu-text-white);
   padding: 0 20px;
   margin-bottom: 30px;
   font-size: 1.5rem;
+  font-family: var(--rmsu-font-display);
 }
 
 .admin-sidebar nav ul {
@@ -34,18 +38,18 @@
 }
 
 .admin-sidebar nav ul li a {
-  color: #ecf0f1;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   padding: 12px 20px;
   display: block;
-  transition: all 0.3s;
+  transition: var(--rmsu-transition-fast);
   font-size: 1rem;
 }
 
 .admin-sidebar nav ul li a:hover,
 .admin-sidebar nav ul li a.active {
-  background: #34495e;
-  color: #3498db;
+  background: var(--rmsu-primary-light);
+  color: var(--rmsu-gold);
 }
 
 .admin-sidebar nav ul li a i {
@@ -60,26 +64,27 @@
   padding: 0; /* ลบ padding ออก */
   width: calc(100vw - min(340px, 28vw)); /* ให้ content กว้างเต็มจอ */
   max-width: 100vw;
-  background: #f7f8fa;
+  background: var(--rmsu-bg-primary);
 }
 
 .admin-header {
-  background: white;
+  background: var(--rmsu-bg-card);
   padding: 15px 30px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: var(--rmsu-shadow-light);
   margin-bottom: 30px;
 }
 
 .stat-card {
-  background: white;
-  border-radius: 10px;
+  background: var(--rmsu-bg-card);
+  border-radius: var(--rmsu-radius-medium);
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
+  box-shadow: var(--rmsu-shadow-light);
+  transition: var(--rmsu-transition-medium);
 }
 
 .stat-card:hover {
   transform: translateY(-5px);
+  box-shadow: var(--rmsu-shadow-medium);
 }
 
 .stat-icon {
@@ -93,32 +98,33 @@
 }
 
 .primary-gradient {
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  background: var(--rmsu-gradient-primary);
 }
 
 .success-gradient {
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  background: linear-gradient(135deg, var(--rmsu-success), #27ae60);
 }
 
 .warning-gradient {
-  background: linear-gradient(135deg, #f1c40f, #f39c12);
+  background: var(--rmsu-gradient-gold);
 }
 
 .danger-gradient {
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  background: linear-gradient(135deg, var(--rmsu-danger), #c0392b);
 }
 
 .sidebar-header {
   display: flex;
   align-items: center;
   padding: 1.5rem 1.5rem;
-  background: rgba(0,0,0,0.1);
+  background: var(--rmsu-hover-overlay);
   margin-bottom: 1rem;
 }
 
 .sidebar-header i {
   font-size: 1.5rem;
   margin-right: 0.75rem;
+  color: var(--rmsu-gold);
 }
 
 .admin-user-info {
@@ -133,7 +139,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.1);
+  background: var(--rmsu-gold);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -142,11 +148,11 @@
 
 .user-avatar i {
   font-size: 1.5rem;
-  color: rgba(255,255,255,0.8);
+  color: var(--rmsu-primary);
 }
 
 .user-details h6 {
-  color: #fff;
+  color: var(--rmsu-text-white);
   margin: 0;
 }
 
@@ -163,19 +169,19 @@
   align-items: center;
   padding: 0.75rem 1rem;
   color: rgba(255,255,255,0.8);
-  border-radius: 0.5rem;
+  border-radius: var(--rmsu-radius-small);
   margin-bottom: 0.25rem;
-  transition: all 0.3s ease;
+  transition: var(--rmsu-transition-fast);
 }
 
 .nav-link:hover {
-  background: rgba(255,255,255,0.1);
-  color: #fff;
+  background: var(--rmsu-hover-overlay);
+  color: var(--rmsu-text-white);
 }
 
 .nav-link.active {
-  background: #3498db;
-  color: #fff;
+  background: var(--rmsu-gold);
+  color: var(--rmsu-primary);
 }
 
 .nav-link i {
@@ -212,23 +218,25 @@
   }
 }
 
-/* Event Management Styles */
+/* Event Management Styles - RMSU Theme */
 .event-card {
-  transition: transform 0.2s;
+  transition: var(--rmsu-transition-medium);
   border: none;
-  border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-radius: var(--rmsu-radius-large);
+  box-shadow: var(--rmsu-shadow-light);
+  background: var(--rmsu-bg-card);
 }
 
 .event-card:hover {
   transform: translateY(-5px);
+  box-shadow: var(--rmsu-shadow-medium);
 }
 
 .event-image {
   height: 200px;
   object-fit: cover;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  border-top-left-radius: var(--rmsu-radius-large);
+  border-top-right-radius: var(--rmsu-radius-large);
 }
 
 .event-status {
@@ -238,27 +246,27 @@
 }
 
 .event-date {
-  color: #6c757d;
+  color: var(--rmsu-text-secondary);
   font-size: 0.9rem;
 }
 
 .event-actions {
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: var(--rmsu-transition-fast);
 }
 
 .event-card:hover .event-actions {
   opacity: 1;
 }
 
-/* Register Card Enhanced Layout */
+/* Register Card Enhanced Layout - RMSU Theme */
 .register-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: calc(100vh - 72px);
   padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--rmsu-gradient-bg);
 }
 
 .register-card.horizontal {
@@ -266,16 +274,16 @@
   width: 100%;
   display: flex;
   background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
+  border-radius: var(--rmsu-radius-large);
   overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--rmsu-shadow-heavy);
 }
 
 .register-card.horizontal .register-side {
   width: 40%;
-  background: linear-gradient(135deg, #1a237e, #0d47a1);
+  background: var(--rmsu-gradient-primary);
   padding: 3rem;
-  color: white;
+  color: var(--rmsu-text-white);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -293,7 +301,8 @@
 .register-card.horizontal .register-side h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: white;
+  color: var(--rmsu-text-white);
+  font-family: var(--rmsu-font-display);
 }
 
 .register-card.horizontal .register-side p {

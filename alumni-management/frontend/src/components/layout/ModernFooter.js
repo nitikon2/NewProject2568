@@ -65,7 +65,7 @@ function ModernFooter() {
     <Box
       component="footer"
       sx={{
-        background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
+        background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
         color: 'white',
         mt: 'auto',
         pt: 8,
@@ -123,27 +123,22 @@ function ModernFooter() {
                       sx={{
                         width: 60,
                         height: 60,
-                        borderRadius: '16px',
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        mr: 2,
-                        boxShadow: '0 8px 32px rgba(102, 126, 234, 0.3)'
+                        mr: 2
                       }}
                     >
                       <SchoolIcon sx={{ fontSize: 32, color: 'white' }} />
                     </Box>
                     <Box>
                       <Typography variant="h6" fontWeight={700} sx={{ 
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        backgroundClip: 'text',
-                        color: 'transparent',
+                        color: 'white',
                         lineHeight: 1.2
                       }}>
                         มหาวิทยาลัยราชภัฏมหาสารคาม
                       </Typography>
-                      <Typography variant="caption" sx={{ opacity: 0.8 }}>
+                      <Typography variant="caption" sx={{ color: 'white', opacity: 0.9 }}>
                         Rajabhat Maha Sarakham University
                       </Typography>
                     </Box>
@@ -213,12 +208,7 @@ function ModernFooter() {
                       width: 40,
                       height: 40,
                       borderRadius: '10px',
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      mr: 2,
-                      flexShrink: 0
+                      background: 'linear-gradient(135deg, #2f4b3f 0%, #3a5c4b 100%)',
                     }}
                   >
                     {React.cloneElement(item.icon, { 

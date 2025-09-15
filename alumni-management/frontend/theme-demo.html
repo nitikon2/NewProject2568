@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ธีมสีมหาวิทยาลัยราชภัฏมหาสารคาม - Alumni Management System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/styles/rmsu-theme.css">
+    <link rel="stylesheet" href="./src/App.css">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: var(--rmsu-bg-primary);
+        }
+        
+        .theme-showcase {
+            margin: 2rem 0;
+        }
+        
+        .color-box {
+            height: 60px;
+            border-radius: var(--rmsu-radius-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            box-shadow: var(--rmsu-shadow-light);
+        }
+        
+        .primary-colors .color-box:nth-child(1) { background: var(--rmsu-primary); color: white; }
+        .primary-colors .color-box:nth-child(2) { background: var(--rmsu-primary-light); color: white; }
+        .primary-colors .color-box:nth-child(3) { background: var(--rmsu-primary-dark); color: white; }
+        
+        .gold-colors .color-box:nth-child(1) { background: var(--rmsu-gold); color: var(--rmsu-primary); }
+        .gold-colors .color-box:nth-child(2) { background: var(--rmsu-gold-light); color: var(--rmsu-primary); }
+        .gold-colors .color-box:nth-child(3) { background: var(--rmsu-gold-dark); color: var(--rmsu-primary); }
+        
+        .demo-section {
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand rmsu-font-primary" href="#">
+                <i class="fas fa-graduation-cap me-2"></i>
+                ระบบจัดการศิษย์เก่า (ธีมแดง-เขียว)
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i>หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-users me-1"></i>ศิษย์เก่า</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-calendar me-1"></i>กิจกรรม</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-comments me-1"></i>ฟอรั่ม</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button class="btn me-2">
+                        <i class="fas fa-sign-in-alt me-1"></i>เข้าสู่ระบบ
+                    </button>
+                    <button class="btn">
+                        <i class="fas fa-user-plus me-1"></i>สมัครสมาชิก
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="text-center my-5">
+            <h1 class="rmsu-font-display" style="color: var(--rmsu-primary);">
+                🎨 ธีมสีแดง-เขียว
+            </h1>
+            <p class="lead" style="color: var(--rmsu-text-secondary);">
+                ระบบจัดการศิษย์เก่าด้วยธีมสีแดงและเขียวที่สดใส
+            </p>
+        </div>
+
+        <!-- Color Palette Showcase -->
+        <div class="theme-showcase">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4 style="color: var(--rmsu-primary);">� สีแดง (Red)</h4>
+                    <div class="primary-colors">
+                        <div class="color-box">#dc2626 - Red Primary</div>
+                        <div class="color-box">#ef4444 - Light Red</div>
+                        <div class="color-box">#b91c1c - Dark Red</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4 style="color: var(--rmsu-gold);">� สีเขียว (Green)</h4>
+                    <div class="gold-colors">
+                        <div class="color-box">#16a34a - Green Primary</div>
+                        <div class="color-box">#22c55e - Light Green</div>
+                        <div class="color-box">#15803d - Dark Green</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4 style="color: var(--rmsu-text-primary);">⚫ สีรอง (Secondary)</h4>
+                    <div style="background: var(--rmsu-bg-secondary); padding: 1rem; border-radius: var(--rmsu-radius-medium);">
+                        <p style="color: var(--rmsu-text-primary); margin: 0;">Text Primary</p>
+                        <p style="color: var(--rmsu-text-secondary); margin: 0;">Text Secondary</p>
+                        <p style="color: var(--rmsu-text-muted); margin: 0;">Text Muted</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Components -->
+        <div class="demo-section">
+            <h3 style="color: var(--rmsu-primary);" class="mb-4">🧩 ตัวอย่าง Components</h3>
+            
+            <!-- Cards -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: var(--rmsu-primary);">
+                                <i class="fas fa-graduation-cap me-2"></i>ข้อมูลศิษย์เก่า
+                            </h5>
+                            <p class="card-text">ระบบจัดการข้อมูลศิษย์เก่าที่ทันสมัยและใช้งานง่าย</p>
+                            <button class="btn-primary btn">
+                                <i class="fas fa-eye me-1"></i>ดูรายละเอียด
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: var(--rmsu-primary);">
+                                <i class="fas fa-calendar-alt me-2"></i>กิจกรรม
+                            </h5>
+                            <p class="card-text">ติดตามกิจกรรมและข่าวสารต่าง ๆ ของมหาวิทยาลัย</p>
+                            <button class="register-btn btn">
+                                <i class="fas fa-calendar-plus me-1"></i>เข้าร่วมกิจกรรม
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Card -->
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="login-card card">
+                        <div class="card-body text-center">
+                            <div class="mb-4">
+                                <i class="fas fa-university" style="font-size: 3rem; color: var(--rmsu-primary);"></i>
+                            </div>
+                            <h3 class="login-title">เข้าสู่ระบบ</h3>
+                            <p class="login-subtitle">ระบบจัดการศิษย์เก่า (ธีมแดง-เขียว)</p>
+                            
+                            <form>
+                                <div class="mb-3 text-start">
+                                    <label class="form-label">อีเมล</label>
+                                    <input type="email" class="form-control login-input" placeholder="กรุณากรอกอีเมล">
+                                </div>
+                                <div class="mb-3 text-start">
+                                    <label class="form-label">รหัสผ่าน</label>
+                                    <input type="password" class="form-control login-input" placeholder="กรุณากรอกรหัสผ่าน">
+                                </div>
+                                <button type="submit" class="login-btn btn w-100 mb-3">
+                                    <i class="fas fa-sign-in-alt me-1"></i>เข้าสู่ระบบ
+                                </button>
+                                <p class="mb-0">
+                                    ยังไม่มีบัญชี? <a href="#" class="register-link">สมัครสมาชิก</a>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>
+                        <i class="fas fa-university me-2"></i>
+                        มหาวิทยาลัยราชภัฏมหาสารคาม
+                    </h5>
+                    <p>ระบบจัดการศิษย์เก่าที่ทันสมัย เชื่อมโยงอดีต ปัจจุบัน และอนาคต</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-line"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5>เมนูหลัก</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#"><i class="fas fa-home me-2"></i>หน้าหลัก</a></li>
+                        <li><a href="#"><i class="fas fa-users me-2"></i>ค้นหาศิษย์เก่า</a></li>
+                        <li><a href="#"><i class="fas fa-calendar me-2"></i>กิจกรรม</a></li>
+                        <li><a href="#"><i class="fas fa-briefcase me-2"></i>ตำแหน่งงาน</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>ติดต่อเรา</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i>มหาสารคาม ประเทศไทย</li>
+                        <li><i class="fas fa-phone me-2"></i>043-754-000</li>
+                        <li><i class="fas fa-envelope me-2"></i>info@rmu.ac.th</li>
+                        <li><i class="fas fa-globe me-2"></i>www.rmu.ac.th</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="text-center pb-3">
+                <p>&copy; 2025 มหาวิทยาลัยราชภัฏมหาสารคาม. สงวนสิทธิ์ทุกประการ.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

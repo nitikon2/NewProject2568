@@ -1,0 +1,496 @@
+/* Furni Modern Admin Panel Animations & Effects */
+
+/* =================== KEYFRAMES ANIMATIONS =================== */
+
+@keyframes furniFloat {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-8px); 
+  }
+}
+
+@keyframes furniPulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: scale(1.05); 
+    opacity: 0.9; 
+  }
+}
+
+@keyframes furniShimmer {
+  0% { 
+    background-position: -200px 0; 
+  }
+  100% { 
+    background-position: 200px 0; 
+  }
+}
+
+@keyframes furniSlideInLeft {
+  from { 
+    transform: translateX(-100%); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes furniSlideInRight {
+  from { 
+    transform: translateX(100%); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes furniSlideInUp {
+  from { 
+    transform: translateY(50px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes furniSlideInDown {
+  from { 
+    transform: translateY(-50px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes furniRotateIn {
+  from { 
+    transform: rotate(-180deg) scale(0.5); 
+    opacity: 0; 
+  }
+  to { 
+    transform: rotate(0deg) scale(1); 
+    opacity: 1; 
+  }
+}
+
+@keyframes furniZoomIn {
+  from { 
+    transform: scale(0.5); 
+    opacity: 0; 
+  }
+  to { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+}
+
+@keyframes furniGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(249, 199, 79, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(249, 199, 79, 0.6);
+  }
+}
+
+@keyframes furniWave {
+  0%, 100% {
+    border-radius: 50% 40% 30% 70%;
+  }
+  25% {
+    border-radius: 30% 60% 70% 40%;
+  }
+  50% {
+    border-radius: 50% 50% 50% 50%;
+  }
+  75% {
+    border-radius: 70% 30% 50% 60%;
+  }
+}
+
+@keyframes furniGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* =================== UTILITY CLASSES =================== */
+
+.furni-float {
+  animation: furniFloat 6s ease-in-out infinite;
+}
+
+.furni-pulse {
+  animation: furniPulse 3s ease-in-out infinite;
+}
+
+.furni-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.furni-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(249, 199, 79, 0.2), transparent);
+  animation: furniShimmer 3s infinite;
+}
+
+.furni-glow {
+  animation: furniGlow 3s ease-in-out infinite;
+}
+
+.furni-wave {
+  animation: furniWave 8s ease-in-out infinite;
+}
+
+.furni-gradient-shift {
+  background: linear-gradient(-45deg, #2f4b3f, #3a5c4b, #f9c74f, #fbd36b);
+  background-size: 400% 400%;
+  animation: furniGradientShift 8s ease infinite;
+}
+
+/* =================== HOVER EFFECTS =================== */
+
+.furni-hover-lift {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.furni-hover-lift:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(47, 75, 63, 0.15);
+}
+
+.furni-hover-glow:hover {
+  box-shadow: 0 0 30px rgba(249, 199, 79, 0.5);
+  border-color: rgba(249, 199, 79, 0.8);
+}
+
+.furni-hover-rotate:hover {
+  transform: rotate(5deg) scale(1.05);
+}
+
+.furni-hover-bounce:hover {
+  animation: furniPulse 0.6s ease-in-out;
+}
+
+/* =================== CARD EFFECTS =================== */
+
+.furni-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.furni-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #f9c74f, #fbd36b);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.furni-card:hover::before {
+  transform: scaleX(1);
+}
+
+.furni-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(47, 75, 63, 0.15);
+  border-color: rgba(249, 199, 79, 0.3);
+}
+
+/* =================== GLASS MORPHISM =================== */
+
+.furni-glass {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(249, 199, 79, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(47, 75, 63, 0.1);
+}
+
+.furni-glass-dark {
+  background: rgba(47, 75, 63, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(249, 199, 79, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* =================== BUTTON EFFECTS =================== */
+
+.furni-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border-radius: 16px;
+  font-weight: 600;
+  padding: 12px 24px;
+}
+
+.furni-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.furni-btn:hover::before {
+  left: 100%;
+}
+
+.furni-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.furni-btn-primary {
+  background: linear-gradient(135deg, #f9c74f, #fbd36b);
+  color: #2a3b3d;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 15px rgba(249, 199, 79, 0.3);
+}
+
+.furni-btn-primary:hover {
+  background: linear-gradient(135deg, #f8b42e, #f9c74f);
+  box-shadow: 0 8px 30px rgba(249, 199, 79, 0.5);
+}
+
+.furni-btn-secondary {
+  background: linear-gradient(135deg, #2f4b3f, #3a5c4b);
+  color: #ffffff;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 15px rgba(47, 75, 63, 0.3);
+}
+
+.furni-btn-secondary:hover {
+  background: linear-gradient(135deg, #243d33, #2f4b3f);
+  box-shadow: 0 8px 30px rgba(47, 75, 63, 0.5);
+}
+
+/* =================== LOADING ANIMATIONS =================== */
+
+.furni-loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(249, 199, 79, 0.3);
+  border-top: 4px solid #f9c74f;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.furni-loading-dots {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.furni-loading-dots div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #f9c74f;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.furni-loading-dots div:nth-child(1) {
+  left: 8px;
+  animation: furniDots1 0.6s infinite;
+}
+
+.furni-loading-dots div:nth-child(2) {
+  left: 8px;
+  animation: furniDots2 0.6s infinite;
+}
+
+.furni-loading-dots div:nth-child(3) {
+  left: 32px;
+  animation: furniDots2 0.6s infinite;
+}
+
+.furni-loading-dots div:nth-child(4) {
+  left: 56px;
+  animation: furniDots3 0.6s infinite;
+}
+
+@keyframes furniDots1 {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+@keyframes furniDots3 {
+  0% { transform: scale(1); }
+  100% { transform: scale(0); }
+}
+
+@keyframes furniDots2 {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(24px, 0); }
+}
+
+/* =================== TEXT EFFECTS =================== */
+
+.furni-gradient-text {
+  background: linear-gradient(135deg, #2f4b3f, #f9c74f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.furni-glow-text {
+  color: #f9c74f;
+  text-shadow: 0 0 10px rgba(249, 199, 79, 0.5);
+}
+
+/* =================== SCROLL ANIMATIONS =================== */
+
+.furni-scroll-reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.furni-scroll-reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =================== RESPONSIVE UTILITIES =================== */
+
+@media (max-width: 768px) {
+  .furni-hover-lift:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
+  
+  .furni-card:hover {
+    transform: translateY(-6px) scale(1.01);
+  }
+  
+  .furni-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .furni-hover-lift:hover {
+    transform: none;
+  }
+  
+  .furni-card:hover {
+    transform: none;
+  }
+}
+
+/* =================== ACCESSIBILITY =================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .furni-float,
+  .furni-pulse,
+  .furni-shimmer,
+  .furni-glow,
+  .furni-wave,
+  .furni-gradient-shift {
+    animation: none;
+  }
+  
+  .furni-hover-lift,
+  .furni-hover-rotate,
+  .furni-btn {
+    transition: none;
+  }
+  
+  .furni-hover-lift:hover,
+  .furni-hover-rotate:hover,
+  .furni-card:hover {
+    transform: none;
+  }
+}
+
+/* =================== CUSTOM SCROLLBAR =================== */
+
+.furni-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.furni-scrollbar::-webkit-scrollbar-track {
+  background: rgba(249, 199, 79, 0.1);
+  border-radius: 10px;
+}
+
+.furni-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #2f4b3f, #f9c74f);
+  border-radius: 10px;
+}
+
+.furni-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #243d33, #f8b42e);
+}
+
+/* =================== FOCUS STYLES =================== */
+
+.furni-focus:focus {
+  outline: 2px solid #f9c74f;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* =================== DARK MODE SUPPORT =================== */
+
+@media (prefers-color-scheme: dark) {
+  .furni-glass {
+    background: rgba(47, 75, 63, 0.9);
+    border: 1px solid rgba(249, 199, 79, 0.3);
+  }
+  
+  .furni-card {
+    background: linear-gradient(135deg, #2a3b3d 0%, #374151 100%);
+    color: #ffffff;
+  }
+}

@@ -1,54 +1,116 @@
+/* Furni Modern Admin Dashboard Theme */
 .dashboard-stat-card {
-  transition: transform 0.2s, box-shadow 0.2s;
-  border: none;
-  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--rmsu-border-light);
+  border-radius: var(--rmsu-radius-xl);
+  background: var(--rmsu-bg-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--rmsu-gradient-gold);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .dashboard-stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transform: translateY(-8px);
+  box-shadow: var(--rmsu-shadow-elevated);
+  border-color: var(--rmsu-gold-light);
+}
+
+.dashboard-stat-card:hover::before {
+  opacity: 1;
 }
 
 .stat-icon {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 50%;
   color: white;
+  margin-bottom: 1rem;
+  background: var(--rmsu-orange-overlay);
 }
 
 .stat-icon i {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  color: var(--rmsu-gold);
 }
 
 .bg-primary {
-  background: linear-gradient(45deg, #4e73df, #224abe);
+  background: var(--rmsu-gradient-primary);
 }
 
 .bg-success {
-  background: linear-gradient(45deg, #1cc88a, #13855c);
+  background: var(--rmsu-gradient-primary);
 }
 
 .bg-warning {
-  background: linear-gradient(45deg, #f6c23e, #dda20a);
+  background: var(--rmsu-gradient-gold);
 }
 
 .bg-info {
-  background: linear-gradient(45deg, #36b9cc, #258391);
+  background: var(--rmsu-gradient-primary);
+}
+
+/* Table Furni Theme */
+.table {
+  background: var(--rmsu-bg-card);
+  border-radius: var(--rmsu-radius-medium);
+  overflow: hidden;
+  box-shadow: var(--rmsu-shadow-light);
+  border: 1px solid var(--rmsu-border-light);
 }
 
 .table th {
+  background: var(--rmsu-bg-secondary);
+  color: var(--rmsu-text-primary);
+  border: none;
+  padding: 1.2rem;
   font-weight: 600;
-  color: #4a5568;
+  font-size: 0.9rem;
 }
 
 .table td {
+  color: var(--rmsu-text-primary);
+  border-color: var(--rmsu-border-light);
+  padding: 1rem 1.2rem;
   vertical-align: middle;
 }
 
+.table tbody tr:hover {
+  background: var(--rmsu-orange-overlay);
+}
+
+/* Badges Furni Theme */
 .badge {
-  padding: 0.5em 0.8em;
-  font-weight: 500;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--rmsu-radius-medium);
+  font-size: 0.75rem;
+}
+
+.badge-primary {
+  background: var(--rmsu-gradient-gold);
+  color: var(--rmsu-text-white);
+}
+
+.badge-secondary {
+  background: var(--rmsu-gradient-primary);
+  color: var(--rmsu-text-white);
+}
+
+.badge-success {
+  background: var(--rmsu-primary);
+  color: var(--rmsu-text-white);
 }

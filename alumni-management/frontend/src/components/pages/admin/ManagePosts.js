@@ -248,29 +248,79 @@ function ManagePosts() {
 
   return (
     <AdminLayout>
-      <Box sx={{ minHeight: '100vh', bgcolor: '#f8fafc' }}>
+      <Box sx={{ minHeight: '100vh', bgcolor: '#f0ede8' }}>
         {/* Header */}
         <Box
           sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
             color: 'white',
             py: 4,
-            mb: 4
+            mb: 4,
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              width: '200px',
+              height: '200px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(249, 199, 79, 0.3) 0%, transparent 70%)',
+              top: '-100px',
+              right: '-50px',
+              animation: 'float 6s ease-in-out infinite'
+            },
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              width: '150px',
+              height: '150px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(251, 211, 107, 0.2) 0%, transparent 70%)',
+              bottom: '-75px',
+              left: '-25px',
+              animation: 'float 8s ease-in-out infinite reverse'
+            },
+            '@keyframes float': {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' }
+            }
           }}
         >
-          <Container maxWidth="xl" sx={{ pl: 4 }}>
+          <Container maxWidth="xl" sx={{ pl: 4, position: 'relative', zIndex: 2 }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Box>
-                <Typography variant="h4" fontWeight={700} mb={1}>
-                  <ForumIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                <Typography variant="h4" fontWeight={700} mb={1} sx={{
+                  textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                  fontFamily: "'Poppins', sans-serif"
+                }}>
+                  <ForumIcon sx={{ 
+                    mr: 1, 
+                    verticalAlign: 'middle',
+                    fontSize: '2rem',
+                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+                  }} />
                   จัดการกระดานสนทนา
                 </Typography>
-                <Typography variant="h6" sx={{ opacity: 0.9 }}>
+                <Typography variant="h6" sx={{ 
+                  opacity: 0.9,
+                  textShadow: '0 1px 2px rgba(0,0,0,0.1)',
+                  fontWeight: 400
+                }}>
                   จัดการโพสต์และความคิดเห็น มหาวิทยาลัยราชภัฏมหาสารคาม
                 </Typography>
               </Box>
-              <Box sx={{ textAlign: 'right' }}>
-                <Typography variant="h5" fontWeight={700}>
+              <Box sx={{ 
+                textAlign: 'right',
+                bgcolor: 'rgba(255,255,255,0.1)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: 3,
+                p: 2,
+                border: '1px solid rgba(255,255,255,0.2)'
+              }}>
+                <Typography variant="h5" fontWeight={700} sx={{
+                  color: '#f9c74f',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                }}>
                   {filteredPosts.length}
                 </Typography>
                 <Typography variant="body2" sx={{ opacity: 0.9 }}>
@@ -296,14 +346,27 @@ function ManagePosts() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
-                startAdornment: <SearchIcon sx={{ color: 'text.secondary', mr: 1 }} />
+                startAdornment: <SearchIcon sx={{ color: '#2f4b3f', mr: 1 }} />
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 3,
                   bgcolor: 'white',
+                  border: '2px solid rgba(47, 75, 63, 0.1)',
+                  transition: 'all 0.3s ease',
                   '&:hover': {
-                    '& > fieldset': { borderColor: '#667eea' }
+                    borderColor: '#f9c74f',
+                    boxShadow: '0 4px 12px rgba(249, 199, 79, 0.15)'
+                  },
+                  '&.Mui-focused': {
+                    borderColor: '#2f4b3f',
+                    boxShadow: '0 4px 12px rgba(47, 75, 63, 0.15)'
+                  }
+                },
+                '& .MuiInputBase-input': {
+                  color: '#2f4b3f',
+                  '&::placeholder': {
+                    color: 'rgba(47, 75, 63, 0.6)'
                   }
                 }
               }}
@@ -314,31 +377,105 @@ function ManagePosts() {
             elevation={0}
             sx={{
               borderRadius: 4,
-              border: '1px solid #e2e8f0',
+              border: '2px solid rgba(47, 75, 63, 0.1)',
+              background: 'rgba(255,255,255,0.95)',
+              backdropFilter: 'blur(20px)',
+              transition: 'all 0.3s ease',
               '&:hover': {
-                boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+                boxShadow: '0 12px 25px rgba(47, 75, 63, 0.1)',
+                transform: 'translateY(-2px)',
+                borderColor: 'rgba(249, 199, 79, 0.3)'
               }
             }}
           >
             <CardContent sx={{ p: 0 }}>
-              <TableContainer component={Paper} elevation={0}>
+              <TableContainer component={Paper} elevation={0} sx={{ 
+                borderRadius: 4,
+                background: 'transparent'
+              }}>
                 <Table>
-                  <TableHead sx={{ bgcolor: '#f8fafc' }}>
+                  <TableHead sx={{ 
+                    bgcolor: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+                    position: 'relative',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+                      opacity: 0.1
+                    }
+                  }}>
                     <TableRow>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>#</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>หัวข้อ</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>ผู้โพสต์</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>วันที่โพสต์</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>คอมเมนต์</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>รูปภาพ</TableCell>
-                      <TableCell sx={{ fontWeight: 600, color: 'primary.main', textAlign: 'center' }}>การจัดการ</TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.9rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>#</TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.9rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>หัวข้อ</TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.9rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>ผู้โพสต์</TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.9rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>วันที่โพสต์</TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.9rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>คอมเมนต์</TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f',
+                        fontSize: '0.9rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>รูปภาพ</TableCell>
+                      <TableCell sx={{ 
+                        fontWeight: 700, 
+                        color: '#2f4b3f', 
+                        textAlign: 'center',
+                        fontSize: '0.9rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>การจัดการ</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {filteredPosts.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={7} align="center" sx={{ py: 4, color: 'text.secondary' }}>
-                          ไม่พบข้อมูลโพสต์
+                        <TableCell colSpan={7} align="center" sx={{ 
+                          py: 6, 
+                          color: '#2f4b3f',
+                          fontSize: '1.1rem',
+                          fontWeight: 500
+                        }}>
+                          <Stack alignItems="center" spacing={2}>
+                            <ForumIcon sx={{ fontSize: 48, color: 'rgba(47, 75, 63, 0.3)' }} />
+                            <Typography variant="h6" color="#2f4b3f">
+                              ไม่พบข้อมูลโพสต์
+                            </Typography>
+                          </Stack>
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -346,31 +483,54 @@ function ManagePosts() {
                         <TableRow 
                           key={post.id}
                           sx={{ 
-                            '&:nth-of-type(odd)': { bgcolor: '#f8fafc' },
-                            '&:hover': { bgcolor: '#e2e8f0' }
+                            '&:nth-of-type(odd)': { 
+                              bgcolor: 'rgba(249, 199, 79, 0.03)' 
+                            },
+                            '&:hover': { 
+                              bgcolor: 'rgba(47, 75, 63, 0.05)',
+                              transform: 'scale(1.002)',
+                              transition: 'all 0.2s ease'
+                            },
+                            transition: 'all 0.2s ease'
                           }}
                         >
-                          <TableCell sx={{ fontWeight: 600, color: 'primary.main' }}>
+                          <TableCell sx={{ 
+                            fontWeight: 700, 
+                            color: '#2f4b3f',
+                            fontSize: '1rem'
+                          }}>
                             {idx + 1}
                           </TableCell>
                           <TableCell>
                             <Stack direction="row" alignItems="center" spacing={1}>
-                              <ForumIcon sx={{ color: 'primary.main' }} />
-                              <Typography fontWeight={600}>{post.title}</Typography>
+                              <ForumIcon sx={{ color: '#f9c74f', fontSize: '1.2rem' }} />
+                              <Typography fontWeight={600} sx={{ color: '#2f4b3f' }}>
+                                {post.title}
+                              </Typography>
                             </Stack>
                           </TableCell>
                           <TableCell>
                             <Stack direction="row" alignItems="center" spacing={1}>
-                              <Avatar sx={{ width: 24, height: 24, bgcolor: 'primary.main' }}>
-                                <PersonIcon sx={{ fontSize: 16 }} />
+                              <Avatar sx={{ 
+                                width: 28, 
+                                height: 28, 
+                                bgcolor: 'linear-gradient(135deg, #2f4b3f 0%, #f9c74f 100%)',
+                                border: '2px solid #f9c74f'
+                              }}>
+                                <PersonIcon sx={{ fontSize: 16, color: 'white' }} />
                               </Avatar>
-                              <Typography variant="body2">{post.author_name}</Typography>
+                              <Typography variant="body2" sx={{ 
+                                color: '#2f4b3f',
+                                fontWeight: 500
+                              }}>
+                                {post.author_name}
+                              </Typography>
                             </Stack>
                           </TableCell>
                           <TableCell>
                             <Stack direction="row" alignItems="center" spacing={1}>
-                              <ScheduleIcon sx={{ color: 'text.secondary' }} />
-                              <Typography variant="body2">
+                              <ScheduleIcon sx={{ color: '#f9c74f' }} />
+                              <Typography variant="body2" sx={{ color: '#2f4b3f' }}>
                                 {moment(post.created_at).locale('th').format('LLL')}
                               </Typography>
                             </Stack>
@@ -380,9 +540,13 @@ function ManagePosts() {
                               label={post.comment_count}
                               size="small"
                               sx={{
-                                bgcolor: '#667eea',
-                                color: 'white',
-                                fontWeight: 600
+                                bgcolor: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+                                color: '#2f4b3f',
+                                fontWeight: 700,
+                                border: '1px solid rgba(47, 75, 63, 0.1)',
+                                '&:hover': {
+                                  transform: 'scale(1.05)'
+                                }
                               }}
                             />
                           </TableCell>
@@ -396,12 +560,22 @@ function ManagePosts() {
                                   width: 80,
                                   height: 50,
                                   objectFit: 'cover',
-                                  borderRadius: 1,
-                                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                                  borderRadius: 2,
+                                  border: '2px solid rgba(249, 199, 79, 0.3)',
+                                  boxShadow: '0 4px 12px rgba(47, 75, 63, 0.1)',
+                                  transition: 'all 0.3s ease',
+                                  '&:hover': {
+                                    transform: 'scale(1.1)',
+                                    borderColor: '#f9c74f',
+                                    boxShadow: '0 6px 16px rgba(47, 75, 63, 0.2)'
+                                  }
                                 }}
                               />
                             ) : (
-                              <ImageIcon sx={{ color: 'text.disabled' }} />
+                              <ImageIcon sx={{ 
+                                color: 'rgba(47, 75, 63, 0.3)',
+                                fontSize: '2rem'
+                              }} />
                             )}
                           </TableCell>
                           <TableCell align="center">
@@ -413,8 +587,17 @@ function ManagePosts() {
                                   setShowDetailModal(true);
                                 }}
                                 sx={{
-                                  color: '#06b6d4',
-                                  '&:hover': { bgcolor: 'rgba(6, 182, 212, 0.1)' }
+                                  color: '#2f4b3f',
+                                  bgcolor: 'rgba(47, 75, 63, 0.1)',
+                                  border: '1px solid rgba(47, 75, 63, 0.2)',
+                                  borderRadius: '8px',
+                                  transition: 'all 0.3s ease',
+                                  '&:hover': { 
+                                    bgcolor: '#2f4b3f',
+                                    color: 'white',
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 4px 12px rgba(47, 75, 63, 0.3)'
+                                  }
                                 }}
                               >
                                 <VisibilityIcon fontSize="small" />
@@ -423,8 +606,17 @@ function ManagePosts() {
                                 size="small"
                                 onClick={() => fetchComments(post.id)}
                                 sx={{
-                                  color: '#6b7280',
-                                  '&:hover': { bgcolor: 'rgba(107, 114, 128, 0.1)' }
+                                  color: '#f9c74f',
+                                  bgcolor: 'rgba(249, 199, 79, 0.1)',
+                                  border: '1px solid rgba(249, 199, 79, 0.2)',
+                                  borderRadius: '8px',
+                                  transition: 'all 0.3s ease',
+                                  '&:hover': { 
+                                    bgcolor: '#f9c74f',
+                                    color: '#2f4b3f',
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 4px 12px rgba(249, 199, 79, 0.3)'
+                                  }
                                 }}
                               >
                                 <CommentIcon fontSize="small" />
@@ -434,7 +626,16 @@ function ManagePosts() {
                                 onClick={() => handleDelete(post.id)}
                                 sx={{
                                   color: '#ef4444',
-                                  '&:hover': { bgcolor: 'rgba(239, 68, 68, 0.1)' }
+                                  bgcolor: 'rgba(239, 68, 68, 0.1)',
+                                  border: '1px solid rgba(239, 68, 68, 0.2)',
+                                  borderRadius: '8px',
+                                  transition: 'all 0.3s ease',
+                                  '&:hover': { 
+                                    bgcolor: '#ef4444',
+                                    color: 'white',
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)'
+                                  }
                                 }}
                               >
                                 <DeleteIcon fontSize="small" />
@@ -461,25 +662,47 @@ function ManagePosts() {
           sx: { 
             borderRadius: 4,
             maxHeight: '85vh',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            border: '2px solid rgba(47, 75, 63, 0.1)',
+            background: 'rgba(255,255,255,0.95)',
+            backdropFilter: 'blur(20px)'
           }
         }}
       >
         <DialogTitle
           sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
             color: 'white',
             fontWeight: 700,
             display: 'flex',
             alignItems: 'center',
             gap: 1,
-            py: 2
+            py: 3,
+            position: 'relative',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: '100px',
+              height: '100px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(249, 199, 79, 0.3) 0%, transparent 70%)',
+              transform: 'translate(30px, -30px)'
+            }
           }}
         >
-          <ForumIcon />
+          <ForumIcon sx={{ 
+            fontSize: '1.5rem',
+            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
+          }} />
           รายละเอียดโพสต์
         </DialogTitle>
-        <DialogContent sx={{ bgcolor: '#f8fafc', p: 0, overflow: 'auto' }}>
+        <DialogContent sx={{ 
+          bgcolor: '#f0ede8', 
+          p: 0, 
+          overflow: 'auto'
+        }}>
           {detailPost && (
             <Box sx={{ p: 3 }}>
               {/* Header Card */}
@@ -488,17 +711,25 @@ function ManagePosts() {
                 sx={{ 
                   mb: 3, 
                   borderRadius: 3,
-                  border: '1px solid #e2e8f0',
-                  overflow: 'hidden'
+                  border: '2px solid rgba(47, 75, 63, 0.1)',
+                  background: 'rgba(255,255,255,0.95)',
+                  backdropFilter: 'blur(20px)',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    borderColor: 'rgba(249, 199, 79, 0.3)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 20px rgba(47, 75, 63, 0.1)'
+                  }
                 }}
               >
                 <CardContent sx={{ p: 3 }}>
                   <Typography 
                     variant="h4" 
                     fontWeight={700} 
-                    color="primary.main" 
                     mb={2}
                     sx={{ 
+                      color: '#2f4b3f',
                       wordBreak: 'break-word',
                       lineHeight: 1.3
                     }}
@@ -518,24 +749,38 @@ function ManagePosts() {
                     </Stack>
                     
                     <Stack direction="row" alignItems="center" spacing={1}>
-                      <Avatar sx={{ width: 32, height: 32, bgcolor: 'success.main' }}>
-                        <ScheduleIcon sx={{ fontSize: 18 }} />
+                      <Avatar sx={{ 
+                        width: 32, 
+                        height: 32, 
+                        bgcolor: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+                        border: '1px solid rgba(47, 75, 63, 0.1)'
+                      }}>
+                        <ScheduleIcon sx={{ fontSize: 18, color: '#2f4b3f' }} />
                       </Avatar>
                       <Box>
-                        <Typography variant="body2" color="text.secondary">วันที่โพสต์</Typography>
-                        <Typography variant="body1" fontWeight={600}>
+                        <Typography variant="body2" sx={{ color: 'rgba(47, 75, 63, 0.6)' }}>
+                          วันที่โพสต์
+                        </Typography>
+                        <Typography variant="body1" fontWeight={600} sx={{ color: '#2f4b3f' }}>
                           {moment(detailPost.created_at).locale('th').format('DD MMM YYYY - HH:mm')}
                         </Typography>
                       </Box>
                     </Stack>
                     
                     <Stack direction="row" alignItems="center" spacing={1}>
-                      <Avatar sx={{ width: 32, height: 32, bgcolor: 'warning.main' }}>
-                        <CommentIcon sx={{ fontSize: 18 }} />
+                      <Avatar sx={{ 
+                        width: 32, 
+                        height: 32, 
+                        bgcolor: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
+                        border: '1px solid rgba(249, 199, 79, 0.2)'
+                      }}>
+                        <CommentIcon sx={{ fontSize: 18, color: '#f9c74f' }} />
                       </Avatar>
                       <Box>
-                        <Typography variant="body2" color="text.secondary">ความคิดเห็น</Typography>
-                        <Typography variant="body1" fontWeight={600}>
+                        <Typography variant="body2" sx={{ color: 'rgba(47, 75, 63, 0.6)' }}>
+                          ความคิดเห็น
+                        </Typography>
+                        <Typography variant="body1" fontWeight={600} sx={{ color: '#2f4b3f' }}>
                           {detailPost.comment_count} ความคิดเห็น
                         </Typography>
                       </Box>
@@ -550,20 +795,28 @@ function ManagePosts() {
                 sx={{ 
                   mb: 3, 
                   borderRadius: 3,
-                  border: '1px solid #e2e8f0'
+                  border: '2px solid rgba(47, 75, 63, 0.1)',
+                  background: 'rgba(255,255,255,0.95)',
+                  backdropFilter: 'blur(20px)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    borderColor: 'rgba(249, 199, 79, 0.3)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 6px 16px rgba(47, 75, 63, 0.1)'
+                  }
                 }}
               >
                 <CardContent sx={{ p: 3 }}>
-                  <Typography variant="h6" fontWeight={600} mb={2} color="primary.main">
+                  <Typography variant="h6" fontWeight={600} mb={2} sx={{ color: '#2f4b3f' }}>
                     เนื้อหาโพสต์
                   </Typography>
                   <Paper 
                     elevation={0} 
                     sx={{ 
                       p: 3, 
-                      bgcolor: '#ffffff', 
+                      bgcolor: 'rgba(249, 199, 79, 0.05)', 
                       borderRadius: 2, 
-                      border: '1px solid #f1f5f9',
+                      border: '1px solid rgba(249, 199, 79, 0.2)',
                       minHeight: 80
                     }}
                   >
@@ -572,7 +825,8 @@ function ManagePosts() {
                       sx={{ 
                         lineHeight: 1.7,
                         whiteSpace: 'pre-wrap',
-                        wordBreak: 'break-word'
+                        wordBreak: 'break-word',
+                        color: '#2f4b3f'
                       }}
                     >
                       {detailPost.content}
@@ -588,20 +842,28 @@ function ManagePosts() {
                   sx={{ 
                     mb: 3, 
                     borderRadius: 3,
-                    border: '1px solid #e2e8f0'
+                    border: '2px solid rgba(47, 75, 63, 0.1)',
+                    background: 'rgba(255,255,255,0.95)',
+                    backdropFilter: 'blur(20px)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      borderColor: 'rgba(249, 199, 79, 0.3)',
+                      transform: 'translateY(-1px)',
+                      boxShadow: '0 6px 16px rgba(47, 75, 63, 0.1)'
+                    }
                   }}
                 >
                   <CardContent sx={{ p: 3 }}>
-                    <Typography variant="h6" fontWeight={600} mb={2} color="primary.main">
+                    <Typography variant="h6" fontWeight={600} mb={2} sx={{ color: '#2f4b3f' }}>
                       รูปภาพ
                     </Typography>
                     <Box 
                       sx={{ 
                         textAlign: 'center',
                         p: 2,
-                        bgcolor: '#f8fafc',
+                        bgcolor: 'rgba(249, 199, 79, 0.05)',
                         borderRadius: 2,
-                        border: '1px solid #f1f5f9'
+                        border: '1px solid rgba(249, 199, 79, 0.2)'
                       }}
                     >
                       <Box
@@ -613,8 +875,9 @@ function ManagePosts() {
                           maxHeight: 400,
                           objectFit: 'contain',
                           borderRadius: 2,
-                          boxShadow: '0 8px 25px rgba(0,0,0,0.1)',
-                          transition: 'transform 0.2s ease',
+                          boxShadow: '0 8px 25px rgba(47, 75, 63, 0.15)',
+                          border: '2px solid rgba(249, 199, 79, 0.3)',
+                          transition: 'all 0.3s ease',
                           '&:hover': {
                             transform: 'scale(1.02)'
                           }
@@ -629,8 +892,8 @@ function ManagePosts() {
         </DialogContent>
         <DialogActions 
           sx={{ 
-            bgcolor: '#f8fafc', 
-            borderTop: '1px solid #e2e8f0',
+            bgcolor: '#f0ede8', 
+            borderTop: '2px solid rgba(47, 75, 63, 0.1)',
             p: 3,
             justifyContent: 'space-between'
           }}
@@ -640,10 +903,18 @@ function ManagePosts() {
             variant="contained"
             startIcon={<CommentIcon />}
             sx={{ 
-              borderRadius: 2,
-              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+              borderRadius: 3,
+              background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+              color: '#2f4b3f',
+              fontWeight: 600,
+              px: 3,
+              py: 1.5,
+              border: '1px solid rgba(47, 75, 63, 0.1)',
+              boxShadow: '0 4px 12px rgba(249, 199, 79, 0.3)',
               '&:hover': {
-                background: 'linear-gradient(135deg, #059669 0%, #047857 100%)'
+                background: 'linear-gradient(135deg, #fbd36b 0%, #f9c74f 100%)',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 6px 16px rgba(249, 199, 79, 0.4)'
               }
             }}
           >
@@ -652,7 +923,19 @@ function ManagePosts() {
           <Button 
             onClick={() => setShowDetailModal(false)} 
             variant="outlined" 
-            sx={{ borderRadius: 2 }}
+            sx={{ 
+              borderRadius: 3,
+              borderColor: '#2f4b3f',
+              color: '#2f4b3f',
+              fontWeight: 600,
+              px: 3,
+              py: 1.5,
+              '&:hover': {
+                borderColor: '#2f4b3f',
+                bgcolor: 'rgba(47, 75, 63, 0.05)',
+                transform: 'translateY(-1px)'
+              }
+            }}
           >
             ปิด
           </Button>

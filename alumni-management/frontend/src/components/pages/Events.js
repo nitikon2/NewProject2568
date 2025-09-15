@@ -55,6 +55,36 @@ import { th } from 'date-fns/locale';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
+// Add CSS animations for Furni theme
+const furniAnimations = `
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+`;
+
+// Insert animations into head
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.textContent = furniAnimations;
+  if (!document.head.querySelector('style[data-furni-animations]')) {
+    style.setAttribute('data-furni-animations', 'true');
+    document.head.appendChild(style);
+  }
+}
+
 function Events() {
   // ปรับ marginTop เฉพาะ filter
   const getHeaderMarginTop = () => {
@@ -192,55 +222,116 @@ function Events() {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f8fafc' }}>
-      {/* Hero Section - เหมือนหน้าข่าวสาร */}
+    <Box sx={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)',
+      fontFamily: "'Source Sans Pro', 'Segoe UI', system-ui, sans-serif"
+    }}>
+      {/* Hero Section - Furni Modern Style */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: 'linear-gradient(135deg, #2f4b3f, #243d33)',
           color: 'white',
-          py: 8,
-          textAlign: 'center'
+          py: { xs: 6, md: 10 },
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: '50%',
+            background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.3"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.2"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.4"/><circle cx="90" cy="80" r="0.8" fill="%23f9c74f" opacity="0.3"/></svg>') repeat`,
+            animation: 'float 20s ease-in-out infinite'
+          }
         }}
       >
-        <Container maxWidth="lg">
-          <Typography variant="h2" fontWeight={700} mb={2}>
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+          <Typography 
+            variant="h1" 
+            sx={{
+              fontFamily: "'Poppins', 'Inter', sans-serif",
+              fontWeight: 700,
+              fontSize: { xs: '2.5rem', md: '3.5rem' },
+              lineHeight: 1.2,
+              mb: 3
+            }}
+          >
             กิจกรรมศิษย์เก่า
           </Typography>
-          <Typography variant="h6" sx={{ opacity: 0.9 }}>
-            กิจกรรมและงานสังสรรค์อย่างเป็นทางการสำหรับศิษย์เก่า มหาวิทยาลัยราชภัฏมหาสารคาม
+          <Typography 
+            variant="h5" 
+            sx={{ 
+              opacity: 0.9,
+              lineHeight: 1.6,
+              fontSize: { xs: '1rem', md: '1.2rem' },
+              fontWeight: 400,
+              mb: 4,
+              maxWidth: '600px',
+              mx: 'auto'
+            }}
+          >
+            เข้าร่วมกิจกรรมและงานสังสรรค์ที่จัดขึ้นเพื่อเสริมสร้างเครือข่ายและความสัมพันธ์ในหมู่ศิษย์เก่า
           </Typography>
+          
+          {/* Hero Icon */}
+          <Box sx={{ 
+            fontSize: { xs: '8rem', md: '12rem' }, 
+            color: 'rgba(249, 199, 79, 0.3)',
+            mb: 2
+          }}>
+            <CalendarIcon sx={{ fontSize: 'inherit' }} />
+          </Box>
         </Container>
       </Box>
 
-      <Container maxWidth="xl" sx={{ py: 4 }}>
-        {/* Search Bar - เหมือนหน้าข่าวสาร */}
-        <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
+      <Container maxWidth="xl" sx={{ py: 6 }}>
+        {/* Search Bar - Furni Style */}
+        <Box sx={{ mb: 6, display: 'flex', justifyContent: 'center' }}>
           <TextField
             placeholder="ค้นหากิจกรรม..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            sx={{ maxWidth: 500, width: '100%' }}
+            sx={{ 
+              maxWidth: 600, 
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                backgroundColor: 'white',
+                borderRadius: '0.75rem',
+                border: '2px solid #dee2e6',
+                fontSize: '0.95rem',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  borderColor: '#f9c74f'
+                },
+                '&.Mui-focused': {
+                  borderColor: '#f9c74f',
+                  boxShadow: '0 0 0 0.2rem rgba(249, 199, 79, 0.25)'
+                }
+              }
+            }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon color="action" />
+                  <SearchIcon sx={{ color: '#f9c74f' }} />
                 </InputAdornment>
               ),
               endAdornment: search && (
                 <InputAdornment position="end">
                   <ClearIcon 
-                    sx={{ cursor: 'pointer', color: 'grey.500' }}
+                    sx={{ cursor: 'pointer', color: '#6c757d' }}
                     onClick={() => setSearch('')}
                   />
                 </InputAdornment>
-              ),
-              sx: { borderRadius: 3 }
+              )
             }}
           />
         </Box>
 
-        {/* Filter Buttons */}
-        <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
+        {/* Filter Buttons - Furni Style */}
+        <Box sx={{ mb: 6, display: 'flex', justifyContent: 'center' }}>
           <ToggleButtonGroup
             value={filter}
             exclusive
@@ -248,14 +339,29 @@ function Events() {
             aria-label="filter events"
             sx={{
               '& .MuiToggleButton-root': {
-                borderRadius: 3,
-                px: 3,
-                py: 1.5,
+                borderRadius: '0.75rem',
+                px: 4,
+                py: 2,
+                fontWeight: 600,
+                borderWidth: '2px',
+                fontSize: '0.95rem',
+                letterSpacing: '0.025em',
+                transition: 'all 0.3s ease',
+                border: '2px solid #2f4b3f !important',
+                color: '#2f4b3f',
+                '&:hover': {
+                  backgroundColor: 'rgba(47, 75, 63, 0.08)',
+                  transform: 'translateY(-2px)'
+                },
                 '&.Mui-selected': {
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                  borderColor: '#f9c74f !important',
                   color: 'white',
+                  boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.3)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)'
+                    background: '#f8b42e',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.25)'
                   }
                 }
               }
@@ -276,15 +382,36 @@ function Events() {
           </ToggleButtonGroup>
         </Box>
 
-        {/* Error Alert */}
+        {/* Error Alert - Furni Style */}
         {error && (
-          <Alert severity="error" sx={{ mb: 4, borderRadius: 2 }}>
-            <Typography variant="h6" gutterBottom>เกิดข้อผิดพลาด</Typography>
+          <Alert 
+            severity="error" 
+            sx={{ 
+              mb: 6, 
+              borderRadius: '0.75rem',
+              boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)',
+              borderLeft: '4px solid #f9c74f',
+              fontWeight: 500,
+              backgroundColor: 'rgba(249, 199, 79, 0.1)',
+              color: '#2a3b3d'
+            }}
+          >
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+              เกิดข้อผิดพลาด
+            </Typography>
             <Typography>{error}</Typography>
             <Button
               variant="outlined"
               color="error"
-              sx={{ mt: 2 }}
+              sx={{ 
+                mt: 2,
+                borderRadius: '0.75rem',
+                fontWeight: 600,
+                borderWidth: '2px',
+                '&:hover': {
+                  transform: 'translateY(-2px)'
+                }
+              }}
               onClick={() => {
                 setError('');
                 setLoading(true);
@@ -296,19 +423,25 @@ function Events() {
           </Alert>
         )}
 
-        {/* Events Grid - ธีมเหมือนหน้าข่าวสาร */}
+        {/* Events Grid - Furni Modern Theme */}
         {loading ? (
-          <Grid container spacing={3}>
+          <Grid container spacing={4}>
             {[...Array(6)].map((_, index) => (
               <Grid item xs={12} md={6} lg={4} key={index}>
-                <Card sx={{ borderRadius: 4, border: '1px solid #e2e8f0' }}>
-                  <Skeleton variant="rectangular" height={200} />
+                <Card sx={{ 
+                  borderRadius: '1.5rem', 
+                  border: '1px solid #e9ecef',
+                  boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)',
+                  height: 450,
+                  overflow: 'hidden'
+                }}>
+                  <Skeleton variant="rectangular" height={220} />
                   <CardContent sx={{ p: 3 }}>
-                    <Skeleton variant="text" width="80%" height={28} />
-                    <Skeleton variant="text" width="60%" height={20} />
+                    <Skeleton variant="text" width="80%" height={32} />
+                    <Skeleton variant="text" width="60%" height={24} />
                     <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
-                      <Skeleton variant="rounded" width={60} height={24} />
-                      <Skeleton variant="rounded" width={80} height={24} />
+                      <Skeleton variant="rounded" width={80} height={28} />
+                      <Skeleton variant="rounded" width={100} height={28} />
                     </Stack>
                     <Box sx={{ mt: 2 }}>
                       <Skeleton variant="text" width="100%" />
@@ -321,7 +454,7 @@ function Events() {
           </Grid>
         ) : (
           <>
-            <Grid container spacing={3}>
+            <Grid container spacing={4}>
               {events
                 .filter(event => {
                   const searchText = search.toLowerCase();
@@ -334,151 +467,277 @@ function Events() {
                 })
                 .map((event, index) => (
                   <Grid item xs={12} md={6} lg={4} key={event.id}>
-                    <Fade in timeout={300 + (index * 100)}>
-                      <Card elevation={0} sx={{
-                        height: '100%',
-                        borderRadius: 4,
-                        border: '1px solid #e2e8f0',
-                        transition: 'all 0.3s ease',
-                        cursor: 'pointer',
-                        position: 'relative',
-                        '&:hover': {
-                          transform: 'translateY(-8px)',
-                          boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                          borderColor: '#667eea'
-                        }
-                      }}
-                      onClick={() => openModal(event)}
-                    >
-                      {/* Event Image */}
-                      <Box sx={{ position: 'relative' }}>
-                        <CardMedia
-                          component="img"
-                          height="200"
-                          image={event.image_url ? `http://localhost:5000${event.image_url}` : '/event-default.jpg'}
-                          alt={event.title}
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = '/event-default.jpg';
-                          }}
-                        />
-                        
-                        {/* Status and Category Chips - ธีมเหมือนหน้าข่าวสาร */}
-                        <Stack direction="row" spacing={1} sx={{ position: 'absolute', top: 16, left: 16 }}>
-                          <Chip
-                            label={isUpcoming(event.event_date) ? 'กำลังจะมาถึง' : 'กิจกรรมที่ผ่านมา'}
-                            size="small"
-                            icon={isUpcoming(event.event_date) ? <EventAvailableIcon /> : <EventBusyIcon />}
+                    <Fade in timeout={400 + (index * 100)}>
+                      <Card 
+                        elevation={0} 
+                        sx={{
+                          height: '100%',
+                          background: 'white',
+                          border: '1px solid #e9ecef',
+                          borderRadius: '1.5rem',
+                          boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)',
+                          transition: 'all 0.3s ease',
+                          cursor: 'pointer',
+                          position: 'relative',
+                          overflow: 'hidden',
+                          '&:hover': {
+                            transform: 'translateY(-8px)',
+                            boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.25)',
+                            borderColor: '#fbd36b'
+                          },
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            height: '4px',
+                            background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                            opacity: 0,
+                            transition: 'opacity 0.3s'
+                          },
+                          '&:hover::before': {
+                            opacity: 1
+                          }
+                        }}
+                        onClick={() => openModal(event)}
+                      >
+                        {/* Event Image */}
+                        <Box sx={{ position: 'relative' }}>
+                          <CardMedia
+                            component="img"
+                            height="220"
+                            image={event.image_url ? `http://localhost:5000${event.image_url}` : '/event-default.jpg'}
+                            alt={event.title}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = '/event-default.jpg';
+                            }}
                             sx={{
-                              bgcolor: isUpcoming(event.event_date) ? '#667eea' : '#9ca3af',
-                              color: 'white',
-                              fontWeight: 600,
-                              '& .MuiChip-icon': { color: 'white' }
+                              borderRadius: '1.5rem 1.5rem 0 0'
                             }}
                           />
-                          {event.category && (
+                          
+                          {/* Status and Category Chips - Furni Style */}
+                          <Stack direction="row" spacing={1} sx={{ position: 'absolute', top: 16, left: 16 }}>
                             <Chip
-                              label={event.category}
+                              label={isUpcoming(event.event_date) ? 'กำลังจะมาถึง' : 'กิจกรรมที่ผ่านมา'}
                               size="small"
+                              icon={isUpcoming(event.event_date) ? <EventAvailableIcon /> : <EventBusyIcon />}
                               sx={{
-                                bgcolor: '#764ba2',
+                                background: isUpcoming(event.event_date) 
+                                  ? 'linear-gradient(135deg, #f9c74f, #fbd36b)' 
+                                  : 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
                                 color: 'white',
-                                fontWeight: 600
+                                fontWeight: 600,
+                                borderRadius: '0.75rem',
+                                '& .MuiChip-icon': { color: 'white' }
                               }}
                             />
-                          )}
-                        </Stack>
+                            {event.category && (
+                              <Chip
+                                label={event.category}
+                                size="small"
+                                sx={{
+                                  background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
+                                  color: 'white',
+                                  fontWeight: 600,
+                                  borderRadius: '0.75rem'
+                                }}
+                              />
+                            )}
+                          </Stack>
 
-                        {/* Share Button */}
-                        <IconButton
+                          {/* Share Button - Furni Style */}
+                          <IconButton
+                            sx={{
+                              position: 'absolute',
+                              top: 16,
+                              right: 16,
+                              width: 50,
+                              height: 50,
+                              backgroundColor: 'rgba(255,255,255,0.9)',
+                              backdropFilter: 'blur(10px)',
+                              border: '2px solid #dee2e6',
+                              color: '#6c757d',
+                              transition: 'all 0.3s ease',
+                              '&:hover': { 
+                                backgroundColor: 'white',
+                                background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                                borderColor: '#f9c74f',
+                                color: 'white',
+                                transform: 'scale(1.1)'
+                              }
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleShare(event);
+                            }}
+                          >
+                            <ShareIcon />
+                          </IconButton>
+
+                          {/* Shine Effect */}
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              background: 'linear-gradient(45deg, transparent 30%, rgba(249, 199, 79, 0.1) 50%, transparent 70%)',
+                              transform: 'translateX(-100%)',
+                              transition: 'transform 0.6s',
+                              '.MuiCard-root:hover &': {
+                                transform: 'translateX(100%)'
+                              }
+                            }}
+                          />
+                        </Box>
+
+                      <CardContent sx={{ 
+                        flexGrow: 1, 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        p: { xs: 2.5, sm: 3.5 },
+                        overflow: 'hidden'
+                      }}>
+                        {/* Event Title - Furni Typography */}
+                        <Typography 
+                          variant="h5" 
                           sx={{
-                            position: 'absolute',
-                            top: 16,
-                            right: 16,
-                            backgroundColor: 'rgba(255,255,255,0.9)',
-                            backdropFilter: 'blur(8px)',
-                            '&:hover': { backgroundColor: 'rgba(255,255,255,1)' }
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleShare(event);
+                            fontFamily: "'Poppins', 'Inter', sans-serif",
+                            fontWeight: 600,
+                            color: '#2a3b3d',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1.5,
+                            mb: 2.5,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            wordBreak: 'break-word',
+                            lineHeight: 1.3,
+                            minHeight: '2.6em',
+                            fontSize: { xs: '1.15rem', sm: '1.3rem' }
                           }}
                         >
-                          <ShareIcon />
-                        </IconButton>
-                      </Box>
-
-                      <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                        {/* Event Title */}
-                        <Typography variant="h5" fontWeight="bold" color="primary" gutterBottom sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 1,
-                          mb: 2
-                        }}>
-                          <CalendarIcon sx={{ color: '#facc15' }} />
-                          {event.title}
+                          <CalendarIcon sx={{ 
+                            color: '#f9c74f', 
+                            flexShrink: 0,
+                            fontSize: { xs: '1.4rem', sm: '1.6rem' }
+                          }} />
+                          <Box sx={{ 
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            wordBreak: 'break-word'
+                          }}>
+                            {event.title}
+                          </Box>
                         </Typography>
 
-                        {/* Event Date & Time */}
-                        <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+                        {/* Event Date & Time - Furni Style */}
+                        <Stack direction="row" spacing={2.5} sx={{ mb: 2.5 }}>
                           <Box display="flex" alignItems="center" gap={1}>
-                            <EventIcon color="action" fontSize="small" />
-                            <Typography variant="body2" color="text.secondary">
+                            <EventIcon sx={{ color: '#6c757d', fontSize: '1.1rem' }} />
+                            <Typography 
+                              variant="body2" 
+                              sx={{ 
+                                color: '#6c757d',
+                                fontWeight: 500,
+                                fontSize: '0.9rem'
+                              }}
+                            >
                               {formatDate(event.event_date)}
                             </Typography>
                           </Box>
                           <Box display="flex" alignItems="center" gap={1}>
-                            <TimeIcon color="action" fontSize="small" />
-                            <Typography variant="body2" color="text.secondary">
+                            <TimeIcon sx={{ color: '#6c757d', fontSize: '1.1rem' }} />
+                            <Typography 
+                              variant="body2" 
+                              sx={{ 
+                                color: '#6c757d',
+                                fontWeight: 500,
+                                fontSize: '0.9rem'
+                              }}
+                            >
                               {formatTime(event.event_date) || '--'}
                             </Typography>
                           </Box>
                         </Stack>
 
-                        {/* Location */}
-                        <Box display="flex" alignItems="center" gap={1} sx={{ mb: 2 }}>
-                          <LocationIcon color="action" fontSize="small" />
-                          <Typography variant="body2" color="text.secondary">
+                        {/* Location - Furni Style */}
+                        <Box display="flex" alignItems="center" gap={1} sx={{ mb: 2.5 }}>
+                          <LocationIcon sx={{ color: '#6c757d', fontSize: '1.1rem' }} />
+                          <Typography 
+                            variant="body2" 
+                            sx={{ 
+                              color: '#6c757d',
+                              fontWeight: 500,
+                              fontSize: '0.9rem'
+                            }}
+                          >
                             {event.location}
                           </Typography>
                         </Box>
 
-                        {/* Description */}
+                        {/* Description - Furni Card Style */}
                         <Box sx={{
-                          p: 2,
-                          borderLeft: 3,
-                          borderColor: 'primary.main',
-                          backgroundColor: 'rgba(37, 99, 235, 0.05)',
-                          borderRadius: 2,
-                          mb: 2,
+                          p: 2.5,
+                          borderLeft: '3px solid #f9c74f',
+                          backgroundColor: 'rgba(249, 199, 79, 0.1)',
+                          borderRadius: '0.5rem',
+                          mb: 2.5,
                           flexGrow: 1,
-                          minHeight: '80px',
+                          minHeight: '85px',
                           display: 'flex',
                           alignItems: 'flex-start'
                         }}>
                           <Typography 
                             variant="body2" 
-                            color="text.primary"
                             sx={{
+                              color: '#2a3b3d',
                               display: '-webkit-box',
                               WebkitLineClamp: 3,
                               WebkitBoxOrient: 'vertical',
                               overflow: 'hidden',
-                              lineHeight: 1.4,
-                              textAlign: 'justify'
+                              lineHeight: 1.5,
+                              textAlign: 'justify',
+                              fontWeight: 400
                             }}
                           >
                             {event.description || 'ไม่มีรายละเอียดเพิ่มเติม'}
                           </Typography>
                         </Box>
 
-                        {/* Participants and View Button */}
+                        {/* Participants and View Button - Furni Style */}
                         <Stack direction="row" justifyContent="space-between" alignItems="center">
-                          <Box display="flex" alignItems="center" gap={1}>
-                            <GroupsIcon color="action" fontSize="small" />
-                            <Typography variant="body2" color="text.secondary">
-                              {event.participants_count || 0} คนเข้าร่วม
+                          <Box 
+                            display="flex" 
+                            alignItems="center" 
+                            gap={1}
+                            sx={{
+                              background: 'rgba(249, 199, 79, 0.1)',
+                              borderRadius: '0.5rem',
+                              px: 1.5,
+                              py: 0.75
+                            }}
+                          >
+                            <GroupsIcon sx={{ color: '#f9c74f', fontSize: '1.1rem' }} />
+                            <Typography 
+                              variant="body2" 
+                              sx={{ 
+                                color: '#2a3b3d',
+                                fontWeight: 600,
+                                fontSize: '0.85rem'
+                              }}
+                            >
+                              {event.participants_count || 0} คน
                             </Typography>
                           </Box>
                           <Button
@@ -489,10 +748,20 @@ function Events() {
                               openModal(event);
                             }}
                             sx={{ 
-                              borderRadius: 3,
-                              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                              borderRadius: '0.75rem',
+                              background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                              color: 'white',
+                              fontWeight: 600,
+                              borderWidth: '2px',
+                              fontSize: '0.9rem',
+                              letterSpacing: '0.025em',
+                              px: 3,
+                              py: 1,
+                              boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.3)',
                               '&:hover': {
-                                background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)'
+                                background: '#f8b42e',
+                                transform: 'translateY(-2px)',
+                                boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.25)'
                               }
                             }}
                           >
@@ -521,7 +790,7 @@ function Events() {
                 ))}
             </Grid>
 
-            {/* Empty State - ธีมเหมือนหน้าข่าวสาร */}
+            {/* Empty State - Furni Style */}
             {events.filter(event => {
               const searchText = search.toLowerCase();
               const match =
@@ -531,18 +800,48 @@ function Events() {
               if (filter === 'past' && isUpcoming(event.event_date)) return false;
               return match;
             }).length === 0 && !loading && !error && (
-              <Box sx={{ textAlign: 'center', py: 8 }}>
-                <EventIcon sx={{ fontSize: 80, color: 'grey.300', mb: 2 }} />
-                <Typography variant="h5" fontWeight="bold" color="text.secondary" sx={{ mb: 1 }}>
-                  ไม่พบกิจกรรมที่ตรงกับเงื่อนไข
+              <Box sx={{ textAlign: 'center', py: 10 }}>
+                <Box 
+                  sx={{ 
+                    width: 120,
+                    height: 120,
+                    borderRadius: '50%',
+                    background: 'rgba(249, 199, 79, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mx: 'auto',
+                    mb: 3
+                  }}
+                >
+                  <EventIcon sx={{ fontSize: 60, color: '#f9c74f' }} />
+                </Box>
+                <Typography 
+                  variant="h4" 
+                  sx={{ 
+                    fontFamily: "'Poppins', 'Inter', sans-serif",
+                    fontWeight: 600, 
+                    color: '#2a3b3d', 
+                    mb: 2 
+                  }}
+                >
+                  ไม่พบกิจกรรม
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  กรุณาลองเปลี่ยนคำค้นหาหรือเงื่อนไขใหม่
+                <Typography 
+                  variant="h6" 
+                  sx={{ 
+                    color: '#6c757d',
+                    fontWeight: 400,
+                    maxWidth: '400px',
+                    mx: 'auto'
+                  }}
+                >
+                  ไม่พบกิจกรรมที่ตรงกับเงื่อนไขที่คุณระบุ กรุณาลองเปลี่ยนคำค้นหาหรือเงื่อนไขใหม่
                 </Typography>
               </Box>
             )}
 
-            {/* Event Detail Dialog */}
+            {/* Event Detail Dialog - Furni Style */}
             <Dialog
               open={showModal}
               onClose={closeModal}
@@ -550,9 +849,10 @@ function Events() {
               fullWidth
               PaperProps={{
                 sx: { 
-                  borderRadius: 4,
+                  borderRadius: '1.5rem',
                   maxHeight: '90vh',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  boxShadow: '0 1rem 3rem rgba(47, 75, 63, 0.2)'
                 }
               }}
             >
@@ -562,19 +862,39 @@ function Events() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: 2,
-                    background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)',
-                    borderBottom: '1px solid #e2e8f0',
-                    py: 2
+                    background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)',
+                    borderBottom: '1px solid #e9ecef',
+                    py: 3,
+                    px: 4
                   }}>
-                    <CalendarIcon sx={{ color: '#facc15', fontSize: 28 }} />
-                    <Typography variant="h5" sx={{ fontWeight: 600, flex: 1 }}>
+                    <CalendarIcon sx={{ color: '#f9c74f', fontSize: 32 }} />
+                    <Typography 
+                      variant="h4" 
+                      sx={{ 
+                        fontFamily: "'Poppins', 'Inter', sans-serif",
+                        fontWeight: 600, 
+                        flex: 1,
+                        color: '#2a3b3d'
+                      }}
+                    >
                       {selectedEvent.title}
                     </Typography>
                     <IconButton
                       onClick={closeModal}
                       sx={{ 
-                        bgcolor: 'rgba(255,255,255,0.8)',
-                        '&:hover': { bgcolor: 'rgba(255,255,255,1)' }
+                        width: 50,
+                        height: 50,
+                        backgroundColor: 'white',
+                        border: '2px solid #dee2e6',
+                        color: '#6c757d',
+                        transition: 'all 0.3s ease',
+                        '&:hover': { 
+                          backgroundColor: 'white',
+                          background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                          borderColor: '#f9c74f',
+                          color: 'white',
+                          transform: 'scale(1.1)'
+                        }
                       }}
                     >
                       <CloseIcon />
@@ -582,11 +902,11 @@ function Events() {
                   </DialogTitle>
                   
                   <DialogContent sx={{ 
-                    background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)',
+                    background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)',
                     p: 0,
                     overflow: 'hidden'
                   }}>
-                    <Box sx={{ height: '60vh', overflow: 'auto', p: 3 }}>
+                    <Box sx={{ height: '60vh', overflow: 'auto', p: 4 }}>
                       <Grid container spacing={4}>
                         <Grid item xs={12} md={6}>
                           <Box
@@ -595,30 +915,38 @@ function Events() {
                             alt={selectedEvent.title}
                             sx={{
                               width: '100%',
-                              borderRadius: 3,
+                              borderRadius: '1.5rem',
                               objectFit: 'cover',
-                              height: { xs: 200, md: 280 },
-                              boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+                              height: { xs: 240, md: 320 },
+                              boxShadow: '0 0.5rem 1rem rgba(47, 75, 63, 0.15)'
                             }}
                             onError={e => {
                               e.target.onerror = null;
                               e.target.src = '/event-default.jpg';
                             }}
                           />
-                          <Stack direction="row" spacing={1} sx={{ mt: 2, flexWrap: 'wrap', gap: 1 }}>
+                          <Stack direction="row" spacing={1} sx={{ mt: 3, flexWrap: 'wrap', gap: 1 }}>
                             <Chip
                               label={isUpcoming(selectedEvent.event_date) ? 'กำลังจะมาถึง' : 'กิจกรรมที่ผ่านมา'}
-                              color={isUpcoming(selectedEvent.event_date) ? 'primary' : 'default'}
                               icon={isUpcoming(selectedEvent.event_date) ? <EventAvailableIcon /> : <EventBusyIcon />}
-                              sx={{ fontWeight: 600 }}
+                              sx={{
+                                background: isUpcoming(selectedEvent.event_date) 
+                                  ? 'linear-gradient(135deg, #f9c74f, #fbd36b)' 
+                                  : 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
+                                color: 'white',
+                                fontWeight: 600,
+                                borderRadius: '0.75rem',
+                                '& .MuiChip-icon': { color: 'white' }
+                              }}
                             />
                             {selectedEvent.category && (
                               <Chip 
                                 label={selectedEvent.category} 
                                 sx={{ 
-                                  bgcolor: '#764ba2', 
+                                  background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
                                   color: 'white',
-                                  fontWeight: 600 
+                                  fontWeight: 600,
+                                  borderRadius: '0.75rem'
                                 }} 
                               />
                             )}
@@ -627,42 +955,90 @@ function Events() {
                         
                         <Grid item xs={12} md={6}>
                           <Stack spacing={3}>
-                            {/* Event Info Cards */}
-                            <Paper elevation={0} sx={{ p: 2, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.7)' }}>
-                              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 1 }}>
-                                <EventIcon sx={{ color: '#667eea' }} />
-                                <Typography variant="h6" sx={{ fontWeight: 600, color: '#1e293b' }}>
+                            {/* Event Info Cards - Furni Style */}
+                            <Paper 
+                              elevation={0} 
+                              sx={{ 
+                                p: 3, 
+                                borderRadius: '1rem', 
+                                backgroundColor: 'white',
+                                border: '1px solid #e9ecef',
+                                boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)'
+                              }}
+                            >
+                              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 2 }}>
+                                <EventIcon sx={{ color: '#f9c74f', fontSize: '1.5rem' }} />
+                                <Typography 
+                                  variant="h6" 
+                                  sx={{ 
+                                    fontFamily: "'Poppins', 'Inter', sans-serif",
+                                    fontWeight: 600, 
+                                    color: '#2a3b3d' 
+                                  }}
+                                >
                                   วันที่และเวลา
                                 </Typography>
                               </Box>
-                              <Typography variant="body1" sx={{ ml: 4, color: '#475569' }}>
+                              <Typography variant="body1" sx={{ ml: 4, color: '#6c757d', mb: 1 }}>
                                 {formatDate(selectedEvent.event_date)}
                               </Typography>
-                              <Typography variant="body1" sx={{ ml: 4, color: '#475569' }}>
+                              <Typography variant="body1" sx={{ ml: 4, color: '#6c757d' }}>
                                 เวลา: {formatTime(selectedEvent.event_date) || 'ไม่ระบุ'}
                               </Typography>
                             </Paper>
                             
-                            <Paper elevation={0} sx={{ p: 2, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.7)' }}>
-                              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 1 }}>
-                                <LocationIcon sx={{ color: '#667eea' }} />
-                                <Typography variant="h6" sx={{ fontWeight: 600, color: '#1e293b' }}>
+                            <Paper 
+                              elevation={0} 
+                              sx={{ 
+                                p: 3, 
+                                borderRadius: '1rem', 
+                                backgroundColor: 'white',
+                                border: '1px solid #e9ecef',
+                                boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)'
+                              }}
+                            >
+                              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 2 }}>
+                                <LocationIcon sx={{ color: '#f9c74f', fontSize: '1.5rem' }} />
+                                <Typography 
+                                  variant="h6" 
+                                  sx={{ 
+                                    fontFamily: "'Poppins', 'Inter', sans-serif",
+                                    fontWeight: 600, 
+                                    color: '#2a3b3d' 
+                                  }}
+                                >
                                   สถานที่
                                 </Typography>
                               </Box>
-                              <Typography variant="body1" sx={{ ml: 4, color: '#475569' }}>
+                              <Typography variant="body1" sx={{ ml: 4, color: '#6c757d' }}>
                                 {selectedEvent.location || 'ไม่ระบุ'}
                               </Typography>
                             </Paper>
                             
-                            <Paper elevation={0} sx={{ p: 2, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.7)' }}>
-                              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 1 }}>
-                                <GroupsIcon sx={{ color: '#667eea' }} />
-                                <Typography variant="h6" sx={{ fontWeight: 600, color: '#1e293b' }}>
+                            <Paper 
+                              elevation={0} 
+                              sx={{ 
+                                p: 3, 
+                                borderRadius: '1rem', 
+                                backgroundColor: 'white',
+                                border: '1px solid #e9ecef',
+                                boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)'
+                              }}
+                            >
+                              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 2 }}>
+                                <GroupsIcon sx={{ color: '#f9c74f', fontSize: '1.5rem' }} />
+                                <Typography 
+                                  variant="h6" 
+                                  sx={{ 
+                                    fontFamily: "'Poppins', 'Inter', sans-serif",
+                                    fontWeight: 600, 
+                                    color: '#2a3b3d' 
+                                  }}
+                                >
                                   ผู้เข้าร่วม
                                 </Typography>
                               </Box>
-                              <Typography variant="body1" sx={{ ml: 4, color: '#475569' }}>
+                              <Typography variant="body1" sx={{ ml: 4, color: '#6c757d' }}>
                                 {selectedEvent.participants_count || 0} คน
                               </Typography>
                             </Paper>
@@ -670,26 +1046,43 @@ function Events() {
                         </Grid>
                         
                         <Grid item xs={12}>
-                          <Divider sx={{ my: 2 }} />
+                          <Divider sx={{ my: 3, borderColor: '#dee2e6' }} />
                           
                           <Box>
-                            <Typography variant="h6" color="primary" sx={{ mb: 2, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Typography 
+                              variant="h5" 
+                              sx={{ 
+                                fontFamily: "'Poppins', 'Inter', sans-serif",
+                                color: '#2a3b3d', 
+                                mb: 3, 
+                                fontWeight: 600, 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                gap: 1.5 
+                              }}
+                            >
                               📝 รายละเอียดกิจกรรม
                             </Typography>
-                            <Paper elevation={0} sx={{ 
-                              p: 3, 
-                              borderRadius: 2, 
-                              bgcolor: 'rgba(255,255,255,0.8)',
-                              border: '1px solid #e2e8f0'
-                            }}>
+                            <Paper 
+                              elevation={0} 
+                              sx={{ 
+                                p: 4, 
+                                borderRadius: '1rem', 
+                                backgroundColor: 'white',
+                                border: '1px solid #e9ecef',
+                                boxShadow: '0 0.125rem 0.25rem rgba(47, 75, 63, 0.1)'
+                              }}
+                            >
                               <Typography 
                                 variant="body1" 
-                                color="text.primary"
                                 sx={{
+                                  color: '#2a3b3d',
                                   lineHeight: 1.8,
                                   textAlign: 'justify',
                                   whiteSpace: 'pre-wrap',
-                                  wordBreak: 'break-word'
+                                  wordBreak: 'break-word',
+                                  fontSize: '1rem',
+                                  fontWeight: 400
                                 }}
                               >
                                 {selectedEvent.description || 'ไม่มีรายละเอียดเพิ่มเติม'}
@@ -702,10 +1095,10 @@ function Events() {
                   </DialogContent>
                   
                   <DialogActions sx={{ 
-                    p: 3, 
-                    background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)',
-                    borderTop: '1px solid #e2e8f0',
-                    gap: 2,
+                    p: 4, 
+                    background: 'linear-gradient(135deg, #f7f5f3, #f0ede8)',
+                    borderTop: '1px solid #e9ecef',
+                    gap: 3,
                     justifyContent: 'center'
                   }}>
                     {user && (
@@ -718,11 +1111,17 @@ function Events() {
                           disabled={registering[selectedEvent.id]}
                           onClick={() => handleUnregister(selectedEvent.id)}
                           sx={{ 
-                            borderRadius: 3,
+                            borderRadius: '0.75rem',
                             px: 4,
-                            py: 1.5,
+                            py: 2,
                             fontWeight: 600,
-                            minWidth: 200
+                            minWidth: 220,
+                            borderWidth: '2px',
+                            fontSize: '0.95rem',
+                            letterSpacing: '0.025em',
+                            '&:hover': {
+                              transform: 'translateY(-2px)'
+                            }
                           }}
                         >
                           ยกเลิกลงทะเบียน
@@ -735,14 +1134,21 @@ function Events() {
                           disabled={registering[selectedEvent.id]}
                           onClick={() => handleRegister(selectedEvent.id)}
                           sx={{ 
-                            borderRadius: 3,
+                            borderRadius: '0.75rem',
                             px: 4,
-                            py: 1.5,
+                            py: 2,
                             fontWeight: 600,
-                            minWidth: 200,
-                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            minWidth: 220,
+                            background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+                            color: 'white',
+                            borderWidth: '2px',
+                            fontSize: '0.95rem',
+                            letterSpacing: '0.025em',
+                            boxShadow: '0 0.25rem 0.75rem rgba(249, 199, 79, 0.3)',
                             '&:hover': {
-                              background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)'
+                              background: '#f8b42e',
+                              transform: 'translateY(-2px)',
+                              boxShadow: '0 1rem 2rem rgba(47, 75, 63, 0.25)'
                             }
                           }}
                         >
@@ -756,11 +1162,22 @@ function Events() {
                       startIcon={<ShareIcon />}
                       onClick={() => handleShare(selectedEvent)}
                       sx={{ 
-                        borderRadius: 3,
+                        borderRadius: '0.75rem',
                         px: 4,
-                        py: 1.5,
+                        py: 2,
                         fontWeight: 600,
-                        minWidth: 150
+                        minWidth: 170,
+                        color: '#2f4b3f',
+                        borderColor: '#2f4b3f',
+                        borderWidth: '2px',
+                        fontSize: '0.95rem',
+                        letterSpacing: '0.025em',
+                        '&:hover': {
+                          backgroundColor: '#2f4b3f',
+                          borderColor: '#2f4b3f',
+                          color: 'white',
+                          transform: 'translateY(-2px)'
+                        }
                       }}
                     >
                       แชร์กิจกรรม

@@ -60,11 +60,6 @@ import {
   NotificationsActive as NotificationsIcon,
   BookmarkBorder as BookmarkIcon,
   Favorite as FavoriteIcon,
-  LinkedIn,
-  GitHub,
-  Twitter,
-  Facebook,
-  Instagram,
   Add as AddIcon
 } from '@mui/icons-material';
 import { styled, keyframes } from '@mui/material/styles';
@@ -74,7 +69,7 @@ import addressData from '../../assets/thai-address-full.json';
 import { Link } from 'react-router-dom';
 import './UltraModernProfile.css';
 
-// Animations
+// Animations - Enhanced Furni Style
 const fadeInUp = keyframes`
   from {
     opacity: 0;
@@ -91,16 +86,30 @@ const float = keyframes`
   50% { transform: translateY(-10px); }
 `;
 
-const glow = keyframes`
-  0%, 100% { 
-    box-shadow: 0 0 5px rgba(102, 126, 234, 0.3),
-                0 0 10px rgba(102, 126, 234, 0.2),
-                0 0 15px rgba(102, 126, 234, 0.1);
+const shimmer = keyframes`
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+`;
+
+const scaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.9);
   }
-  50% { 
-    box-shadow: 0 0 10px rgba(102, 126, 234, 0.4),
-                0 0 20px rgba(102, 126, 234, 0.3),
-                0 0 30px rgba(102, 126, 234, 0.2);
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
+const slideInLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 `;
 
@@ -110,21 +119,27 @@ const ProfileContainer = styled(Container)(({ theme }) => ({
   paddingBottom: theme.spacing(4),
   maxWidth: '1400px !important',
   position: 'relative',
-  animation: `${fadeInUp} 0.8s ease-out`
+  animation: `${fadeInUp} 0.8s ease-out`,
+  background: 'linear-gradient(135deg, #f7f5f3 0%, #f0ede8 100%)',
+  borderRadius: '24px',
+  padding: theme.spacing(4),
+  marginTop: theme.spacing(2),
+  boxShadow: '0 4px 20px rgba(47, 75, 63, 0.1)',
 }));
 
 const GlassCard = styled(Card)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.95)',
-  backdropFilter: 'blur(20px)',
-  borderRadius: '24px',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
-  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+  backdropFilter: 'blur(15px)',
+  borderRadius: '20px',
+  border: '1px solid rgba(249, 199, 79, 0.2)',
+  boxShadow: '0 8px 32px rgba(47, 75, 63, 0.1)',
   transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
   overflow: 'hidden',
   position: 'relative',
   '&:hover': {
-    transform: 'translateY(-8px)',
-    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
+    transform: 'translateY(-5px)',
+    boxShadow: '0 16px 48px rgba(47, 75, 63, 0.15)',
+    borderColor: 'rgba(249, 199, 79, 0.4)',
   },
   '&::before': {
     content: '""',
@@ -132,29 +147,35 @@ const GlassCard = styled(Card)(({ theme }) => ({
     top: 0,
     left: 0,
     right: 0,
-    height: '3px',
-    background: 'linear-gradient(90deg, #667eea, #764ba2, #f093fb)'
+    height: '4px',
+    background: 'linear-gradient(90deg, #2f4b3f, #f9c74f)',
+    opacity: 0,
+    transition: 'opacity 0.3s ease',
+  },
+  '&:hover::before': {
+    opacity: 1,
   }
 }));
 
 const HeroSection = styled(Box)(({ theme }) => ({
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
-  borderRadius: '32px',
+  background: 'linear-gradient(135deg, #2f4b3f 0%, #243d33 100%)',
+  borderRadius: '24px',
   padding: theme.spacing(5),
   color: 'white',
   position: 'relative',
   overflow: 'hidden',
   marginBottom: theme.spacing(4),
-  animation: `${glow} 3s ease-in-out infinite`,
+  boxShadow: '0 8px 32px rgba(47, 75, 63, 0.3)',
   '&::before': {
     content: '""',
     position: 'absolute',
-    top: '-50%',
-    left: '-50%',
-    width: '200%',
-    height: '200%',
-    background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
-    animation: `${float} 6s ease-in-out infinite`
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: '50%',
+    background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.3"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.2"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.4"/><circle cx="90" cy="80" r="0.8" fill="%23f9c74f" opacity="0.3"/></svg>') repeat`,
+    backgroundSize: '100px 100px',
+    animation: `${float} 20s ease-in-out infinite`,
   }
 }));
 
@@ -163,16 +184,18 @@ const ProfileAvatar = styled(Avatar)(({ theme }) => ({
   height: 140,
   fontSize: '3.5rem',
   fontWeight: 'bold',
-  border: '5px solid white',
-  boxShadow: '0 15px 35px rgba(0, 0, 0, 0.3)',
+  border: '4px solid #f9c74f',
+  boxShadow: '0 8px 24px rgba(249, 199, 79, 0.4)',
   cursor: 'pointer',
   transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
   position: 'relative',
   zIndex: 10,
-  background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4)',
+  background: 'linear-gradient(135deg, #f9c74f 0%, #fbd36b 100%)',
+  color: '#2f4b3f',
   '&:hover': {
-    transform: 'scale(1.08) rotate(2deg)',
-    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)'
+    transform: 'scale(1.05)',
+    boxShadow: '0 12px 36px rgba(249, 199, 79, 0.6)',
+    border: '4px solid #fbd36b'
   }
 }));
 
@@ -195,10 +218,21 @@ const SectionHeader = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   gap: theme.spacing(2),
   marginBottom: theme.spacing(3),
-  padding: theme.spacing(1),
+  padding: theme.spacing(1.5),
   borderRadius: '16px',
-  background: 'linear-gradient(90deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1))',
-  border: '1px solid rgba(102, 126, 234, 0.2)'
+  background: 'linear-gradient(135deg, rgba(47, 75, 63, 0.1), rgba(249, 199, 79, 0.1))',
+  border: '1px solid rgba(249, 199, 79, 0.2)',
+  position: 'relative',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: '4px',
+    background: 'linear-gradient(135deg, #2f4b3f, #f9c74f)',
+    borderRadius: '2px',
+  }
 }));
 
 
@@ -214,26 +248,26 @@ const ActionBtn = styled(Button)(({ theme, variant: btnVariant }) => ({
   overflow: 'hidden',
   transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
   ...(btnVariant === 'primary' && {
-    background: 'linear-gradient(45deg, #667eea, #764ba2)',
-    color: 'white',
+    background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+    color: '#2f4b3f',
     border: 'none',
-    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.4)',
+    boxShadow: '0 4px 16px rgba(249, 199, 79, 0.4)',
     '&:hover': {
-      transform: 'translateY(-3px)',
-      boxShadow: '0 8px 30px rgba(102, 126, 234, 0.6)',
-      background: 'linear-gradient(45deg, #5a6fd8, #6a4190)',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 8px 24px rgba(249, 199, 79, 0.6)',
+      background: 'linear-gradient(135deg, #f8b42e, #f9c74f)',
     }
   }),
   ...(btnVariant === 'secondary' && {
-    background: 'rgba(255, 255, 255, 0.9)',
-    color: '#667eea',
-    border: '2px solid rgba(102, 126, 234, 0.3)',
+    background: 'rgba(255, 255, 255, 0.95)',
+    color: '#2f4b3f',
+    border: '2px solid rgba(249, 199, 79, 0.3)',
     backdropFilter: 'blur(10px)',
     '&:hover': {
-      transform: 'translateY(-3px)',
+      transform: 'translateY(-2px)',
       background: 'rgba(255, 255, 255, 1)',
-      borderColor: '#667eea',
-      boxShadow: '0 8px 30px rgba(102, 126, 234, 0.3)',
+      borderColor: '#f9c74f',
+      boxShadow: '0 8px 24px rgba(249, 199, 79, 0.3)',
     }
   })
 }));
@@ -241,33 +275,46 @@ const ActionBtn = styled(Button)(({ theme, variant: btnVariant }) => ({
 const CustomTextField = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
     borderRadius: '16px',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     backdropFilter: 'blur(10px)',
     transition: 'all 0.3s ease',
+    border: '2px solid rgba(249, 199, 79, 0.2)',
     '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      borderColor: 'rgba(249, 199, 79, 0.4)',
     },
     '&.Mui-focused': {
       backgroundColor: 'rgba(255, 255, 255, 1)',
-      boxShadow: '0 0 0 3px rgba(102, 126, 234, 0.1)',
+      borderColor: '#f9c74f',
+      boxShadow: '0 0 0 3px rgba(249, 199, 79, 0.1)',
+    },
+    '& fieldset': {
+      border: 'none',
     }
   },
   '& .MuiInputLabel-root': {
-    fontWeight: 500,
+    fontWeight: 600,
+    color: '#2f4b3f',
+    '&.Mui-focused': {
+      color: '#2f4b3f',
+    }
   }
 }));
 
 const SkillChip = styled(Chip)(({ theme }) => ({
-  background: 'linear-gradient(45deg, #667eea, #764ba2)',
+  background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
   color: 'white',
   fontWeight: 600,
   borderRadius: '20px',
   padding: '8px 4px',
   margin: '4px',
   transition: 'all 0.3s ease',
+  border: '1px solid rgba(249, 199, 79, 0.3)',
   '&:hover': {
     transform: 'scale(1.05)',
-    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+    boxShadow: '0 4px 15px rgba(47, 75, 63, 0.4)',
+    background: 'linear-gradient(135deg, #f9c74f, #fbd36b)',
+    color: '#2f4b3f',
   }
 }));
 
@@ -481,7 +528,7 @@ function UltraModernProfilePage() {
           <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             {label}
           </Typography>
-          <Typography variant="body1" sx={{ mt: 1, color: '#2d3748', fontWeight: 500, fontSize: '1.1rem' }}>
+          <Typography variant="body1" sx={{ mt: 1, color: '#2f4b3f', fontWeight: 500, fontSize: '1.1rem' }}>
             {value || (type === 'textarea' ? 'ยังไม่มีข้อมูล' : 'ไม่ระบุ')}
           </Typography>
         </Box>
@@ -536,7 +583,7 @@ function UltraModernProfilePage() {
           <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             {label}
           </Typography>
-          <Typography variant="body1" sx={{ mt: 1, color: '#2d3748', fontWeight: 500, fontSize: '1.1rem' }}>
+          <Typography variant="body1" sx={{ mt: 1, color: '#2f4b3f', fontWeight: 500, fontSize: '1.1rem' }}>
             {value || 'ไม่ระบุ'}
           </Typography>
         </Box>
@@ -595,7 +642,7 @@ function UltraModernProfilePage() {
           <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             {label}
           </Typography>
-          <Typography variant="body1" sx={{ mt: 1, color: '#2d3748', fontWeight: 500 }}>
+          <Typography variant="body1" sx={{ mt: 1, color: '#2f4b3f', fontWeight: 500 }}>
             {value || 'ไม่ระบุ'}
           </Typography>
         </Box>
@@ -682,12 +729,18 @@ function UltraModernProfilePage() {
                         position: 'absolute',
                         bottom: 5,
                         right: 5,
-                        bgcolor: 'white',
-                        color: '#667eea',
+                        bgcolor: '#f9c74f',
+                        color: '#2f4b3f',
                         width: 40,
                         height: 40,
-                        '&:hover': { bgcolor: '#f8f9fa', transform: 'scale(1.1)' },
-                        boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
+                        '&:hover': { 
+                          bgcolor: '#fbd36b', 
+                          transform: 'scale(1.1)',
+                          boxShadow: '0 6px 24px rgba(249, 199, 79, 0.5)'
+                        },
+                        boxShadow: '0 4px 16px rgba(249, 199, 79, 0.4)',
+                        border: '2px solid white',
+                        transition: 'all 0.3s ease'
                       }}
                       size="small"
                     >
@@ -771,16 +824,33 @@ function UltraModernProfilePage() {
             variant="scrollable"
             scrollButtons="auto"
             sx={{
+              background: 'rgba(255, 255, 255, 0.9)',
+              borderRadius: '20px',
+              padding: '8px',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 4px 20px rgba(47, 75, 63, 0.1)',
               '& .MuiTab-root': {
                 fontWeight: 600,
                 fontSize: '1rem',
                 textTransform: 'none',
-                borderRadius: '16px 16px 0 0',
-                minHeight: 48,
+                borderRadius: '16px',
+                minHeight: 52,
+                margin: '0 4px',
+                color: '#2f4b3f',
+                transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                '&:hover': {
+                  background: 'rgba(249, 199, 79, 0.1)',
+                  transform: 'translateY(-1px)',
+                },
                 '&.Mui-selected': {
-                  background: 'linear-gradient(45deg, #667eea, #764ba2)',
+                  background: 'linear-gradient(135deg, #2f4b3f, #3a5c4b)',
                   color: 'white',
+                  boxShadow: '0 4px 16px rgba(47, 75, 63, 0.3)',
+                  transform: 'translateY(-1px)',
                 }
+              },
+              '& .MuiTabs-indicator': {
+                display: 'none',
               }
             }}
           >
@@ -798,9 +868,9 @@ function UltraModernProfilePage() {
               <InfoCard>
                 <CardContent>
                   <SectionHeader>
-                    <PersonIcon sx={{ color: '#667eea', fontSize: '2rem' }} />
+                    <PersonIcon sx={{ color: '#2f4b3f', fontSize: '2rem' }} />
                     <Box>
-                      <Typography variant="h5" sx={{ fontWeight: 700, color: '#2d3748' }}>
+                      <Typography variant="h5" sx={{ fontWeight: 700, color: '#2f4b3f' }}>
                         ข้อมูลส่วนตัว
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
@@ -845,7 +915,7 @@ function UltraModernProfilePage() {
                   <Stack spacing={2}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Typography>ความสมบูรณ์โปรไฟล์</Typography>
-                      <Typography sx={{ fontWeight: 700, color: '#667eea' }}>85%</Typography>
+                      <Typography sx={{ fontWeight: 700, color: '#2f4b3f' }}>85%</Typography>
                     </Box>
                     <LinearProgress 
                       variant="determinate" 
@@ -853,9 +923,9 @@ function UltraModernProfilePage() {
                       sx={{ 
                         height: 8, 
                         borderRadius: 4,
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        backgroundColor: 'rgba(249, 199, 79, 0.1)',
                         '& .MuiLinearProgress-bar': {
-                          background: 'linear-gradient(45deg, #667eea, #764ba2)',
+                          background: 'linear-gradient(45deg, #2f4b3f, #f9c74f)',
                           borderRadius: 4,
                         }
                       }} 
@@ -865,7 +935,7 @@ function UltraModernProfilePage() {
                     
                     <Stack spacing={2}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <DateRangeIcon sx={{ color: '#10b981' }} />
+                        <DateRangeIcon sx={{ color: '#f9c74f' }} />
                         <Box>
                           <Typography variant="body2" color="text.secondary">สมาชิกตั้งแต่</Typography>
                           <Typography variant="h6" sx={{ fontWeight: 700 }}>2024</Typography>
@@ -893,9 +963,9 @@ function UltraModernProfilePage() {
               <InfoCard>
                 <CardContent>
                   <SectionHeader>
-                    <SchoolIcon sx={{ color: '#667eea', fontSize: '2rem' }} />
+                    <SchoolIcon sx={{ color: '#2f4b3f', fontSize: '2rem' }} />
                     <Box>
-                      <Typography variant="h5" sx={{ fontWeight: 700, color: '#2d3748' }}>
+                      <Typography variant="h5" sx={{ fontWeight: 700, color: '#2f4b3f' }}>
                         ข้อมูลการศึกษา
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
@@ -906,13 +976,16 @@ function UltraModernProfilePage() {
                   
                   <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
+                      {renderField('student_id', 'รหัสนักศึกษา', userData?.student_id)}
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      {renderField('graduation_year', 'ปีที่จบการศึกษา', userData?.graduation_year)}
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
                       {renderField('faculty', 'คณะ', userData?.faculty)}
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       {renderField('major', 'สาขาวิชา', userData?.major)}
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      {renderField('graduation_year', 'ปีที่จบการศึกษา', userData?.graduation_year)}
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -923,9 +996,9 @@ function UltraModernProfilePage() {
               <InfoCard>
                 <CardContent>
                   <SectionHeader>
-                    <TrendingUpIcon sx={{ color: '#10b981', fontSize: '2rem' }} />
+                    <TrendingUpIcon sx={{ color: '#f9c74f', fontSize: '2rem' }} />
                     <Box>
-                      <Typography variant="h5" sx={{ fontWeight: 700, color: '#2d3748' }}>
+                      <Typography variant="h5" sx={{ fontWeight: 700, color: '#2f4b3f' }}>
                         สถิติการศึกษา
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
@@ -992,9 +1065,9 @@ function UltraModernProfilePage() {
               <InfoCard>
                 <CardContent>
                   <SectionHeader>
-                    <LocationIcon sx={{ color: '#10b981', fontSize: '2rem' }} />
+                    <LocationIcon sx={{ color: '#f9c74f', fontSize: '2rem' }} />
                     <Box>
-                      <Typography variant="h5" sx={{ fontWeight: 700, color: '#2d3748' }}>
+                      <Typography variant="h5" sx={{ fontWeight: 700, color: '#2f4b3f' }}>
                         ที่อยู่
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
@@ -1028,9 +1101,9 @@ function UltraModernProfilePage() {
               <InfoCard>
                 <CardContent>
                   <SectionHeader>
-                    <PublicIcon sx={{ color: '#3b82f6', fontSize: '2rem' }} />
+                    <PublicIcon sx={{ color: '#f9c74f', fontSize: '2rem' }} />
                     <Box>
-                      <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 700, color: '#2f4b3f' }}>
                         ช่องทางติดต่อ
                       </Typography>
                     </Box>
@@ -1038,7 +1111,7 @@ function UltraModernProfilePage() {
                   
                   <Stack spacing={3}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <EmailIcon sx={{ color: '#667eea' }} />
+                      <EmailIcon sx={{ color: '#2f4b3f' }} />
                       <Box>
                         <Typography variant="body2" color="text.secondary">อีเมล</Typography>
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
@@ -1048,26 +1121,13 @@ function UltraModernProfilePage() {
                     </Box>
                     
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <PhoneIcon sx={{ color: '#10b981' }} />
+                      <PhoneIcon sx={{ color: '#f9c74f' }} />
                       <Box>
                         <Typography variant="body2" color="text.secondary">เบอร์โทร</Typography>
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
                           {userData?.phone || 'ไม่ระบุ'}
                         </Typography>
                       </Box>
-                    </Box>
-                    
-                    <Divider />
-                    
-                    <Box>
-                      <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
-                        โซเชียลมีเดีย
-                      </Typography>
-                      <Stack direction="row" spacing={1} flexWrap="wrap">
-                        <Chip icon={<Facebook />} label="Facebook" variant="outlined" />
-                        <Chip icon={<Instagram />} label="Instagram" variant="outlined" />
-                        <Chip icon={<LinkedIn />} label="LinkedIn" variant="outlined" />
-                      </Stack>
                     </Box>
                   </Stack>
                 </CardContent>
@@ -1082,9 +1142,9 @@ function UltraModernProfilePage() {
               <InfoCard>
                 <CardContent>
                   <SectionHeader>
-                    <WorkIcon sx={{ color: '#8b5cf6', fontSize: '2rem' }} />
+                    <WorkIcon sx={{ color: '#f9c74f', fontSize: '2rem' }} />
                     <Box>
-                      <Typography variant="h5" sx={{ fontWeight: 700, color: '#2d3748' }}>
+                      <Typography variant="h5" sx={{ fontWeight: 700, color: '#2f4b3f' }}>
                         ประวัติการทำงาน
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
@@ -1116,10 +1176,10 @@ function UltraModernProfilePage() {
                           }}
                         >
                           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                            <WorkIcon sx={{ color: '#667eea', fontSize: '2rem', mt: 0.5 }} />
+                            <WorkIcon sx={{ color: '#2f4b3f', fontSize: '2rem', mt: 0.5 }} />
                             <Box sx={{ flex: 1 }}>
                               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                <Typography variant="h6" sx={{ fontWeight: 700, color: '#2d3748' }}>
+                                <Typography variant="h6" sx={{ fontWeight: 700, color: '#2f4b3f' }}>
                                   {work.position}
                                 </Typography>
                                 {work.is_current && (
@@ -1205,9 +1265,9 @@ function UltraModernProfilePage() {
             <LinearProgress 
               sx={{
                 height: 4,
-                background: 'rgba(102, 126, 234, 0.1)',
+                background: 'rgba(249, 199, 79, 0.1)',
                 '& .MuiLinearProgress-bar': {
-                  background: 'linear-gradient(45deg, #667eea, #764ba2)',
+                  background: 'linear-gradient(45deg, #2f4b3f, #f9c74f)',
                 }
               }}
             />

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Management System - ธีม Furni ใหม่ 🌿</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Furni Enhanced Green Theme Variables */
+        :root {
+            /* Primary Colors - เขียว Furni */
+            --rmsu-primary: #2f4b3f;
+            --rmsu-primary-light: #3a5c4b;
+            --rmsu-primary-dark: #243d33;
+            
+            /* Secondary Colors - เหลืองสว่าง */
+            --rmsu-gold: #f9c74f;
+            --rmsu-gold-light: #fbd36b;
+            --rmsu-gold-dark: #f8b42e;
+            
+            /* Background Colors - ครีมอบอุ่น */
+            --rmsu-bg-primary: #f7f5f3;
+            --rmsu-bg-secondary: #f0ede8;
+            --rmsu-bg-card: #ffffff;
+            --rmsu-bg-dark: #2a3b3d;
+            
+            /* Text Colors */
+            --rmsu-text-primary: #2a3b3d;
+            --rmsu-text-secondary: #6c757d;
+            --rmsu-text-muted: #adb5bd;
+            --rmsu-text-white: #ffffff;
+            
+            /* Border Colors */
+            --rmsu-border-light: #e9ecef;
+            --rmsu-border-medium: #dee2e6;
+            --rmsu-border-dark: #ced4da;
+            
+            /* Gradients */
+            --rmsu-gradient-primary: linear-gradient(135deg, #2f4b3f, #3a5c4b);
+            --rmsu-gradient-gold: linear-gradient(135deg, #f9c74f, #fbd36b);
+            --rmsu-gradient-bg: linear-gradient(135deg, #f7f5f3, #f0ede8);
+            --rmsu-gradient-hero: linear-gradient(135deg, #2f4b3f, #243d33);
+            
+            /* Shadows */
+            --rmsu-shadow-light: 0 0.125rem 0.25rem rgba(47, 75, 63, 0.1);
+            --rmsu-shadow-medium: 0 0.5rem 1rem rgba(47, 75, 63, 0.15);
+            --rmsu-shadow-heavy: 0 1rem 3rem rgba(47, 75, 63, 0.2);
+            --rmsu-shadow-elevated: 0 1rem 2rem rgba(47, 75, 63, 0.25);
+            --rmsu-shadow-orange: 0 0.25rem 0.75rem rgba(249, 199, 79, 0.3);
+            
+            /* Effects */
+            --rmsu-hover-overlay: rgba(47, 75, 63, 0.08);
+            --rmsu-orange-overlay: rgba(249, 199, 79, 0.1);
+            --rmsu-glass-bg: rgba(255, 255, 255, 0.9);
+            
+            /* Other */
+            --rmsu-radius-small: 0.5rem;
+            --rmsu-radius-medium: 0.75rem;
+            --rmsu-radius-large: 1rem;
+            --rmsu-radius-xl: 1.5rem;
+            --rmsu-transition-fast: 0.2s ease;
+            --rmsu-transition-medium: 0.3s ease;
+        }
+
+        /* Global Styles */
+        * {
+            font-family: 'Source Sans Pro', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6, .heading {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        body {
+            background: var(--rmsu-gradient-bg);
+            color: var(--rmsu-text-primary);
+            line-height: 1.7;
+            font-weight: 400;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styles - Glass Effect */
+        .navbar {
+            background: var(--rmsu-glass-bg) !important;
+            box-shadow: var(--rmsu-shadow-medium);
+            border-bottom: 1px solid var(--rmsu-border-light);
+            padding: 1rem 0;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--rmsu-primary) !important;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar .nav-link {
+            color: var(--rmsu-text-secondary) !important;
+            font-weight: 500;
+            font-size: 1rem;
+            margin-right: 1.5rem;
+            transition: var(--rmsu-transition-medium);
+            border-radius: var(--rmsu-radius-small);
+            padding: 0.5rem 1rem;
+            position: relative;
+        }
+
+        .navbar .nav-link:hover, 
+        .navbar .nav-link.active {
+            color: var(--rmsu-primary) !important;
+            background: var(--rmsu-hover-overlay);
+        }
+
+        .navbar .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: var(--rmsu-gradient-gold);
+            border-radius: 2px;
+        }
+
+        /* Buttons - Enhanced Furni Style */
+        .btn {
+            font-weight: 600;
+            border-radius: var(--rmsu-radius-medium);
+            transition: var(--rmsu-transition-medium);
+            border-width: 2px;
+            font-size: 0.95rem;
+            letter-spacing: 0.025em;
+            padding: 0.75rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--rmsu-gradient-gold);
+            border-color: var(--rmsu-gold);
+            color: var(--rmsu-text-white);
+            box-shadow: var(--rmsu-shadow-orange);
+        }
+
+        .btn-primary:hover {
+            background: var(--rmsu-gold-dark);
+            border-color: var(--rmsu-gold-dark);
+            color: var(--rmsu-text-white);
+            transform: translateY(-2px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .btn-secondary {
+            background: var(--rmsu-gradient-primary);
+            border-color: var(--rmsu-primary);
+            color: var(--rmsu-text-white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--rmsu-primary-dark);
+            border-color: var(--rmsu-primary-dark);
+            color: var(--rmsu-text-white);
+            transform: translateY(-2px);
+        }
+
+        /* Cards - Enhanced with Golden Top Border */
+        .card {
+            background: var(--rmsu-bg-card);
+            border: 1px solid var(--rmsu-border-light);
+            border-radius: var(--rmsu-radius-xl);
+            box-shadow: var(--rmsu-shadow-light);
+            transition: var(--rmsu-transition-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--rmsu-gradient-gold);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--rmsu-shadow-elevated);
+            border-color: var(--rmsu-gold-light);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            background: var(--rmsu-bg-secondary);
+            border-bottom: 1px solid var(--rmsu-border-light);
+            padding: 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--rmsu-text-primary);
+            border-radius: var(--rmsu-radius-xl) var(--rmsu-radius-xl) 0 0;
+        }
+
+        .card-header.bg-primary {
+            background: var(--rmsu-gradient-primary) !important;
+            color: var(--rmsu-text-white);
+            border-bottom: none;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: var(--rmsu-gradient-hero);
+            color: var(--rmsu-text-white);
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 50%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.5" fill="%23f9c74f" opacity="0.3"/><circle cx="80" cy="30" r="1" fill="%23f9c74f" opacity="0.2"/><circle cx="40" cy="70" r="1.2" fill="%23f9c74f" opacity="0.4"/><circle cx="90" cy="80" r="0.8" fill="%23f9c74f" opacity="0.3"/></svg>') repeat;
+            background-size: 100px 100px;
+        }
+
+        /* Feature Icons */
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--rmsu-gradient-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: var(--rmsu-shadow-orange);
+        }
+
+        .feature-icon i {
+            font-size: 2rem;
+            color: var(--rmsu-text-white);
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            background: var(--rmsu-bg-card);
+            border-radius: var(--rmsu-radius-xl);
+            border: 1px solid var(--rmsu-border-light);
+            transition: var(--rmsu-transition-medium);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--rmsu-primary);
+            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--rmsu-text-secondary);
+        }
+
+        /* Form Elements */
+        .form-control, 
+        .form-select {
+            background: var(--rmsu-bg-card);
+            border: 2px solid var(--rmsu-border-medium);
+            color: var(--rmsu-text-primary);
+            border-radius: var(--rmsu-radius-medium);
+            transition: var(--rmsu-transition-medium);
+            font-size: 0.95rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .form-control:focus, 
+        .form-select:focus {
+            background: var(--rmsu-bg-card);
+            border-color: var(--rmsu-gold);
+            color: var(--rmsu-text-primary);
+            box-shadow: 0 0 0 0.2rem rgba(249, 199, 79, 0.25);
+        }
+
+        /* New Feature - Glass Cards */
+        .glass-card {
+            background: var(--rmsu-glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--rmsu-radius-xl);
+            box-shadow: var(--rmsu-shadow-elevated);
+        }
+
+        /* Animation */
+        .page-transition {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Badge เปลี่ยนใหม่ */
+        .badge-new {
+            background: var(--rmsu-gradient-gold);
+            color: var(--rmsu-text-white);
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--rmsu-radius-medium);
+            font-size: 0.75rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-graduation-cap me-2"></i>
+                Alumni Management
+                <span class="badge badge-new ms-2">ธีมใหม่ Furni!</span>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active" href="#">หน้าหลัก</a>
+                <a class="nav-link" href="#">จัดการศิษย์เก่า</a>
+                <a class="nav-link" href="#">กิจกรรม</a>
+                <a class="nav-link" href="#">รายงาน</a>
+                <a class="nav-link" href="#">ตั้งค่า</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">
+                        ธีม Furni ใหม่ 🌿
+                        <span class="d-block text-warning">เขียวธรรมชาติ เหลืองสดใส</span>
+                    </h1>
+                    <p class="lead mb-4">
+                        ระบบจัดการข้อมูลศิษย์เก่าด้วยธีมใหม่ที่ได้แรงบันดาลใจจากเว็บไซต์ Furni 
+                        พร้อมสีเขียวธรรมชาติและสีเหลืองสดใส
+                    </p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-primary btn-lg">
+                            <i class="fas fa-play me-2"></i>ดูธีมใหม่
+                        </button>
+                        <button class="btn btn-secondary btn-lg">
+                            <i class="fas fa-info-circle me-2"></i>เรียนรู้เพิ่มเติม
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="glass-card p-4">
+                        <h3 class="text-center mb-4">✨ คุณสมบัติใหม่</h3>
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <div class="feature-icon">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <h5>สีเขียว Furni</h5>
+                                <p class="small">สีเขียวธรรมชาติ #2f4b3f</p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <div class="feature-icon">
+                                    <i class="fas fa-sun"></i>
+                                </div>
+                                <h5>เหลืองสดใส</h5>
+                                <p class="small">สีเหลืองสดใส #f9c74f</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-number">2,548</div>
+                        <div class="stat-label">ศิษย์เก่าทั้งหมด</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">กิจกรรมทั้งหมด</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-number">89%</div>
+                        <div class="stat-label">อัตราการเข้าร่วม</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">คณะ/หลักสูตร</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary">
+                            <h5 class="mb-0">
+                                <i class="fas fa-users me-2"></i>จัดการศิษย์เก่า
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p>ระบบจัดการข้อมูลศิษย์เก่าที่ครบถ้วน พร้อมการค้นหาและจัดกลุ่มที่ง่ายดาย</p>
+                            <button class="btn btn-primary">เรียนรู้เพิ่มเติม</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar-alt me-2"></i>จัดการกิจกรรม
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p>สร้างและจัดการกิจกรรมสำหรับศิษย์เก่า พร้อมระบบลงทะเบียนออนไลน์</p>
+                            <button class="btn btn-secondary">เรียนรู้เพิ่มเติม</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-bar me-2"></i>รายงานและสถิติ
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p>ดูสถิติและรายงานการเข้าร่วมกิจกรรม พร้อมกราฟแสดงผลที่เข้าใจง่าย</p>
+                            <button class="btn btn-primary">เรียนรู้เพิ่มเติม</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Form Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header bg-primary">
+                            <h4 class="mb-0">
+                                <i class="fas fa-user-plus me-2"></i>ลงทะเบียนศิษย์เก่าใหม่
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">ชื่อ</label>
+                                        <input type="text" class="form-control" placeholder="กรอกชื่อ">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">นามสกุล</label>
+                                        <input type="text" class="form-control" placeholder="กรอกนามสกุล">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">คณะ</label>
+                                        <select class="form-select">
+                                            <option>เลือกคณะ</option>
+                                            <option>คณะวิศวกรรมศาสตร์</option>
+                                            <option>คณะครุศาสตร์</option>
+                                            <option>คณะวิทยาศาสตร์</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">ปีที่จบการศึกษา</label>
+                                        <select class="form-select">
+                                            <option>เลือกปี</option>
+                                            <option>2567</option>
+                                            <option>2566</option>
+                                            <option>2565</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">อีเมล</label>
+                                        <input type="email" class="form-control" placeholder="example@email.com">
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary btn-lg">
+                                            <i class="fas fa-save me-2"></i>บันทึกข้อมูล
+                                        </button>
+                                        <button type="reset" class="btn btn-secondary btn-lg ms-2">
+                                            <i class="fas fa-undo me-2"></i>ล้างข้อมูล
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="text-center">
+                <h5>🎨 ธีม Furni Enhanced Green ใหม่!</h5>
+                <p class="mb-0">
+                    สีเขียวธรรมชาติ <span class="text-warning">#2f4b3f</span> + 
+                    สีเหลืองสดใส <span class="text-warning">#f9c74f</span>
+                </p>
+                <p class="small mt-2">อัปเดตธีมใหม่ตามแบบเว็บไซต์ Furni เรียบร้อยแล้ว! ✨</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add page transition animation
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.classList.add('page-transition');
+        });
+
+        // Add some interactive effects
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

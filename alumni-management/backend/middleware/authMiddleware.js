@@ -41,7 +41,11 @@ const isAdmin = async (req, res, next) => {
   }
 };
 
+// เพิ่มฟังก์ชัน isAuthenticated
+const isAuthenticated = verifyToken;
+
 module.exports = {
   verifyToken,
-  isAdmin
+  isAdmin,
+  isAuthenticated
 };

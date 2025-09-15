@@ -338,11 +338,17 @@ router.get('/alumni/stats', async (req, res) => {
 router.get('/alumni', isAdmin, async (req, res) => {
   try {
     const [alumni] = await db.query(`
-      SELECT id, student_id, title, name, faculty, major, graduation_year, email, phone,
-             bio, address, profile_image,
-             province, district, subdistrict, zipcode, created_at
-      FROM users WHERE role = 'user'
-      ORDER BY created_at DESC
+      SELECT DISTINCT
+        u.id, u.student_id, u.title, u.name, u.faculty, u.major, u.graduation_year, 
+        u.email, u.phone, u.bio, u.address, u.current_address, u.profile_image,
+        u.province, u.district, u.subdistrict, u.zipcode, u.created_at,
+        wh.position as current_position,
+        wh.company_name as current_workplace,
+        wh.industry as current_industry
+      FROM users u
+      LEFT JOIN work_history wh ON u.id = wh.user_id AND wh.is_current = 1
+      WHERE u.role = 'user'
+      ORDER BY u.created_at DESC
     `);
     res.json({
       status: 'success',
@@ -371,6 +377,7 @@ router.post('/alumni', isAdmin, async (req, res) => {
       phone = '',
       bio = '',
       address = '',
+      current_address = '',
       profile_image = '',
       province = '',
       district = '',
@@ -401,13 +408,13 @@ router.post('/alumni', isAdmin, async (req, res) => {
     const [result] = await db.query(`
       INSERT INTO users (
         student_id, title, name, password, email, phone, faculty, major, graduation_year,
-        bio, address, profile_image,
+        bio, address, current_address, profile_image,
         province, district, subdistrict, zipcode,
         role, is_verified, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'user', true, NOW())
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'user', true, NOW())
     `, [
       student_id, title, name, hashedPassword, email, phone, faculty, major, graduation_year,
-      bio, address, profile_image,
+      bio, address, current_address, profile_image,
       province, district, subdistrict, zipcode
     ]);
 
@@ -441,6 +448,7 @@ router.put('/alumni/:id', isAdmin, async (req, res) => {
       phone = '',
       bio = '',
       address = '',
+      current_address = '',
       profile_image = '',
       province = '',
       district = '',
@@ -463,10 +471,10 @@ router.put('/alumni/:id', isAdmin, async (req, res) => {
     await db.query(`
       UPDATE users 
       SET student_id = ?, title = ?, name = ?, faculty = ?, major = ?, graduation_year = ?, email = ?, phone = ?,
-          bio = ?, address = ?, profile_image = ?,
+          bio = ?, current_address = ?, profile_image = ?,
           province = ?, district = ?, subdistrict = ?, zipcode = ?
       WHERE id = ? AND role = 'user'`,
-      [student_id, title, name, faculty, major, graduation_year, email, phone, bio, address, profile_image, province, district, subdistrict, zipcode, userId]
+      [student_id, title, name, faculty, major, graduation_year, email, phone, bio, current_address, profile_image, province, district, subdistrict, zipcode, userId]
     );
 
     res.json({ message: 'อัพเดทข้อมูลสำเร็จ' });

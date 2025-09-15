@@ -20,11 +20,15 @@ dirs.forEach(dir => {
 
 // Configure CORS
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://localhost:3001', 'http://127.0.0.1:3000', 'http://127.0.0.1:3001'],
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
+    optionsSuccessStatus: 200
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Increase payload limit
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -47,6 +51,7 @@ const eventsRoutes = require('./routes/events');
 const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 const workHistoryRoutes = require('./routes/workHistory');
+const adminRequestsRoutes = require('./routes/adminRequests');
 
 // Add logging middleware to track all requests
 app.use((req, res, next) => {
@@ -67,6 +72,7 @@ app.use('/api/events', eventsRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/work-history', workHistoryRoutes);
+app.use('/api/admin-requests', adminRequestsRoutes);
 
 // Error handling for file uploads
 app.use((err, req, res, next) => {

@@ -9,8 +9,10 @@ router.get('/', async (req, res) => {
                 // ตรวจสอบการเชื่อมต่อกับฐานข้อมูล
                 await db.query('SELECT 1');
 
+                const limit = req.query.limit ? parseInt(req.query.limit) : null;
+
                 // Query พร้อมส่งจำนวนผู้เข้าร่วมกิจกรรม (participants_count)
-                const [events] = await db.query(`
+                let query = `
                         SELECT e.*, 
                                      (SELECT COUNT(*) FROM event_registrations er WHERE er.event_id = e.id) AS participants_count,
                                      CASE 
@@ -18,8 +20,13 @@ router.get('/', async (req, res) => {
                                          ELSE 'past'
                                      END as status
                         FROM events e
-                        ORDER BY e.event_date DESC`
-                );
+                        ORDER BY e.event_date DESC`;
+                
+                if (limit) {
+                    query += ` LIMIT ${limit}`;
+                }
+
+                const [events] = await db.query(query);
 
                 if (!events) {
                         throw new Error('ไม่สามารถดึงข้อมูลกิจกรรมได้');

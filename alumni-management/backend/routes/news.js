@@ -5,12 +5,19 @@ const db = require('../db');
 // Get all news
 router.get('/', async (req, res) => {
     try {
-        const [news] = await db.query(`
+        const limit = req.query.limit ? parseInt(req.query.limit) : null;
+        let query = `
             SELECT n.*, u.name as author_name
             FROM news n
             LEFT JOIN users u ON n.author_id = u.id
             ORDER BY n.created_at DESC
-        `);
+        `;
+        
+        if (limit) {
+            query += ` LIMIT ${limit}`;
+        }
+        
+        const [news] = await db.query(query);
         res.json(news);
     } catch (err) {
         console.error('Error fetching news:', err);

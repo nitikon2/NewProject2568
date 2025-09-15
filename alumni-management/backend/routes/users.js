@@ -131,7 +131,7 @@ router.post('/register', async (req, res) => {
     try {
         console.log('=== REGISTER ROUTE REACHED ===');
         console.log('Registration request body:', req.body);
-    const { password, province, district, subdistrict, zipcode, ...userData } = req.body;
+    const { password, province, district, subdistrict, zipcode, address, ...userData } = req.body;
         
         // ตรวจสอบข้อมูลที่จำเป็น
         if (!userData.title || !userData.name || !password || !userData.student_id || !userData.email || !userData.phone || !userData.graduation_year || !userData.faculty || !userData.major) {
@@ -164,14 +164,15 @@ router.post('/register', async (req, res) => {
             `INSERT INTO users (
                 title, name, password, student_id,
                 email, phone, graduation_year,
-                faculty, major, bio,
+                faculty, major, bio, address, current_address,
                 role, is_verified,
                 province, district, subdistrict, zipcode
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'user', false, ?, ?, ?, ?)`,
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'user', false, ?, ?, ?, ?)`,
             [
                 userData.title, userData.name, hashedPassword, userData.student_id,
                 userData.email, userData.phone, userData.graduation_year,
                 userData.faculty, userData.major, userData.bio || '',
+                address || '', address || '', // ใช้ address เดียวกันสำหรับทั้ง address และ current_address
                 province || '', district || '', subdistrict || '', zipcode || ''
             ]
         );
@@ -250,7 +251,8 @@ router.put('/:id', async (req, res) => {
             province,
             district,
             subdistrict,
-            zipcode
+            zipcode,
+            student_id
         } = req.body;    // Validate required fields
     if (!name || !phone || !graduation_year || !faculty || !major) {
       return res.status(400).json({ message: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
@@ -261,7 +263,7 @@ router.put('/:id', async (req, res) => {
              SET name = ?, phone = ?, graduation_year = ?, 
                      faculty = ?, major = ?, bio = ?,
                      address = ?, province = ?, district = ?, subdistrict = ?, zipcode = ?,
-                     updated_at = NOW()
+                     student_id = ?, updated_at = NOW()
              WHERE id = ?`,
             [
                 name,
@@ -275,6 +277,7 @@ router.put('/:id', async (req, res) => {
                 district ?? '',
                 subdistrict ?? '',
                 zipcode ?? '',
+                student_id ?? '',
                 req.params.id
             ]
         );

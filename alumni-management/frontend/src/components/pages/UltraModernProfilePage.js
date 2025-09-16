@@ -855,7 +855,7 @@ function UltraModernProfilePage() {
             }}
           >
             <Tab icon={<PersonIcon />} label="ข้อมูลส่วนตัว" />
-            <Tab icon={<SchoolIcon />} label="การศึกษาและงาน" />
+            <Tab icon={<SchoolIcon />} label="ข้อมูลการศึกษา" />
             <Tab icon={<LocationIcon />} label="ที่อยู่และการติดต่อ" />
             <Tab icon={<WorkIcon />} label="ประวัติการทำงาน" />
           </Tabs>
@@ -1038,17 +1038,6 @@ function UltraModernProfilePage() {
                         </Typography>
                         <Typography variant="h6" sx={{ fontWeight: 600 }}>
                           จบการศึกษา
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <TimelineIcon sx={{ color: '#06b6d4' }} />
-                      <Box>
-                        <Typography variant="body2" color="text.secondary">
-                          ประสบการณ์หลังจบ
-                        </Typography>
-                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                          {userData?.graduation_year ? (new Date().getFullYear() - userData.graduation_year) : 0} ปี
                         </Typography>
                       </Box>
                     </Box>
